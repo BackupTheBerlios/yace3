@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2003 Giuliano Gagliardi
+  Copyright (C) 2003 Giuliano Gagliardi, Tobias Bahls, Giuliano Montecarlo
 
   This file is part of YaCE 3
 
@@ -189,36 +189,57 @@ void
 irccon::parse (const string & what)
 {
 	ircargs ia (what);
+
+	/*
+	  Insertme:
+	  if (ia.command() == "NICK") {
+	    yace->irc().insertUser(ia.arg(0), ia(arg4));
+	    replace(yace->sql().getString("enters"),"%CNAME%",ia.arg(0));
+	    return;
+	  }
+	*/
 	if (ia.command () == "PRIVMSG")
 	{
 		if (ia.arg (0)[0] == '#')
 		{
 			if (ia.rest ()[0] == (char) 1)
 			{
-				string s_me =
-					ia.rest ().substr (0, ia.rest ().length () - 2);
+				string s_me = ia.rest ().substr (0, ia.rest ().length () - 2);
 				s_me = s_me.substr (s_me.find (" "), s_me.length () - s_me.find ("N"));
 				i2y_me (ia.prefix (), s_me, ia.arg(0));
-			} else {
-			i2y_say (ia.prefix (), ia.rest (), ia.arg (0));
-			}
+			} else
+				i2y_say (ia.prefix (), ia.rest (), ia.arg (0));
 		}
 		else
-		{
 			i2y_whisper (ia.prefix (), ia.rest (), ia.arg (0));
-		}
 		return;
-	}
-	else			/* TODO: if(ia.command() == "NICK") {
-				 * yace->irc().insertUser(ia.arg(0), ia.arg(4));
-				 * replace(yace->sql().getString("enters"), "%CNAME", ia.arg(0));
-				 * return;
-				 * } else */ if (ia.command () == "PING")
+	} else	if (ia.command() == "PING")
 	{
 		string pong = "PONG yace.filbboard.de " + ia.arg (0);
 		yace->irc ().send (pong);
 		return;
 	}
+
+	else if (ia.command() == "MODE")
+	{
+		// Insert other Modeparsing here. THIS IS ONLY TEMPORARY
+		/* FIXME, IMTOOLATZY:
+		string room = getChannel(roomof(ia.prefix()));
+		string notice;
+		if (ia.arg(1) == "+i") {
+			lock(room);
+			notice = yace->sql().getString("lock_room");
+		}
+		else if (ia.arg(1) == "-i") {
+			unlock(room);
+			notice = yace->sql().getString("unlock_rooom");
+		}
+		notice = replaceCommon(notice);
+		notice = replace(notice,"%CNAME%",ia.prefix());
+	  sendRoomU(ia.prefix(),notice);
+	 	*/
+	}
+	
 	else			/* FIXME: if(ia.command() == "AWAY") {
 				 * i2y_away(ia.prefix(), ia.rest(), "#lounge"); // <- "lounge" must be repaced with the rooms the user is (ircuser class needed)
 				 * return;
