@@ -215,7 +215,7 @@ irccon::parse (const string & what)
 		irchehe->DecRef();
 	}
   else if (ia.command() == "JOIN") {
-	  if (!exists(ia.prefix)) return;
+	  if (!exists(ia.prefix())) return;
 	  string foo = replace(ia.arg(0),","," ");
 	  commandargs ca(foo);
 	  user* u = yace->users().getUser(ia.prefix());
@@ -286,13 +286,33 @@ irccon::parse (const string & what)
 		  		  adding = false;
 		  		break;
 
-		  		case 'o':
-					  // FIXME.
+		  		case 'O':
 		  		  if (adding)
 						  setRights(user,51);
 					  else
 						  setRights(user,0);
 		  		break;
+
+					case 'C':
+					  if (adding)
+						  setRights(user,201);
+						else
+						  setRights(user,0);
+					break;
+					
+				  case 'A':
+					  if (adding)
+						  setRights(user,200);
+						else
+						  setRights(user,0);
+					break;
+
+					case 'o':
+					  if (adding)
+						  setRights(user,25);
+					  else
+						  setRights(user,0);
+					break;
 				}
 				
 			}

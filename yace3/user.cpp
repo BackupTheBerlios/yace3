@@ -119,7 +119,6 @@ void user::DecRef()
 
 int user::igetProp(const string& key)
 {
-  if(ircuser) return 0;
   int ret;
   m_iprops.enterMutex();
   if(iprops.count(key))
@@ -132,7 +131,6 @@ int user::igetProp(const string& key)
 
 void user::isetProp(const string& key, int val)
 {
-  if(ircuser) return;
   m_iprops.enterMutex();
   iprops[key] = val;
   m_iprops.leaveMutex();
@@ -140,7 +138,6 @@ void user::isetProp(const string& key, int val)
 
 string user::sgetProp(const string& key)
 {
-  if(ircuser) return "";
   string ret;
   m_sprops.enterMutex();
   if(sprops.count(key))
@@ -153,7 +150,6 @@ string user::sgetProp(const string& key)
 
 void user::ssetProp(const string& key, const string& val)
 {
-  if(ircuser) return;
   m_sprops.enterMutex();
   sprops[key] = val;
   m_sprops.leaveMutex();
