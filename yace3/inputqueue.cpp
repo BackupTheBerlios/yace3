@@ -106,24 +106,24 @@ inputqueue::run ()
 			if (cmds.count (tolower (tmp.arg (0))))
 			{
 				command = tolower (tmp.arg (0));
-				argz = commandargs (tmp.rest (0));
+				argz = commandargs (htmlspecialchars(tmp.rest (0)));
 			}
 			else
 			{
 				command = "m";
-				argz = commandargs (got.text.substr (1));
+				argz = commandargs (htmlspecialchars(got.text.substr (1)));
 			}
 		}
 		else
 		{
 			command = "say";
 			sendUserIRC (user, sendirc);
-			argz = commandargs (/*replaceI(*//*replaceAll (*/got.text/*), "sebi", "Der &Auml;rmste Stra&szlig;enpenner von Frankfurt"), got.text*/);
+			argz = commandargs (htmlspecialchars(/*replaceI(*//*replaceAll (*/got.text/*), "sebi", "Der &Auml;rmste Stra&szlig;enpenner von Frankfurt"), got.text*/));
 		}
 
 
 		f = cmds[command];
-		f (yace->users().getUser(user)->getName(), htmlspecialchars(argz));
+		f (yace->users().getUser(user)->getName(), argz);
 	}
 }
 
