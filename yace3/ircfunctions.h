@@ -8,4 +8,5 @@
 string getChannel(const string& yaceroom);
 
 void sendUserIRC(const string& user, const string& what);
-void newIRCUser(const string& who);
+void newIRCUser(user* u);
+void quitIRCUser(user* u);

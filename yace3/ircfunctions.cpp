@@ -50,26 +50,20 @@ void sendUserIRC(const string& user, const string& what)
   return;
 }
 
-void newIRCUser(const string& who)
+void newIRCUser(user* u)
 {
   ostringstream toirc;
   
-  ::user* u = yace->users().getUser(who);
-  
-  string ircroom = getChannel(u->getRoom());
-  if(ircroom == "") return;
-  
-  toirc << "NICK " << who << " 1 1 " << who << " " << u->getIP() << " " << yace->irc().getServerName() << " 1 :Yace-User";
+  toirc << "NICK " << u->getName() << " 1 1 yace " << u->getIP() << " " << yace->irc().getServerName() << " 1 :Yace-User" << endl;
   yace->irc().send(toirc.str());  
   toirc.clear();
 
-  toirc << ":" << who << " SETHOST yace.filbboard.de";
-  yace->irc().send(toirc.str());
-  toirc.clear();
-
-  toirc << ":" << who << " JOIN " << ircroom;
+  toirc << ":" << u->getName() << " SETHOST yace.filbboard.de" << endl;
   yace->irc().send(toirc.str());
   
-  u->DecRef();
-  return;
+}
+
+void quitIRCUser(user* u)
+{
+  yace->irc().send(":" + u->getName() + "QUIT :Logged out");
 }

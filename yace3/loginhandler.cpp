@@ -58,6 +58,7 @@ void loginhandler::run()
     if(!goodnick(nick))
       throw badnick;
 
+    /* CHECK FOR IRC HERE */
     
     if(yace->users().existsUser(nick))
       throw inuse;
@@ -81,9 +82,9 @@ void loginhandler::run()
     Semaphore logout;
 
     user* hehe = new user(con, &wait, &logout, nick, ip, id);
-
-    newIRCUser(nick);
     
+    newIRCUser(hehe);
+
     hehe->ssetProp("logintime", c_time());
 
     string regstrings = yace->sql().getConfStr("regstrings");
@@ -171,6 +172,8 @@ void loginhandler::run()
     enters(hehe);
 
     logout.wait();
+
+    quitIRCUser(hehe);
 
     leaves(hehe);
     yace->rooms().leaves(hehe->getName());

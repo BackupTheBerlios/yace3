@@ -94,6 +94,8 @@ void irccon::connectRC(const string& room, const string& channel)
 
 void irccon::send(const string& str)
 {
+
+  cout << "DEBUG: " << str << endl;
   (*irc) << str << endl;
 }
 
