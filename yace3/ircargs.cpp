@@ -52,7 +52,8 @@ ircargs::ircargs(const string& text):
       m_args.push_back(temp.substr(0, act));
       temp.replace(0, act + 1, "");
     }
-
+    
+    m_args.push_back(temp);
     m_args.push_back(m_rest);
   }
 }
