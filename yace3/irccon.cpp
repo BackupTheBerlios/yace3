@@ -246,7 +246,7 @@ irccon::parse (const string & what)
 	  if (ia.arg(0)[0] == '#') {
 		  // Channelmodes
 			string room = ia.arg(0);
-			room = room.substr(1, room.length()-1);
+			cout << room << endl;
 			string modes = ia.arg(1);
 			bool adding = false;
 			
@@ -269,11 +269,20 @@ irccon::parse (const string & what)
 					break;
 			
           case 'm':
-					  // Needs getchannelthingy too
-						if (adding)
-						  setMod(room, 10, 25);
-						if (!adding)
-						  setMod(room, 0, 0);
+					  string notice;
+						if (adding) {
+						  notice = yace->sql().getString("mod");
+						  setMod(getRoom(room), 10, 25);
+						}
+						if (!adding) {
+						  setMod(getRoom(room), 0, 0);
+							notice = yace->sql().getString("remove_mod");
+						}
+						
+						notice = replaceUser(ia.prefix(), notice);
+						notice = replaceCommon(notice);
+
+						sendRoomU(ia.prefix(),notice);
 					break;
 					
 				}

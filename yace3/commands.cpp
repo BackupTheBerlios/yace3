@@ -247,10 +247,12 @@ static int mod(CA)
   if(hasMod(roomof(caller))) {
     notice = yace->sql().getString("remove_mod");
     setMod(roomof(caller), 0, 0);
+		yace->irc().send(":" + caller + " MODE " + getChannel(roomof(caller)) + " -m");
   }
   else {
     notice = yace->sql().getString("mod");
     setMod(roomof(caller), voice, local);
+		yace->irc().send(":" + caller + " MODE " + getChannel(roomof(caller)) + " +m");
   }
 
   notice = replaceUser(caller, notice);
