@@ -33,171 +33,197 @@
 #include "stringutil.h"
 #include "ircfunctions.h"
 
-irccon::irccon(const string& h, int p, const string& n, const string& pwd)
+irccon::irccon (const string & h, int p, const string & n, const string & pwd)
 {
-  connected = false;
-  host = h;
-  port = p;
-  name = n;
-  pass = pwd;
+	connected = false;
+	host = h;
+	port = p;
+	name = n;
+	pass = pwd;
 }
 
-void irccon::run()
+void
+irccon::run ()
 {
-  connect();
-  connectRC("lounge", "#lounge");
-  string got;
-  for(;;) {
-    std::getline(*irc, got);
-    /*
-    commandargs ca(got);
-    ircargs ia(got);
-    */
-    parse(got);
-    /*if(ca.arg(0) == "PING") {
-      string pong = ":" + name + " PONG " + name + " " + ca.arg(1);
-      ircargs ia(got);
-      cout << ia.command() << endl;
-    } */
-    /*if(ia.command() == "PING") {
-      string pong = ":" + name + " PONG " + name + " " + ia.arg(2);
-      (*irc) << pong << endl;
-    } */
-    /*if(ia.command() == "PRIVMSG") {
-      string from = ia.prefix();
-      string to = ia.arg(0);
-      string what = ia.rest();
-      // cout << "DEBUG: Got Privmsg from " << from << " to " << to << ": " << what << endl;
-      
-      if (to[0] == '#') {
-        // Public
-	ostringstream tosend;
-	tosend << "(" << from << ") " << what;
-	sendAll(tosend.str());
-      } else {
-        // Private
-        string tosend = replaceUser(from, yace->sql().getString("whisperfrom"));
-	// FIXME: replaceUser needs user-class as first argument. 
+	connect ();
+	connectRC ("lounge", "#yace");
+	string got;
+	for (;;)
+	{
+		std::getline (*irc, got);
+		/*
+		 * commandargs ca(got);
+		 * ircargs ia(got);
+		 */
+		parse (got);
+		/*if(ca.arg(0) == "PING") {
+		 * string pong = ":" + name + " PONG " + name + " " + ca.arg(1);
+		 * ircargs ia(got);
+		 * cout << ia.command() << endl;
+		 * } */
+		/*if(ia.command() == "PING") {
+		 * string pong = ":" + name + " PONG " + name + " " + ia.arg(2);
+		 * (*irc) << pong << endl;
+		 * } */
+		/*if(ia.command() == "PRIVMSG") {
+		 * string from = ia.prefix();
+		 * string to = ia.arg(0);
+		 * string what = ia.rest();
+		 * // cout << "DEBUG: Got Privmsg from " << from << " to " << to << ": " << what << endl;
+		 * 
+		 * if (to[0] == '#') {
+		 * // Public
+		 * ostringstream tosend;
+		 * tosend << "(" << from << ") " << what;
+		 * sendAll(tosend.str());
+		 * } else {
+		 * // Private
+		 * string tosend = replaceUser(from, yace->sql().getString("whisperfrom"));
+		 * // FIXME: replaceUser needs user-class as first argument. 
+		 * 
+		 * tosend = replace(tosend, "%TEXT%", what);
+		 * sendUser(to, tosend);
+		 * }
+		 * } */
 
-        tosend = replace(tosend, "%TEXT%", what);
-        sendUser(to, tosend);
-      }
-    }*/
-    
-    if (got != "") {
-        cout << got << endl;
-    }
-  }
+		if (got != "")
+		{
+			cout << got << endl;
+		}
+	}
 }
 
-string irccon::getChannel(const string& room)
+string
+irccon::getChannel (const string & room)
 {
-  if(c_rooms.count(room))
-    return c_rooms[room];
-  else
-    return "";
+	if (c_rooms.count (room))
+		return c_rooms[room];
+	else
+		return "";
 }
 
-string irccon::getRoom(const string& channel)
+string
+irccon::getRoom (const string & channel)
 {
-  for(map<string, string>::const_iterator it = c_rooms.begin(); it != c_rooms.end(); ++it) {
-    if (it->second == channel)
-      return it->first;
-  }
-  return "";
+	for (map < string, string >::const_iterator it = c_rooms.begin ();
+	     it != c_rooms.end (); ++it)
+	{
+		if (it->second == channel)
+			return it->first;
+	}
+	return "";
 }
 
-void irccon::connectRC(const string& room, const string& channel)
+void
+irccon::connectRC (const string & room, const string & channel)
 {
-  if(channel == "")
-    if(c_rooms.count(room)) {
-      c_rooms.erase(room);
-      return;
-    }
-  
-  string a;
-  if((a = getRoom(channel)) != "") {
-    c_rooms.erase(a);
-  }
-  
-  c_rooms[room] = channel;
+	if (channel == "")
+		if (c_rooms.count (room))
+		{
+			c_rooms.erase (room);
+			return;
+		}
+
+	string a;
+	if ((a = getRoom (channel)) != "")
+	{
+		c_rooms.erase (a);
+	}
+
+	c_rooms[room] = channel;
 }
 
-void irccon::send(const string& str)
+void
+irccon::send (const string & str)
 {
 
-  cout << "DEBUG: " << str << endl;
-  (*irc) << str << endl;
+	cout << "DEBUG: " << str << endl;
+	(*irc) << str << endl;
 }
 
-bool irccon::connect()
+bool
+irccon::connect ()
 {
-  irc = new TCPStream(InetHostAddress(host.c_str()), port);
-  if(!irc->isConnected()) {
-    delete irc;
-    return false;
-  }
+	irc = new TCPStream (InetHostAddress (host.c_str ()), port);
+	if (!irc->isConnected ())
+	{
+		delete irc;
+		return false;
+	}
 
-  try {
-    (*irc) << "PASS " << pass << endl;
-    (*irc) << "SERVER " << name << " 1 :YaCE Connection (alpha)" << endl;
+	try
+	{
+		(*irc) << "PASS " << pass << endl;
+		(*irc) << "SERVER " << name << " 1 :YaCE Connection (alpha)"
+			<< endl;
 
-    //(*irc) << "NICK YaCE 1 1 yace " << name << " " << name << " 1 :YaCE-Testfreak" << endl;
-    //(*irc) << ":YaCE JOIN #lounge" << endl;
-    
-  }
-  catch(...) {
-    delete irc;
-    return false;
-  }
-  
-  if(!irc->isConnected()) {
-    delete irc;
-    return false;
-  }
-  
-  connected = true;
-  return true;
+		//(*irc) << "NICK YaCE 1 1 yace " << name << " " << name << " 1 :YaCE-Testfreak" << endl;
+		//(*irc) << ":YaCE JOIN #lounge" << endl;
+
+	}
+	catch (...)
+	{
+		delete irc;
+		return false;
+	}
+
+	if (!irc->isConnected ())
+	{
+		delete irc;
+		return false;
+	}
+
+	connected = true;
+	return true;
 }
 
-void irccon::insertUser(const string& name, const string& hostname)
+void
+irccon::insertUser (const string & name, const string & hostname)
 {
-  c_nicks[name] =  hostname;
-  return;
+	c_nicks[name] = hostname;
+	return;
 }
 
 
-void irccon::parse(const string& what)
+void
+irccon::parse (const string & what)
 {
-  ircargs ia(what);
-  commandargs ca(what); // since we cant parse the errormessages with ircargs
-
-  // Errormessage? Exit.
-  if (ca.arg(0) == "ERROR") {
-    cout << "Connection to IRC Server failed. Errormessage:" << endl;
-    cout << what << endl;
-    std::exit(0);
-  }
-
-  
-  if(ia.command() == "PRIVMSG")
-  {
-    if(ia.arg(0)[0] == '#')
-    {
-      i2y_say(ia.prefix(), ia.rest(), ia.arg(0));
-    } else {
-      i2y_whisper(ia.prefix(), ia.rest(), ia.arg(0));
-    }
-    return;
-  } else if(ia.command() == "NICK") {
-      yace->irc().insertUser(ia.arg(0), ia.arg(4));
-      replace(yace->sql().getString("enters"), "%CNAME", ia.arg(0));
-      return;
-    } else if(ia.command() == "PING") {
-      string pong = "PONG yace.gogi.tv " + ia.arg(0);
-      yace->irc().send(pong);
-      return;
-    } else {
-      return;
-  }
+	ircargs ia (what);
+	if (ia.command () == "PRIVMSG")
+	{
+		if (ia.arg (0)[0] == '#')
+		{
+			if (ia.rest ()[0] == (char) 1)
+			{
+				string s_me =
+					ia.rest ().substr (0, ia.rest ().length () - 2);
+				s_me = s_me.substr (s_me.find (" "), s_me.length () - s_me.find ("N"));
+				i2y_me (ia.prefix (), s_me, ia.arg(0));
+			} else {
+			i2y_say (ia.prefix (), ia.rest (), ia.arg (0));
+			}
+		}
+		else
+		{
+			i2y_whisper (ia.prefix (), ia.rest (), ia.arg (0));
+		}
+		return;
+	}
+	else			/* TODO: if(ia.command() == "NICK") {
+				 * yace->irc().insertUser(ia.arg(0), ia.arg(4));
+				 * replace(yace->sql().getString("enters"), "%CNAME", ia.arg(0));
+				 * return;
+				 * } else */ if (ia.command () == "PING")
+	{
+		string pong = "PONG yace.filbboard.de " + ia.arg (0);
+		yace->irc ().send (pong);
+		return;
+	}
+	else			/* FIXME: if(ia.command() == "AWAY") {
+				 * i2y_away(ia.prefix(), ia.rest(), "#lounge"); // <- "lounge" must be repaced with the rooms the user is (ircuser class needed)
+				 * return;
+				 * } else */
+	{
+		return;
+	}
 }
