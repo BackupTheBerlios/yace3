@@ -42,12 +42,20 @@ user* usercont::getUser(const string& name)
   string lname = tolower(name);
   user* ret;
   m_users.enterMutex();
-  if(!users.count(lname))
+  hash_map::iterator it;
+  
+  for(it = users.begin(); it != users.end(); ++it)
+  {
+	  if(it->second->getName() == name) ret = it->second;
+	  if(it->second->sgetProp("nick") == name) ret = it->second;
+  }
+	
+  /*if(!users.count(lname))
     ret = NULL;
   else {
     ret =  users[lname];
     ret->IncRef();
-  }
+  }*/
   m_users.leaveMutex();
   return ret;
 }
