@@ -231,22 +231,46 @@ irccon::parse (const string & what)
 	
 	else if (ia.command() == "MODE")
 	{
-		// Insert other Modeparsing here. THIS IS ONLY TEMPORARY
-		/* FIXME, IMTOOLATZY:
-		string room = getChannel(roomof(ia.prefix()));
-		string notice;
-		if (ia.arg(1) == "+i") {
-			lock(room);
-			notice = yace->sql().getString("lock_room");
+	  // FIXME: Doesnt parse ":tobi MODE #lounge -m"
+	  if (ia.arg(0)[0] == '#') {
+		  // Channelmodes
+			string room = ia.arg(0);
+			room = room.substr(1, room.length()-1);
+			string modes = ia.arg(1);
+			bool adding;
+
+			for (int i=1; i<modes.length(); i++) {
+			  switch (modes[i]) {
+				  case '+':
+					  adding = true;
+					break;
+					
+					case '-':
+					  adding = false;
+					break;
+					
+					case 'i':
+					  // Needs getchannelthingy
+					  if (adding)
+						  lock(room);
+						else
+						  unlock(room);
+					break;
+			
+          case 'm':
+					  // Needs getchannelthingy too
+						if (adding)
+						  setMod(room, 10, 25);
+						else
+						  setMod(room, 0, 0);
+					break;
+					
+				}
+			}
 		}
-		else if (ia.arg(1) == "-i") {
-			unlock(room);
-			notice = yace->sql().getString("unlock_rooom");
+		else {
+		  // Usermodes	
 		}
-		notice = replaceCommon(notice);
-		notice = replace(notice,"%CNAME%",ia.prefix());
-	  sendRoomU(ia.prefix(),notice);
-	 	*/
 	}
 	
 	else			/* FIXME: if(ia.command() == "AWAY") {
