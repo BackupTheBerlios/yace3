@@ -438,7 +438,11 @@ string replaceAll(const string& in)
   string ret = in;
   hash_map<string, string> reps = yace->sql().getReplaces();
   for(hash_map<string, string>::iterator it = reps.begin(); it != reps.end(); ++it) {
-    ret = replaceI(ret, it->first, it->second);
+	//ret = replaceI(ret, it->first, it->second);
+	while(ret.find(it->first) != string::npos) 
+	{
+	  ret = replaceI(ret, it->first, it->second);
+	}
   }
   return ret;
 }
