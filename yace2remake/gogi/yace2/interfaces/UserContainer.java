@@ -26,7 +26,6 @@ package gogi.yace2.interfaces;
 
 import java.util.Enumeration;
 import java.net.Socket;
-import java.io.PrintStream;
 
 public interface UserContainer
 {
@@ -37,6 +36,6 @@ public interface UserContainer
 	public User user(String name);
 
 	// add and delete an user
-	public boolean add(String name, String room, Socket csock, PrintStream pw);
+	public boolean add(String name, String room, Socket sock, java.io.PrintStream pw);
 	public boolean del(String name);
 }

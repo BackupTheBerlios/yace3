@@ -24,14 +24,17 @@
 
 package gogi.yace2.core;
 
+import gogi.yace2.interfaces.RoomContainer;
 import gogi.yace2.interfaces.Server;
-// import gogi.yace2.base.*;
+import gogi.yace2.interfaces.UserContainer;
 import bsh.Interpreter;
-// import java.util.*;
 
 public class YaCE implements Server
 {
 	private Interpreter m_bsh;
+
+	private RoomContainer m_rooms;
+	private UserContainer m_users;
 
 	public YaCE()
 	{
@@ -72,11 +75,28 @@ public class YaCE implements Server
 			System.exit(1);
 		}
 
+		System.out.println("+-- BeanShell has been successfully set up!");
 
+		// Set up user and room container
+		System.out.println("+-- Setting up user and room container...");
+		m_rooms = new RoomContainerImpl();
+		m_users = new UserContainerImpl(this);
+		System.out.println("+-- Container have been set up!");
 	}
+
 	public Interpreter bsh()
 	{
 		return m_bsh;
+	}
+
+	public RoomContainer rooms()
+	{
+		return m_rooms;
+	}
+
+	public UserContainer users()
+	{
+		return m_users;
 	}
 }
 

@@ -24,12 +24,13 @@
 
 package gogi.yace2.interfaces;
 
-// import gogi.yace2.base.*;
 import bsh.Interpreter;
 
 public interface Server
 {
 	public Interpreter bsh();
+	public RoomContainer rooms();
+	public UserContainer users();
 }
 
 /*public interface Server

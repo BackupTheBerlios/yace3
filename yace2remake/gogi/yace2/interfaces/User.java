@@ -26,20 +26,21 @@ import java.util.Enumeration;
 public interface User
 {
 	// send something to an user
-	public boolean send(String tosend);
+	public boolean send(String to_send);
 
 	// add and get a string to the props hashtable
 	public String sgetProp(String prop);
-	public boolean ssetProp(String prop, String toset);
+	public boolean ssetProp(String prop, String to_set);
 
 	// add and get a long to the props hashtable
 	public long igetProp(String prop);
-	public boolean isetProp(String prop, long toset);
+	public boolean isetProp(String prop, long to_set);
 
 	// add and get a boolean to the props hashtable
 	public boolean bgetProp(String prop);
-	public boolean bsetProp(String prop, boolean toset);
-	public boolean bsetProp(String prop, long toset);
+	public boolean bsetProp(String prop, boolean to_set);
+	public boolean bsetProp(String prop, long to_set);
+	public boolean bsetProp(String prop, String to_set);
 
 	// add and get an object to the props hashtable
 	public Object getProp(String prop);
@@ -51,6 +52,9 @@ public interface User
 
 	// let an user join another room
 	public boolean join(String room);
+
+	// disconnect the user
+	public void disconnect();
 
 	// get all props
 	public Enumeration allProps();

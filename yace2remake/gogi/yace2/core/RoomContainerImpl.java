@@ -66,7 +66,7 @@ public class RoomContainerImpl implements RoomContainer
 
 	public Room room(String name)
 	{
-		// return the room with the name in the variable name
+		// returns the room with the name in the variable name
 		// if this room does not exist this container will create
 		// a new object, put it into the m_rooms hashtable and
 		// return it.
@@ -87,8 +87,6 @@ public class RoomContainerImpl implements RoomContainer
 				to_ret = new RoomImpl(name);
 				m_rooms.put(name, to_ret);
 			}
-
-			return to_ret;
 		}
 		catch(NullPointerException e)
 		{
@@ -98,6 +96,8 @@ public class RoomContainerImpl implements RoomContainer
 		{
 			return null;
 		}
+
+		return to_ret;
 	}
 
 	public boolean del(String name)
@@ -106,7 +106,7 @@ public class RoomContainerImpl implements RoomContainer
 		try
 		{
 			// exception handling is necessary because
-			// get() will throw a NullPointerException
+			// remove() will throw a NullPointerException
 			// if the key is null.
 
 			Object o = m_rooms.remove(name);

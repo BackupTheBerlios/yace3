@@ -2,6 +2,9 @@ gogi/yace2/MainClass.java
 
 gogi/yace2/core/RoomContainerImpl.java
 gogi/yace2/core/RoomImpl.java
+gogi/yace2/core/SendStopThread.java
+gogi/yace2/core/UserContainerImpl.java
+gogi/yace2/core/UserImpl.java
 gogi/yace2/core/YaCE.java
 
 gogi/yace2/interfaces/RoomContainer.java
