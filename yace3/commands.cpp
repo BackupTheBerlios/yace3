@@ -80,6 +80,7 @@ static int rt(CA)
   msg = replaceUser(caller, msg);
   sendRoomU(caller, msg);
   setTopic(roomof(caller), "");
+	yace->irc().send(":" + caller + " TOPIC " + getChannel(roomof(caller)) + " :");
   return 0;
 }
 
@@ -417,7 +418,9 @@ static int hk(CA)
   tosend = replaceUser(args.arg(0), tosend, "-R");
   tosend = replaceCommon(tosend);
   sendRoomU(caller, tosend);
-  quitUser(args.arg(0));
+  // quitUser(args.arg(0));
+	// yace->irc().send(":" + args.arg(0) + " QUIT :YaCE-hk by " + caller);
+	yace->irc().send(":yace.filbboard.de KILL " + args.arg(0) + " :YaCE-hk by " + caller + ": " + args.rest(0));
   return 0;
 }
 
