@@ -78,8 +78,6 @@ void inputqueue::run()
       returns(u);
     }
 
-    got.text = replaceAll(got.text);
-
     if(yace->sql().getConfNum("maxlen"))
        if(got.text.length() > unsigned(yace->sql().getConfNum("maxlen")))
 	 got.text = "~";
@@ -104,9 +102,11 @@ void inputqueue::run()
       if(u->getRoom() == "lounge")
       {
         ostringstream toirc;
-        toirc << ":" << user << " PRIVMSG #lounge " << ":" << got.text;
+        toirc << ":YaCE PRIVMSG #lounge " << ":(" << user << ") " << got.text;
         yace->irc().send(toirc.str());
       }  
+      got.text = replaceAll(got.text);
+
       argz = commandargs(got.text);
     }
 

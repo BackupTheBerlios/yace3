@@ -22,6 +22,7 @@
 #include "irccon.h"
 #include "functions.h"
 #include "commandargs.h"
+#include "stringutil.h"
 
 irccon::irccon(const string& h, int p, const string& n, const string& pwd)
 {
@@ -45,7 +46,12 @@ void irccon::run()
       (*irc) << pong << endl;
     }
 
-    sendAll(got);
+    if(ca.arg(1) == "PRIVMSG")
+    {
+      sendAll(htmlspecialchars("(" + replace(ca.arg(0), ":", "") + ") " + replace(ca.arg(3), ":", "") + " " + ca.rest(3)));
+    } else {
+      sendAll(got);
+    }
     cout << got << endl;
   }
 }
