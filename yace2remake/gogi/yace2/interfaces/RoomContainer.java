@@ -35,4 +35,7 @@ public interface RoomContainer
 
 	// delete a room
 	public boolean del(String name);
+
+	// remove all empty rooms
+	public void clear();
 }
