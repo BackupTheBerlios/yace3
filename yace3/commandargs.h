@@ -33,14 +33,18 @@ using namespace std;
 class commandargs
 {
   string full;
+  string plain;
   vector<string> args;
   vector<string> rests;
 
  public:
+  commandargs(const string& text, const string& plaintext);
   commandargs(const string& text);
   string arg(unsigned int i);
   string rest(unsigned int i);
   string all();
+  string getPlain();
+
 };
 
 #endif

@@ -21,9 +21,10 @@
 
 #include "commandargs.h"
 
-commandargs::commandargs(const string& text)
+commandargs::commandargs(const string& text, const string& plaintext)
 {
   full = text;
+  plain = plaintext;
   string op(full);
 
   unsigned int act;
@@ -35,6 +36,23 @@ commandargs::commandargs(const string& text)
   args.push_back(op);
   //rests.push_back(op);
 }
+
+commandargs::commandargs(const string& text)
+{
+  full = text;
+  plain = text;
+  string op(full);
+
+  unsigned int act;
+  while((act = op.find(" ")) != string::npos) {
+    args.push_back(op.substr(0, act));
+    rests.push_back(op.substr(act + 1));
+    op.replace(0, act + 1, "");
+  }
+  args.push_back(op);
+  //rests.push_back(op);
+}
+
 
 string commandargs::all()
 {
@@ -63,4 +81,9 @@ string commandargs::arg(unsigned int i)
   catch(...) {
     return "";
   }
+}
+
+string commandargs::getPlain()
+{
+  return plain;
 }
