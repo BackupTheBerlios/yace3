@@ -365,10 +365,11 @@ irccon::parse (const string & what)
 		for (int i=0; foo != ""; i++) {
 		  foo = ca.arg(i);
 			if (foo != "") {
-			  foo = replace(foo.substr(1,foo.length()), "_", ""); 
+			  /* foo = replace(foo.substr(1,foo.length()-1), "_", ""); 
 			  foo = replace(foo, "\r", "");
-			  foo = replace(foo.substr(1, foo.length()-1), "_", " ");
-			  if(foo.find(" ") == foo.length()) foo = foo.substr(0,foo.length()-1);
+			  if(foo.find(" ") == foo.length()) foo = foo.substr(0,foo.length()-1); */
+  foo = replace(foo, "\r", "");
+        foo = IRCrtoYaCEr(foo);
 			  cout << foo << " und so" << endl;
 			  yace->rooms().joinRoom(u->getName(), foo, true);
 			}
@@ -436,10 +437,10 @@ irccon::parse (const string & what)
 					break;
 		      
 					case 's':
-					  if (adding)
-						  hide(room);
-						else
-						  reveal(room);
+					  if (adding) 
+              hide(IRCrtoYaCEr(room));
+            else
+						  reveal(IRCrtoYaCEr(room));
 					break;
 					
           case 'm':

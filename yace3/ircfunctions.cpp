@@ -183,6 +183,14 @@ y2i_back (const string & who)
 	return;
 }
 
+string IRCrtoYaCEr(const string& which) {
+  string foo = which;
+  foo = replace(foo.substr(1,foo.length()-1), "_", "");
+  foo = replace(foo, "\r", "");
+  if(foo.find(" ") == foo.length()) foo = foo.substr(0,foo.length()-1);
+  return foo;
+
+}
 void
 i2y_me(const string& who, const string& what, const string& where)
 {

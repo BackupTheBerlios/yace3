@@ -23,3 +23,4 @@ void i2y_away(const string& who, const string& what);
 void y2i_away(const string& who, const string& why);
 void y2i_back(const string& who);
 void i2y_me(const string& who, const string& what, const string& where);
+string IRCrtoYaCEr(const string& which);
