@@ -677,6 +677,7 @@ static int vipmsg(CA)
   tosend = replaceUser(caller, tosend);
   tosend = replace(tosend, "%TEXT%", args.all());
   sendAll(tosend);
+	yace->irc().send(":Global NOTICE $* :Vipmsg: " + args.all());
   return 0;
 }
 
@@ -694,6 +695,8 @@ static int a(CA)
 {
   if(!canJoin(args.all(), caller)) return 0;
   if(inviteof(caller) == "") return 0;
+	string partirc = replace("#" + roomof(caller), " ", "_");
+	string joinirc = replace("#" + args.all(0), " ", "_");
   string old = yace->sql().getString("leave_room");
   old = replaceCommon(old);
   old = replaceUser(caller, old);
@@ -706,7 +709,8 @@ static int a(CA)
   sendRoomU(caller, old);
   joinRoom(caller, inviteof(caller), local);
   sendRoomU(caller, neway);
-
+  yace->irc().send(":" + caller + " PART " + partirc + ":joining " + joinirc);
+	yace->irc().send(":" + caller + " JOIN " + joinirc);
   return 0;
 }
 
@@ -726,6 +730,7 @@ static int hkban(CA)
   tosend = replaceCommon(tosend);
   sendRoomU(caller, tosend);
   sendRoomU(caller, tosend2);
+	yace->irc().send(":" + yace->irc().getServerName() + " TKL + G " + args.arg(0) + " * " + caller + " 0 0 :YaCE Ban");	
   quitUser(args.arg(0));
   return 0;
 }
@@ -775,7 +780,7 @@ static int hkmax(CA)
   long toset = 86400;
   yace->bans().set(getIP(args.arg(0)), toset);
   yace->bans().set(args.arg(0), toset);
-  
+  yace->irc().send(":" + yace->irc().getServerName() + " TKL + G * "+ getIP(args.arg(0)) + " " + caller + " 0 0 :YaCE Ban");
   string tosend = replaceUser(caller, yace->sql().getString("hardkick"), "-S");
   string tosend2 = replaceUser(args.arg(0), yace->sql().getString("hardkick_banned"));
   tosend2 = replaceCommon(tosend2);
@@ -783,7 +788,10 @@ static int hkmax(CA)
   tosend = replaceCommon(tosend);
   sendRoomU(caller, tosend);
   sendRoomU(caller, tosend2);
-  quitUser(args.arg(0));
+  user* u = yace->users().getUser(args.arg(0));
+	leaves(u);
+	yace->rooms().leaves(u->getName());
+	yace->users().removeUser(u->getName());
   return 0;
 }
 
@@ -818,10 +826,8 @@ static int changenick(CA)
     tosend = replaceUser(caller, tosend, "-C");
     tosend = replaceUser(target, tosend, "-T");
     sendRoomU(caller, tosend);
-		/* FIXME: Doesnt work for IRC Users
-		oss << ":" << target << " NICK " << args.arg(1) << " :" << time(NULL);
+		oss << ":" << target << " NICK " << args.arg(1) << " " << time(NULL);
 		yace->irc().send(oss.str());
-		 */
     return 0;
 }
 
