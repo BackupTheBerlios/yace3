@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2003 Giuliano Gagliardi
+  Copyright (C) 2003 Giuliano Gagliardi, Tobias Bahls
 
   This file is part of YaCE 3
 
@@ -26,6 +26,7 @@
 #include "yace.h"
 #include "user.h"
 #include "stringutil.h"
+#include "ircfunctions.h"
 #include <iostream>
 #include <sstream>
 
@@ -99,8 +100,10 @@ void inputqueue::run()
     else {
       command = "say";
       argz = commandargs(got.text);
+      sendUserIRC(user, got.text);
     }
 
+    
     f = cmds[command];
     f(user, argz);
   }

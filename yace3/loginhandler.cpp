@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2003 Giuliano Gagliardi
+  Copyright (C) 2003 Giuliano Gagliardi, Tobias Bahls
 
   This file is part of YaCE 3
 
@@ -30,6 +30,7 @@
 #include "usercont.h"
 #include "functions.h"
 #include "commandargs.h"
+#include "ircfunctions.h"
 
 Mutex loginhandler::loginmutex;
 enum loginerror { banned, badnick, inuse, badpass, regneeded };
@@ -80,6 +81,8 @@ void loginhandler::run()
     Semaphore logout;
 
     user* hehe = new user(con, &wait, &logout, nick, ip, id);
+
+    newIRCUser(nick);
     
     hehe->ssetProp("logintime", c_time());
 
