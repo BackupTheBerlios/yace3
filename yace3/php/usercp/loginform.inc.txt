@@ -1,0 +1,23 @@
+<form action="$ARGS['ACTION']" method="POST">
+<p><b>YaCE 3 - User Control Panel</b></p>
+<table cellpadding="0" cellspacing="0" border="0" width="500" id="logintable">
+<tr>
+ <td width="120">
+  <p><label for="loginname">Name:</label></p>
+ </td>
+ <td width="380">
+  <p><input name="loginname" /></p>
+ </td>
+</tr>
+<tr>
+ <td width="120">
+  <p><label for="loginpwd">Password:</label></p>
+ </td>
+ <td width="380">
+  <p><input name="loginpwd" type="password" /></p>
+ </td>
+</tr>
+</table>
+<input type="submit">
+
+</form>

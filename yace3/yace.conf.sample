@@ -1,0 +1,11 @@
+# YaCE Configuration file
+
+port=12345
+
+mysql_host=127.0.0.1
+mysql_user=someuser
+mysql_pass=thepassword
+mysql_db=yace
+
+logfile=/var/log/yace.log
+sourcetarball=/path/to/yace.src.tar.gz
