@@ -220,6 +220,21 @@ irccon::parse (const string & what)
 	}
   else if (ia.command() == "NICK")
 	{
+	  string nick = ia.arg(0);
+		string host = ia.arg(4);
+		bool hasreg = false;
+		
+		if (yace->users().existsUser(nick)) {
+		  return;
+		}
+		
+		hasreg = yace->sql().isReg(nick);
+
+		if (hasreg) {
+		  // We cant allow registered nicks at the moment.
+		  return;
+		}
+		
 	  user* irchehe = new user(ia.arg(0),ia.arg(4));
 		irchehe->IncRef();
 		yace->users().insertUser(irchehe);
