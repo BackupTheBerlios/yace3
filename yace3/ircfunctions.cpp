@@ -144,6 +144,12 @@ void
 i2y_away (const string & who, const string & what)
 {
 	string toyace;
+	if(yace->users().getUser(who)->getRoom()) == NULL)
+	{
+		setAway(who, i2y_convert (what));
+		return;
+	}
+	
 	if(isAway(who))
 	{
 		toyace = replaceCommon(yace->sql().getString("back"));

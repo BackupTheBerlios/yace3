@@ -77,7 +77,7 @@ void room::DecRef()
   m_refcount.enterMutex();
   --refcount;
 
-  if(refcount == 0) {
+  if(refcount <= 0) {
     //cout << "DELETING ROOM!" << endl;
     m_refcount.leaveMutex();
     delete this;
