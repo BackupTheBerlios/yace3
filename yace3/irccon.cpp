@@ -364,7 +364,8 @@ irccon::parse (const string & what)
 		for (int i=0; foo != ""; i++) {
 		  foo = ca.arg(i);
 			if (foo != "") { 
-			  foo = foo.substr(1, foo.length()-1);
+			  foo = replace(foo, " ", "");
+			  foo = replace(foo.substr(1, foo.length()-1), "_", " ");
 			  if(foo.find(" ") == foo.length()) foo = foo.substr(0,foo.length()-1);
 			  yace->rooms().joinRoom(u->getName(), foo, true);
 			}
