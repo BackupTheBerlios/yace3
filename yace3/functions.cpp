@@ -25,6 +25,7 @@
 #include "stringutil.h"
 #include "room.h"
 #include "user.h"
+#include "ircfunctions.h"
 #include <sstream>
 #include <iostream>
 
@@ -51,6 +52,7 @@ void returns(user* u)
   snd = replaceUser(u->getName(), snd);
   snd = replace(snd, "%TEXT%", u->sgetProp("away"));
   
+  yace->irc().send(":" + u->getName() + " AWAY");
   u->ssetProp("away", "");
   sendRoomI(u->getName(), snd);
 }

@@ -27,6 +27,8 @@
 #include "yace.h"
 #include "irccon.h"
 
+string color = "da1337";
+
 string
 i2y_convert (const string & text)
 {
@@ -117,7 +119,6 @@ quitIRCUser (user * u)
 void
 i2y_say (const string & who, const string & what, const string & where)
 {
-	string color = "da1337";
 	string text = what;
 	string tosend =
 		replace (yace->sql ().getString ("say"), "%NAME%", who);
@@ -131,7 +132,6 @@ i2y_say (const string & who, const string & what, const string & where)
 void
 i2y_whisper (const string & who, const string & what, const string & user)
 {
-	string color = "da1337";
 	string toyace =
 		replaceCommon (yace->sql ().getString ("whisperfrom"));
 	toyace = replace (toyace, "%CNAME",
@@ -145,7 +145,6 @@ i2y_whisper (const string & who, const string & what, const string & user)
 void
 i2y_away (const string & who, const string & what, const string & where)
 {
-	string color = "da1337";
 	string toyace = replaceCommon (yace->sql ().getString ("away"));
 	toyace = replace (toyace, "%TEXT%", replaceAll (i2y_convert (what)));
 	toyace = replace (toyace, "%COLOR%", color);
@@ -169,5 +168,15 @@ void
 y2i_back (const string & who)
 {
 	yace->irc ().send (":" + who + " AWAY");
+	return;
+}
+
+void
+i2y_me(const string& who, const string& what, const string& where)
+{
+	string toyace = replace(yace->sql().getString("me"), "%COLOR%", color);
+	toyace = replace(toyace, "%NAME%", who);
+	toyace = replace(toyace, "%TEXT%", what);
+	sendRoom(yace->irc().getRoom(where), toyace);
 	return;
 }
