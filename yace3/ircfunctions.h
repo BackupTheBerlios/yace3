@@ -5,7 +5,7 @@
 #include "yace.h"
 #include "irccon.h"
 
-string getIRCChannel(const string &yaceroom);
+string getChannel(const string &yaceroom);
 
 void sendUserIRC(const string &user, const string &what);
 void newIRCUser(const string &who);

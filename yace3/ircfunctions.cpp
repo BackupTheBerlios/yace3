@@ -6,9 +6,9 @@
 #include "yace.h"
 #include "irccon.h"
 
-string getIRCChannel(const string& yaceroom)
+string getChannel(const string& yaceroom)
 {
-  return yace->irc().getRoom(yaceroom);
+  return yace->irc().getChannel(yaceroom);
 }
 
 void sendUserIRC(const string& user, const string& what)
