@@ -45,6 +45,9 @@ private:
   vector<string> irc_nicks;
   map<string, string> c_nicks;
 
+  Mutex m_connection;
+  Mutex m_state;
+
 public:
   irccon(const string& h, int p, const string& n, const string& pwd);
   void run();
