@@ -1,0 +1,10 @@
+gogi/yace2/MainClass.java
+
+gogi/yace2/core/RoomImpl.java
+gogi/yace2/core/YaCE.java
+
+gogi/yace2/interfaces/Room.java
+gogi/yace2/interfaces/RoomContainer.java
+gogi/yace2/interfaces/Server.java
+gogi/yace2/interfaces/User.java
+gogi/yace2/interfaces/UserContainer.java
