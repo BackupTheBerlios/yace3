@@ -99,8 +99,9 @@ void inputqueue::run()
     }
     else {
       command = "say";
-      argz = commandargs(got.text);
       sendUserIRC(user, got.text);
+      replaceAll(got.text);
+      argz = commandargs(got.text);
     }
 
     
