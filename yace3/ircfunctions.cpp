@@ -4,6 +4,7 @@
 #include "room.h"
 #include "user.h"
 #include "yace.h"
+#include "irccon.h"
 
 string getIRCChannel(const string &yaceroom)
 {
