@@ -798,9 +798,9 @@ static int nick(CA)
     tosend = replace(tosend, "%NICK%", nick);
     tosend = replaceUser(caller, tosend);
     sendRoomU(caller, tosend);
-		/* FIXME: User gets killed after the 2nd Time
+		//  FIXME: User gets killed after the 2nd Time
     oss << ":" << caller << " NICK " << nick << " :" << time(NULL);
-		yace->irc().send(oss.str()); */
+		yace->irc().send(oss.str());
     return 0;
 }
 
