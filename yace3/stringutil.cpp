@@ -90,11 +90,12 @@ string replaceI(const string& str, const string& pattern, const string& repl)
   unsigned long replen = repl.length();
   unsigned long lastpos = 0;
   unsigned long f = 0;
-  while( (f = op.find(pattern, lastpos)) != string::npos ) {
+	
+  while((f = op.find(tolower(pattern), lastpos)) != string::npos ) {
     toret.replace(f, plen, repl);
     lastpos = f + replen;
   }
-
+  
   return toret;
 }
 
@@ -164,19 +165,22 @@ string getNoContent()
 string getHeader()
 {
   string ret;
+
+  // IF YOU EDIT SOME OF THIS STUFF, YOU BRAKE LAW! WE AND THE GNU-GUYS WILL FIND YOU AND KICK YOUR ASS.
+  // The YaCE-Frame don't scroll if you edit this, btw.
   ret.append("HTTP/1.1 200 OK\r\n");
   ret.append("Server: YaCE 3\r\n");
   ret.append("Cache-control: no-cache\r\n");
   ret.append("Content-type: text/html\r\n");
   ret.append("\r\n");
   ret.append("\r\n");
-
-
+  
   ret.append("<HTML>\n");
   ret.append("<HEAD>\n");
   ret.append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
   ret.append("<TITLE>YaCE</TITLE>\n");
   ret.append("<SCRIPT LANGUAGE=\"JavaScript\" TYPE=\"text/javascript\">\n");
+  
   ret.append("<!--\n");
   ret.append("scrolling=true;\n");
   ret.append("function movesnew(){\n");
@@ -185,15 +189,25 @@ string getHeader()
   ret.append("}\n");
   ret.append("movesnew();\n");
   ret.append("//-->\n");
+  
   ret.append("</SCRIPT>\n");
   ret.append("</HEAD>\n");
   ret.append("<BODY BGCOLOR=\"#ffffff\" ALINK=\"#000000\" LINK=\"#000000\" VLINK=\"#00000\" onFocus=\"scrolling = false\" onBlur=\"scrolling = true\" onMouseOver=\"scrolling = false\" onMouseOut=\"scrolling = true\">\n");
-  ret.append("<table border=\"1\" cellpadding=\"2\" cellspacing=\"0\" style=\"padding-left: 5px; border-collapse: collapse\" width=\"625\"><tr><td style=\"width: 100%\"><a href=\"/SOURCE/source.tar.gz\" style=\"text-decoration: none; color: #000000;\" target=\"_blank\">\n");
+  ret.append("<table border=\"1\" cellpadding=\"2\" cellspacing=\"0\" style=\"padding-left: 5px; border-collapse: collapse\" width=\"725\"><tr><td style=\"width: 100%\"><a href=\"/SOURCE/source.tar.gz\" style=\"text-decoration: none; color: #000000;\" target=\"_blank\">\n");
   ret.append("<span style=\"font-family: Tahoma, Arial, Times New Roman; font-size: 8pt\"><b><span style=\"color: #0099FF\">" NIHIL "YaCE 3" NIHIL "</span> " NIHIL VERSION NIHIL " - Copyright &copy; 2003 Giuliano Gagliardi, Tobias Bahls, Giuliano Montecarlo, Thomas Yao</b><br />Thanks to: Matthias Butz, Daniel v.Dombrowski</span>");
   ret.append("</a><br><span style=\"font-family: Tahoma, Arial, Times New Roman, Times; font-size: 7pt\"></span></td></tr></table>\n");
+>>>>>>> 1.8
   return ret;
 }
 #undef NIHIL
+<<<<<<< stringutil.cpp
+#undef SEBISUCKS
+#undef YACERULAY
+#undef DONTEDIT
+#undef KICKMICROSOFT
+#undef USEGNULINUX
+=======
+>>>>>>> 1.8
 
 void iconv(const char* to_charset, const char* from_charset, std::string& target, const std::string& source) throw (std::runtime_error)
 {
