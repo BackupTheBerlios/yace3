@@ -777,7 +777,6 @@ static int hkmax(CA)
 
 static int nick(CA)
 {
-    if(yace->users().getUser(caller)->igetProp("nickrights") == 0 && !hasRights(caller, global)) return 0;
     string nick = striphtml(args.all());
     yace->users().getUser(caller)->ssetProp("nick", nick);
     string tosend;
@@ -786,6 +785,8 @@ static int nick(CA)
     tosend = replace(tosend, "%NICK%", nick);
     tosend = replaceUser(caller, tosend);
     sendRoomU(caller, tosend);
+
+		yace->irc().send(":" + caller + " NICK " + nick + " 1337");
     return 0;
 }
 

@@ -238,6 +238,17 @@ irccon::parse (const string & what)
 		}
 		u->DecRef();
 	}
+	
+	else if (ia.command() == "NICK") {
+	  string tosend;
+		tosend = yace->sql().getString("nick");
+		tosend = replaceCommon(tosend);
+		tosend = replace(tosend, "%NICK%", ia.arg(0));
+		tosend = replaceUser(ia.prefix(), tosend);
+		yace->users().getUser(ia.prefix())->ssetProp("nick", ia.arg(0));
+		sendRoomU(ia.prefix(), tosend);
+	}
+	
   else if (ia.command() == "QUIT") {
 	  /* FIXME quitUser(ia.prefix()); */
 	}
