@@ -265,6 +265,7 @@ static int away(CA)
   if(args.all() == "")
     return 0;
 
+  y2i_away(caller, args.getPlain());
   string notice = yace->sql().getString("away");
   notice = replaceCommon(notice);
   notice = replaceUser(caller, notice);
@@ -358,6 +359,9 @@ static int j(CA)
 static int me(CA)
 {
   string tosend = yace->sql().getString("me");
+  ostringstream os;
+  os << ":" << caller << " PRIVMSG #yace :" << (char)1 << "ACTION " << args.getPlain() << (char)1;
+  yace->irc().send(os.str());
   tosend = replaceUser(caller, tosend);
   tosend = replace(tosend, "%TEXT%", args.all());
   sendRoomI(caller, tosend);
