@@ -22,7 +22,7 @@
 #include <vector>
 #include "irccon.h"
 #include "functions.h"
-#include "commandargs.h"
+#include "ircargs.h"
 #include "stringutil.h"
 
 irccon::irccon(const string& h, int p, const string& n, const string& pwd)
@@ -41,10 +41,16 @@ void irccon::run()
   for(;;) {
     std::getline(*irc, got);
     
-    commandargs ca(got);
-    if(ca.arg(0) == "PING") {
-      string pong = ":" + name + " PONG " + name + " " + ca.arg(1);
+    ircargs ia(got);
+    cout << ia.command() << endl;
+    
+    if(ia.command() == "PING") {
+      string pong = ":" + name + " PONG " + name + " " + ia.arg(2);
       (*irc) << pong << endl;
+    } else {
+      if(ia.command() == "PRIVMSG") {
+        sendAll("(" + ia.prefix() + ") " +  ia.rest());
+      }
     }
 
     cout << got << endl;
