@@ -170,6 +170,16 @@ void irccon::insertUser(const string& name, const string& hostname)
 void irccon::parse(const string& what)
 {
   ircargs ia(what);
+  commandargs ca(what); // since we cant parse the errormessages with ircargs
+
+  // Errormessage? Exit.
+  if (ca.arg(0) == "ERROR") {
+    cout << "Connection to IRC Server failed. Errormessage:" << endl;
+    cout << what << endl;
+    std::exit(0);
+  }
+
+  
   if(ia.command() == "PRIVMSG")
   {
     if(ia.arg(0)[0] == '#')
