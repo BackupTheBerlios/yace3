@@ -216,7 +216,7 @@ static int col(CA)
 static int gag(CA)
 {
   string target = args.arg(0);
-
+  user* u = yace->users().getUser(args.arg(0));
   if(!hasRights(caller, local)) return 0;
   if(!exists(target, caller)) return 0;
   if(!sameRoom(caller, target)) return 0;
@@ -226,10 +226,13 @@ static int gag(CA)
   if(gagged(target)) {
     ungag(target);
     notice = yace->sql().getString("un_gag");
+		yace->irc().send(":" + yace->irc().getServerName + " TKL -s * " + u->getIP() + "YaCE!yace@" + yace->irc().getServerName + " 0 0 :YaCE Gag");
   }
   else {
     gag(target);
     notice = yace->sql().getString("gag");
+		yace->irc().send(":" + yace->irc().getServerName + " TKL +s * " + u->getIP() + "YaCE!yace@" + yace->irc().getServerName + " 0 0 :YaCE Gag");
+				
   }
 
   notice = replaceUser(caller, notice, "-C");
@@ -237,8 +240,9 @@ static int gag(CA)
   notice = replaceCommon(notice);
 
   sendRoomU(caller, notice);
-
+  u->DecRef();
   return 0;
+
 }
 
 static int mod(CA)
