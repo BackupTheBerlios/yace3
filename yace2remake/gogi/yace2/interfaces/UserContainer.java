@@ -34,7 +34,7 @@ public interface UserContainer
 	public Enumeration allUsers();
 
 	// get a specific user
-	public User get(String name);
+	public User user(String name);
 
 	// add and delete an user
 	public boolean add(String name, String room, Socket csock, PrintStream pw);
