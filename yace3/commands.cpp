@@ -371,7 +371,7 @@ static int amsg(CA)
 {
   if(!hasRights(caller, admin)) return 0;
   sendAll(replace(yace->sql().getText("admin_msg"), "%TEXT%", args.all()));
-  yace->irc().send(":Global $* :Administrator-Message: " + args.all())
+  yace->irc().send(":Global $* :Administrator-Message: " + args.all());
   return 0;
 }
 
@@ -490,7 +490,7 @@ static int su(CA)
   tosend = replaceUser(args.arg(0), tosend, "-R");
   tosend = replaceUser(caller, tosend, "-S");
   tosend = replaceCommon(tosend);
-  yace->irc().send(":" + caller + " MODE " +  replace("#" + args.all(), " ", "_") + " +aohq " args.arg(0) + " " + args.arg(0) + " " + args.arg(0) + " " + args.arg(0));
+  yace->irc().send(":" + caller + " MODE " +  replace("#" + args.all(), " ", "_") + " +aohq " + args.arg(0) + " " + args.arg(0) + " " + args.arg(0) + " " + args.arg(0));
   setRightsH(args.arg(0), local);
   sendRoomU(args.arg(0), tosend);
   return 0;
@@ -506,7 +506,7 @@ static int rsu(CA)
   os << "R_" << local << "_R";
   tosend = replace(tosend, "%RIGHTS%", yace->sql().getText(os.str()));
   
-  yace->irc().send(":" + caller + " MODE " +  replace("#" + args.all(), " ", "_") + " -aohq " args.arg(0) + " " + args.arg(0) + " " + args.arg(0) + " " + args.arg(0));
+  yace->irc().send(":" + caller + " MODE " +  replace("#" + args.all(), " ", "_") + " -aohq " + args.arg(0) + " " + args.arg(0) + " " + args.arg(0) + " " + args.arg(0));
   tosend = replaceUser(args.arg(0), tosend, "-R");
   tosend = replaceUser(caller, tosend, "-S");
   tosend = replaceCommon(tosend);
@@ -643,11 +643,11 @@ static int cat(CA)
   neway = replace(neway, "%TEXT-R%", roomof(args.arg(0)));
 
   sendRoomU(caller, old);
-  yace->irc().send(":" + caller + " PART " replace("#" + roomof(caller), " ", "_"));
-  yace->irc().send(":" + args.arg(0) + " PART " replace("#" + roomof(caller), " ", "_"));
+  yace->irc().send(":" + caller + " PART " + replace("#" + roomof(caller), " ", "_"));
+  yace->irc().send(":" + args.arg(0) + " PART " + replace("#" + roomof(caller), " ", "_"));
   joinRoom(caller, args.rest(0), local);
-  yace->irc().send(":" + caller + " JOIN " replace("#" + args.rest(0), " ", "_"));
-  yace->irc().send(":" + args.arg(0) + " JOIN " replace("#" + args.rest(0), " ", "_"));
+  yace->irc().send(":" + caller + " JOIN " + replace("#" + args.rest(0), " ", "_"));
+  yace->irc().send(":" + args.arg(0) + " JOIN " + replace("#" + args.rest(0), " ", "_"));
   joinRoom(args.arg(0), args.rest(0), local);
   sendRoomU(caller, neway);
 
@@ -704,7 +704,7 @@ static int a(CA)
   if(!canJoin(args.all(), caller)) return 0;
   if(inviteof(caller) == "") return 0;
 	string partirc = replace("#" + roomof(caller), " ", "_");
-	string joinirc = replace("#" + args.all(0), " ", "_");
+	string joinirc = replace("#" + args.all(), " ", "_");
   string old = yace->sql().getString("leave_room");
   old = replaceCommon(old);
   old = replaceUser(caller, old);
@@ -889,7 +889,7 @@ void register_commands(inputqueue::commandmap& i)
  
   i["sendall"] = sendall;
   i["shutdown"] = shutdown;
-  i["kc"] = kc;
+  //i["kc"] = kc;
   i["amsg"] = amsg;
   i["vipmsg"] = vipmsg;
 
