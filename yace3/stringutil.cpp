@@ -28,7 +28,7 @@
 #include <errno.h>
 #include <cc++/digest.h>
 
-#define VERSION "v0.00 - alpha 4 (NUNC)"
+#define VERSION "v0.00 - Beta 1 (GOGIUS PIGER EST)"
 
 string md5(const string& in)
 {
