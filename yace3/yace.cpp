@@ -89,21 +89,33 @@ void YaCE::run()
   }
   cout << "OK" << endl;
   log("Starting up...");
-  cout << "+---Starting up";
 
-  cout << ".";
+  
   inqu.init();
-  cout << ".";
   thetimer.init();
-  cout << ".";
 
   inqu.start();
-  cout << ".";
   thetimer.start();
-  cout << "OK" << endl;
-
 
   adminhandler::load_actions();
+
+  // Starting irc, if needed
+  
+  if(cfg.get("irc") == "1") {
+    cout << "Connecting to IRC(" << cfg.get("irc_host") << "...";
+    int ircport = atoi(cfg.get("irc_port").c_str());
+    
+    try {
+      ic = new irccon(cfg.get("irc_host"), ircport, cfg.get("irc_name"), cfg.get("irc_password"));
+      ic->start();
+    } catch(...) {
+      cout << "ERROR" << endl;
+      exit(1);
+    }
+    
+    cout << "OK" << endl;
+  }
+  // end irc
 
   try {
     cout << "+---Initialize Sockets...";
@@ -114,7 +126,7 @@ void YaCE::run()
     log("Listening on port " + cfg.get("port"));
     cout << "OK" << endl;
     cout << "+" << endl;
-    cout << "+---Start sucessfully!" << endl;
+    cout << "+---Started sucessfully!" << endl;
     while(server.isPendingConnection()) {
       nextcon = new connection(server);
       nextcon->start();
