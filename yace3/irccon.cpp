@@ -356,6 +356,7 @@ irccon::parse (const string & what)
   else if (ia.command() == "JOIN") {
 	  if (!exists(ia.prefix())/* || !yace->sql().isReg(ia.prefix())*/) return;
 	  string foo = replace(ia.arg(0),","," ");
+	  cout << foo << "und so" << endl;
 	  commandargs ca(foo);
 	  user* u = yace->users().getUser(ia.prefix());
 		
@@ -364,7 +365,7 @@ irccon::parse (const string & what)
 		  foo = ca.arg(i);
 			if (foo != "") { 
 			  foo = foo.substr(1, foo.length()-1);
-			  if(foo[foo.length()-1] == ' ') foo = foo.substr(0,foo.length()-1);
+			  if(foo.find(" ") == foo.length()) foo = foo.substr(0,foo.length()-1);
 			  yace->rooms().joinRoom(u->getName(), foo, true);
 			}
 		}
