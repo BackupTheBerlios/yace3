@@ -86,8 +86,9 @@ void inputqueue::run()
     u->DecRef();
     // POST PROCESS END
 
-    string sendirc;
-    iconv("ISO-8859-1", "UTF-8", sendirc, got.text);
+    string sendirc, gottext;
+    gottext = got.text;
+    iconv("ISO-8859-1", "UTF-8", sendirc, gottext);
     if(got.text.find("/") == 0) {
       commandargs tmp(got.text.substr(1));
       if(cmds.count(tolower(tmp.arg(0)))) {

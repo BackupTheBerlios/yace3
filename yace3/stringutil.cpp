@@ -94,7 +94,7 @@ string replaceI(const string& str, const string& pattern, const string& repl)
     toret.replace(f, plen, repl);
     lastpos = f + replen;
   }
-  
+
   return toret;
 }
 
@@ -207,13 +207,13 @@ void iconv(const char* to_charset, const char* from_charset, std::string& target
   char* const buf = new char[o_len];
   char* o_ptr(buf);
   ::iconv(cd, &s_ptr, &s_len, &o_ptr, &o_len);
-  if ((s_len != 0) || errno) {
-    int sys_err(errno);
-    throw std::runtime_error(std::string(source) +
-			     ": Dv::Xml::iconv from " + from_charset + " to " + to_charset + " failed [" +
-			     (sys_err ? strerror(sys_err) : "") + "]"
-			     );
-  }
+//  if ((s_len != 0) || errno) {
+//    int sys_err(errno);
+ //   throw std::runtime_error(std::string(source) +
+//			     ": Dv::Xml::iconv from " + from_charset + " to " + to_charset + " failed [" +
+//			     (sys_err ? strerror(sys_err) : "") + "]"
+//			     );
+//  }
   target.resize(0);
   target.append(buf, max_o_len - o_len);
   delete [] buf;
