@@ -157,7 +157,7 @@ public class RoomImpl implements Room
 
 			boolean to_ret = false;
 			// check if object is a boolean
-			if((value.toString() == "true") || (value.toString() == "false"))
+			if(value instanceof Boolean)
 			// cast into Boolean and get booleanValue()
 				to_ret = ((Boolean)value).booleanValue();
 			else
@@ -253,7 +253,7 @@ public class RoomImpl implements Room
 	}
 
 	public boolean setProp(String prop, Object to_set)
-{
+	{
 		try
 		{
 			// exception handling is necessary because
