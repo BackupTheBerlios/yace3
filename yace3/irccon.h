@@ -50,6 +50,8 @@ public:
   bool connect();
   void irccon::send(const string& str);
 
+  string getServerName() { return name; }
+
   string getChannel(const string& room);
   string getRoom(const string& channel);
   void connectRC(const string& room, const string& channel);
