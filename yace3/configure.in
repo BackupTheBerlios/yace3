@@ -76,7 +76,7 @@ CXXFLAGS="$CXXFLAGS -I${MYSQL_incdir}"
  
 					
 AC_MSG_CHECKING([for MySQL++ library directory])
-AC_ARG_WITH(mysqlpp, [  --with-mysqlpp=<path>     root directory path of MySQL++ installation], [MYSQL_lib_check="$with_mysql/lib" MYSQL_inc_check="$with_mysql/include"], [MYSQLPP_lib_check="/usr/local/mysql++/lib /usr/local/lib/mysql++ /opt/mysql/lib/mysql++ /usr/lib/mysql++ /usr/local/mysql++/lib /usr/local/lib /opt/mysql/lib /usr/lib" MYSQLPP_inc_check="/usr/local/mysql++/include /usr/local/include/mysql++ /opt/mysql++/include/mysql++ /usr/include/mysql++"])
+AC_ARG_WITH(mysqlpp, [  --with-mysqlpp=<path>     root directory path of MySQL++ installation], [MYSQL_lib_check="$with_mysql/lib" MYSQL_inc_check="$with_mysql/include"], [MYSQLPP_lib_check="/usr/local/mysql++/lib /usr/local/lib/mysql++ /opt/mysql/lib/mysql++ /usr/lib/mysql++ /usr/local/mysql++/lib /usr/local/lib /opt/mysql/lib /usr/lib" MYSQLPP_inc_check="/usr/local/mysql++/include /usr/local/include/mysql++ /usr/local/include /usr/local/include/mysql++ /opt/mysql++/include/mysql++ /usr/include/mysql++"])
                                                                                                                                                              
 AC_ARG_WITH(mysqlpp-lib, [  --with-mysqlpp-lib=<path> directory path of MySQL++ library installation], [MYSQLPP_lib_check=$with_mysqlpp/lib])
                                                                                                                                                              

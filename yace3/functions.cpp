@@ -437,7 +437,7 @@ bool hasRights(const string& who, int i, bool msg)
   return false;
 }
 
-inline string replaceAll(const string& in)
+string replaceAll(const string& in)
 {
   string ret = in;
   hash_map<string, string> reps = yace->sql().getReplaces();
