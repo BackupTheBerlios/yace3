@@ -192,6 +192,15 @@ irccon::parse (const string & what)
 		yace->irc ().send (pong);
 		return;
 	}
+	else if (ia.command() == "TOPIC") 
+	{
+	  string msg = yace->sql().getString("settopic");
+		msg = replaceCommon(msg);
+		msg = replaceUser(ia.prefix(), msg);
+		msg = replace(msg, "%TEXT%", ia.rest());
+		sendRoomU(ia.prefix(),msg);
+	  setTopic(getRoom(ia.arg(0)),ia.rest());
+	}
   else if (ia.command() == "NICK")
 	{
 	  string nick = ia.arg(0);

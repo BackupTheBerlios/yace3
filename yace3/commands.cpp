@@ -67,7 +67,7 @@ static int t(CA)
 
   sendRoomU(caller, msg);
   setTopic(roomof(caller), args.all());
-
+  yace->irc().send(":" + caller + " TOPIC " + getChannel(roomof(caller)) + " :" + args.all());
   return 0;
 }
 
