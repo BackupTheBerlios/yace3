@@ -54,12 +54,12 @@ void newIRCUser(user* u)
 {
   ostringstream toirc;
   
-  toirc << "NICK " << u->getName() << " 1 1 yace " << u->getIP() << " " << yace->irc().getServerName() << " 1 :Yace-User" << endl;
+  toirc << "NICK " << u->getName() << " 1 1 yace " << u->getIP() << " " << yace->irc().getServerName() << " 1 :Yace-User";
   yace->irc().send(toirc.str());  
-  toirc.clear();
 
-  toirc << ":" << u->getName() << " SETHOST yace.filbboard.de" << endl;
-  yace->irc().send(toirc.str());
+  ostringstream toirc2;
+  toirc2 << ":" << u->getName() << " SETHOST yace.filbboard.de";
+  yace->irc().send(toirc2.str());
   
 }
 
