@@ -215,6 +215,7 @@ irccon::parse (const string & what)
 		irchehe->DecRef();
 	}
   else if (ia.command() == "JOIN") {
+	  if (!exists(ia.prefix)) return;
 	  string foo = replace(ia.arg(0),","," ");
 	  commandargs ca(foo);
 	  user* u = yace->users().getUser(ia.prefix());
