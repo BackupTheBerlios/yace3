@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2003 Giuliano Gagliardi, Thomas Yao
+  Copyright (C) 2003 Giuliano Gagliardi, Thomas Yao, Giuliano Montecarlo
 
   This file is part of YaCE 3
 
