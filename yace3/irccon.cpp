@@ -434,7 +434,14 @@ irccon::parse (const string & what)
 						if (!adding)
 						  unlock(room);
 					break;
-			
+		      
+					case 's':
+					  if (adding)
+						  hide(room);
+						else
+						  reveal(room);
+					break;
+					
           case 'm':
 					  string notice;
 						if (adding) {

@@ -287,7 +287,7 @@ string getChatList()
     room* r = yace->rooms().getRoom(*it);
     if(r == NULL)
       continue;
-
+    if (r->igetProp("locked") == 1) continue;
     string line = replace(c_room, "%ROOM%", r->getName());
     if(r->igetProp("modtalk"))
       line = replace(line, "%MODERATED%", c_mod);
@@ -706,6 +706,23 @@ void unlock(const string& rm)
   r->DecRef();
 }
 
+void hide(const string& rm)
+{
+  room* r = yace->rooms().getRoom(rm);
+	if (r == NULL) return;
+
+	r->isetProp("hidden", 1);
+	r->DecRef();
+}
+
+void reveal(const string& rm)
+{
+  room* r = yace->rooms().getRoom(rm);
+	if (r == NULL) return;
+
+	r->isetProp("hidden", 0);
+	r->DecRef();
+}
 bool locked(const string& rm)
 {
   room* r = yace->rooms().getRoom(rm);
