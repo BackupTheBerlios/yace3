@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2003 Giuliano Gagliardi
+  Copyright (C) 2003 Giuliano Gagliardi, Tobias Bahls
 
   This file is part of YaCE 3
 
@@ -35,9 +35,16 @@ user::user(connection* c, Semaphore* s, Semaphore* l, const string& n, const str
   name = n;
 }
 
+user::user(const string& n, const string& addr) {
+  ircuser = true;
+  name = n;
+  ip = addr;
+}
+
 string user::getID()
 {
-  return sid;
+  if (ircuser) return NULL;
+  else return sid;
 }
 
 string user::getName()
@@ -49,8 +56,9 @@ string user::getRoom()
 {
   m_room.enterMutex();
   string ret = joined_room;
-  m_room.leaveMutex();
-  return ret;
+ 	m_room.leaveMutex();
+ 	return ret;
+ 
 }
 
 void user::setRoom(const string& n)
@@ -58,10 +66,12 @@ void user::setRoom(const string& n)
   m_room.enterMutex();
   joined_room = n;
   m_room.leaveMutex();
+	
 }
 
 bool user::send(const string& data)
 {
+  if (ircuser) return false;
   if(con->send(data))
     return true;
   
@@ -85,6 +95,13 @@ void user::IncRef()
 
 void user::DecRef()
 {
+  if (ircuser) {
+	  m_refcount.enterMutex();
+		--refcount;
+		m_refcount.leaveMutex();
+		return;
+	}
+	
   m_refcount.enterMutex();
   --refcount;
 

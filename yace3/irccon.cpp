@@ -189,7 +189,6 @@ void
 irccon::parse (const string & what)
 {
 	ircargs ia (what);
-
 	/*
 	  Insertme:
 	  if (ia.command() == "NICK") {
@@ -219,7 +218,16 @@ irccon::parse (const string & what)
 		yace->irc ().send (pong);
 		return;
 	}
-
+  else if (ia.command() == "NICK")
+	{
+	  user* irchehe = new user(ia.arg(0),ia.arg(4));
+		irchehe->IncRef();
+		yace->users().insertUser(irchehe);
+		/* Temporary until someone does the Channelparsing-Stuff */
+		yace->rooms().joinRoom(irchehe->getName(), "lounge");
+		irchehe->DecRef();
+	}
+	
 	else if (ia.command() == "MODE")
 	{
 		// Insert other Modeparsing here. THIS IS ONLY TEMPORARY

@@ -55,6 +55,7 @@ class user
   string joined_room;
   connection* con;
   Mutex m_room;
+	bool ircuser;
  
   Mutex m_sprops;
   Mutex m_iprops;
@@ -65,6 +66,7 @@ class user
   
  public:
   user(connection* c, Semaphore* s, Semaphore* l, const string& n, const string& addr, const string& id);
+	user(const string& n, const string& addr);
   string getID();
   string getName();
   string getIP();
