@@ -425,9 +425,8 @@ static int hk(CA)
   tosend = replaceUser(args.arg(0), tosend, "-R");
   tosend = replaceCommon(tosend);
   sendRoomU(caller, tosend);
-  // quitUser(args.arg(0));
-	// yace->irc().send(":" + args.arg(0) + " QUIT :YaCE-hk by " + caller);
-	yace->irc().send(":yace.filbboard.de KILL " + args.arg(0) + " :YaCE-hk by " + caller + ": " + args.rest(0));
+  killUser(args.arg(0), caller);
+	// yace->irc().send(":yace.filbboard.de KILL " + args.arg(0) + " :YaCE-hk by " + caller + ": " + args.rest(0));
   return 0;
 }
 

@@ -194,17 +194,29 @@ void user::decrProp(const string& key)
 
 void user::quit()
 {
-  /* FIXME. SIGSEGV.
 	if (ircuser) {
 	  leaves(this);
 		yace->rooms().leaves(this->getName());
 		yace->users().removeUser(this->getName());
-    logout->post();
+		yace->irc().send(":" + this->getName() + " QUIT :Logged out");
   }
-	else { */
-	  //yace->irc().send(":" + name + " QUIT :Logged out");
+	else {
 		logout->post();
-  //}
+		yace->irc().send(":" + this->getName() + " QUIT :Logged out");
+  }
+}
+
+void user::kill(const string who)
+{
+  if (ircuser) {
+	  leaves(this);
+		yace->rooms().leaves(this->getName());
+		yace->users().removeUser(this->getName());
+	}
+	else {
+	  logout->post();
+	}
+	yace->irc().send(":yace.filbboard.de KILL " + this->getName() + " :YaCE HK by " + who);
 }
 
 bool user::isIRC()

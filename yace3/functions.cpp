@@ -790,6 +790,14 @@ int quitUser(const string &user)
   return 0;
 }
 
+int killUser(const string &user,const string who)
+{
+  ::user *u = yace->users().getUser(user);
+	u->kill(who);
+	u->DecRef();
+	return 0;
+}
+
 string getIP(const string &user)
 {
   ::user *u = yace->users().getUser(user);
