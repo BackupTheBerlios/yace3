@@ -118,7 +118,7 @@ inputqueue::run ()
 		{
 			command = "say";
 			sendUserIRC (user, sendirc);
-			argz = commandargs (/*replaceI(*//*replaceAll (*/got.text/*)/*, "sebi", "Der &Auml;rmste Stra&szlig;enpenner von Frankfurt"), got.text*/);
+			argz = commandargs (/*replaceI(*//*replaceAll (*/got.text/*), "sebi", "Der &Auml;rmste Stra&szlig;enpenner von Frankfurt"), got.text*/);
 		}
 
 

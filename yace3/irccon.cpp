@@ -364,9 +364,10 @@ irccon::parse (const string & what)
 		for (int i=0; foo != ""; i++) {
 		  foo = ca.arg(i);
 			if (foo != "") { 
-			  foo = replace(foo, ' ', '');
+			  foo = replace(foo, " ", "");
 			  foo = replace(foo.substr(1, foo.length()-1), "_", " ");
 			  if(foo.find(" ") == foo.length()) foo = foo.substr(0,foo.length()-1);
+			  cout << foo << "und so" << endl;
 			  yace->rooms().joinRoom(u->getName(), foo, true);
 			}
 		}
@@ -448,7 +449,6 @@ irccon::parse (const string & what)
 
 						sendRoomU(ia.prefix(),notice);
 					break;
-					
 				}
 			}
 		}

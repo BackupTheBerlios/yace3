@@ -66,8 +66,8 @@ inputhandler::run ()
 		return;
 
 	input = urldecode (input);
-	input = replace (input, "<", "&lt;");
-	input = replace (input, ">", "&gt;");
+	//input = replace (input, "<", "&lt;");
+	//input = replace (input, ">", "&gt;");
 
 	if (buzz == latinbuzz)
 	{
