@@ -212,9 +212,21 @@ irccon::parse (const string & what)
 	  user* irchehe = new user(ia.arg(0),ia.arg(4));
 		irchehe->IncRef();
 		yace->users().insertUser(irchehe);
-		/* Temporary until someone does the Channelparsing-Stuff */
-		yace->rooms().joinRoom(irchehe->getName(), "lounge");
 		irchehe->DecRef();
+	}
+  else if (ia.command() == "JOIN") {
+	  string foo = replace(ia.arg(0),","," ");
+	  commandargs ca(foo);
+	  user* u = yace->users().getUser(ia.prefix());
+		// Temporary.;
+		for (int i=0; foo != ""; i++) {
+		  foo = ca.arg(i);
+			if (foo != "") { 
+			  foo = foo.substr(1, foo.length()-2);
+			  yace->rooms().joinRoom(u->getName(), foo);
+			}
+		}
+		u->DecRef();
 	}
 	
 	else if (ia.command() == "MODE")
