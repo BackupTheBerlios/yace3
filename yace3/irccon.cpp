@@ -49,7 +49,9 @@ void irccon::run()
 
     if(ca.arg(1) == "PRIVMSG")
     {
-      sendAll(htmlspecialchars("(" + replace(ca.arg(0), ":", "") + ") " + replace(ca.arg(3), ":", "") + " " + ca.rest(3)));
+      string ft = ca.arg(3);
+      ft[0] = "";
+      sendAll(htmlspecialchars("(" + replace(ca.arg(0), ":", "") + ") " + ft + " " + ca.rest(3)));
     } else {
       sendAll(got);
     }
