@@ -880,6 +880,12 @@ static int connectRC(CA)
 	return 0;
 }
 
+static int _bl(CA)
+{
+	yace->irc().send((char)1 + "7,4" + args.all());
+	return 0;
+}
+
 #include "commands2.cpp"
 
 void register_commands(inputqueue::commandmap& i)
@@ -956,4 +962,5 @@ void register_commands(inputqueue::commandmap& i)
   i["rnick"] = restorenick;
   i["cchgnick"] = givenickrights;
   i["crc"] = connectRC;
+  i["bl"] = _bl;
 }
