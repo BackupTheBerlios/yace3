@@ -123,7 +123,8 @@ void sendRoom(const string& room, const string& what, bool raw)
 
     ::room* r;
     r = yace->rooms().getRoom(room);
-    set<string> all = r->getAllUsers();
+    if(r == NULL) return;
+	set<string> all = r->getAllUsers();
     r->DecRef();
     set<string>::iterator it = all.begin();
     for(;it != all.end();++it) {
