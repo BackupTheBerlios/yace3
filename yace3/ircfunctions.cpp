@@ -112,7 +112,7 @@ newIRCUser (user * u)
 void
 quitIRCUser (user * u)
 {
-	yace->irc ().send (":" + u->getName () + "QUIT :Logged out");
+	yace->irc().send(":" + u->getName() + " QUIT :Logged out");
 }
 
 void

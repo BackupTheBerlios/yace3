@@ -202,7 +202,7 @@ void user::quit()
     logout->post();
   }
 	else { */
-	  yace->irc().send(":" + name + " QUIT :YaCE3");
+	  //yace->irc().send(":" + name + " QUIT :Logged out");
 		logout->post();
   //}
 }

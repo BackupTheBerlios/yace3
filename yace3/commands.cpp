@@ -352,13 +352,16 @@ static int j(CA)
   old = replaceCommon(old);
   old = replaceUser(caller, old);
   old = replace(old, "%TEXT%", args.all());
+  
   string neway = yace->sql().getString("join_room");
   neway = replaceCommon(neway);
   neway = replaceUser(caller, neway);
   neway = replace(neway, "%TEXT%", roomof(caller));
-
+  
   sendRoomU(caller, old);
+  yace->irc().send(":" + caller + " PART " + replace("#" + roomof(caller), " ", "_") + " :joining to " + replace("#" + args.all(), " ", "_"));
   joinRoom(caller, args.all(), local);
+  yace->irc().send(":" + caller + " JOIN " + replace("#" + args.all(), " ", "_"));
   sendRoomU(caller, neway);
 
   return 0;
@@ -843,6 +846,12 @@ static int givenickrights(CA)
     return 0;
 }
 
+static int connectRC(CA)
+{
+	yace->irc().connectRC(args.arg(0), args.arg(1));
+	return 0;
+}
+
 #include "commands2.cpp"
 
 void register_commands(inputqueue::commandmap& i)
@@ -918,4 +927,5 @@ void register_commands(inputqueue::commandmap& i)
   i["chgnick"] = changenick;
   i["rnick"] = restorenick;
   i["cchgnick"] = givenickrights;
+  i["crc"] = connectRC;
 }

@@ -151,7 +151,7 @@ irccon::insertUser (const string & name, const string & hostname)
 }
 
 
-void
+inline void
 irccon::parse (const string & what)
 {
 	ircargs ia (what);
@@ -171,6 +171,7 @@ irccon::parse (const string & what)
 				yace->sql().insertRegistry(ca.arg(0),ca.arg(1),ca.arg(2));
 				cout << "DEBUG: Added new Nick to Registry: " << ca.arg(0) << endl;
 			}
+		 	return;
 		}
 		
 		if (ia.arg (0)[0] == '#')
@@ -197,9 +198,10 @@ irccon::parse (const string & what)
 	  string msg = yace->sql().getString("settopic");
 		msg = replaceCommon(msg);
 		msg = replaceUser(ia.prefix(), msg);
-		msg = replace(msg, "%TEXT%", ia.rest());
+		msg = replace(msg, "%TEXT%", ia.rest().substr(0, ia.rest().length()-1));
 		sendRoomU(ia.prefix(),msg);
 	  setTopic(getRoom(ia.arg(0)),ia.rest());
+	  return;
 	}
   else if (ia.command() == "NICK")
 	{
@@ -222,9 +224,10 @@ irccon::parse (const string & what)
 		yace->users().insertUser(irchehe);
 		yace->rooms().joinRoom(irchehe->getName(), yace->sql().getConfStr("stdroom"));
 		irchehe->DecRef();
+		return;
 	}
   else if (ia.command() == "JOIN") {
-	  if (!exists(ia.prefix()) && !yace->sql().isReg(ia.prefix())) return;
+	  if (!exists(ia.prefix()) || !yace->sql().isReg(ia.prefix())) return;
 	  string foo = replace(ia.arg(0),","," ");
 	  commandargs ca(foo);
 	  user* u = yace->users().getUser(ia.prefix());
@@ -237,6 +240,7 @@ irccon::parse (const string & what)
 			}
 		}
 		u->DecRef();
+		return;
 	}
 	
 	else if (ia.command() == "NICK") {
@@ -247,6 +251,7 @@ irccon::parse (const string & what)
 		tosend = replaceUser(ia.prefix(), tosend);
 		yace->users().getUser(ia.prefix())->ssetProp("nick", ia.arg(0));
 		sendRoomU(ia.prefix(), tosend);
+	    return;
 	}
 	
   else if (ia.command() == "QUIT") {
@@ -347,6 +352,7 @@ irccon::parse (const string & what)
 				
 			}
 		}
+		return;
 	}
 	
 	else /*if(ia.command() == "AWAY") {

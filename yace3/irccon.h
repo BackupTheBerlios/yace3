@@ -57,7 +57,7 @@ public:
   string getRoom(const string& channel);
   void insertUser(const string& name, const string& hostname);
   void connectRC(const string& room, const string& channel);
-  void parse(const string& what);
+  inline void parse(const string& what);
 
 };
 

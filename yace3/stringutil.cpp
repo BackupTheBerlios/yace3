@@ -28,7 +28,7 @@
 #include <errno.h>
 #include <cc++/digest.h>
 
-#define VERSION "0.00 - alpha 3"
+#define VERSION "v0.00 - alpha 4 (NUNC)"
 
 string md5(const string& in)
 {
@@ -188,8 +188,8 @@ string getHeader()
   ret.append("</SCRIPT>\n");
   ret.append("</HEAD>\n");
   ret.append("<BODY BGCOLOR=\"#ffffff\" ALINK=\"#000000\" LINK=\"#000000\" VLINK=\"#00000\" onFocus=\"scrolling = false\" onBlur=\"scrolling = true\" onMouseOver=\"scrolling = false\" onMouseOut=\"scrolling = true\">\n");
-  ret.append("<table border=\"1\" cellpadding=\"2\" cellspacing=\"0\" style=\"border-collapse: collapse\"><tr><td style=\"width: 100%\"><a href=\"/SOURCE/source.tar.gz\" style=\"text-decoration: none; color: #000000;\" target=\"_blank\">\n");
-  ret.append("<span style=\"font-family: Tahoma, Arial, Times New Roman; font-size: 8pt\"><b><span style=\"color: #0099FF\">" NIHIL "YaCE 3" NIHIL "</span> (" NIHIL VERSION NIHIL ") - Copyright &copy; 2003 Giuliano Gagliardi, Thomas Yao, Tobias Bahls, Giuliano Montecarlo</b><br />Thanks to: Matthias Butz</span>");
+  ret.append("<table border=\"1\" cellpadding=\"2\" cellspacing=\"0\" style=\"padding-left: 5px; border-collapse: collapse\" width=\"625\"><tr><td style=\"width: 100%\"><a href=\"/SOURCE/source.tar.gz\" style=\"text-decoration: none; color: #000000;\" target=\"_blank\">\n");
+  ret.append("<span style=\"font-family: Tahoma, Arial, Times New Roman; font-size: 8pt\"><b><span style=\"color: #0099FF\">" NIHIL "YaCE 3" NIHIL "</span> " NIHIL VERSION NIHIL " - Copyright &copy; 2003 Giuliano Gagliardi, Tobias Bahls, Giuliano Montecarlo, Thomas Yao</b><br />Thanks to: Matthias Butz, Daniel v.Dombrowski</span>");
   ret.append("</a><br><span style=\"font-family: Tahoma, Arial, Times New Roman, Times; font-size: 7pt\"></span></td></tr></table>\n");
   return ret;
 }
