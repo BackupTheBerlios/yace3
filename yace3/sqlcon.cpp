@@ -20,6 +20,7 @@
 */
 
 #include "sqlcon.h"
+#include <iostream>
 
 sqlcon::sqlcon(const string& database, const string& host, const string& user, const string& pass) :
   con(database.c_str(), host.c_str(), user.c_str(), pass.c_str())
@@ -240,7 +241,9 @@ long sqlcon::getRegNum(const string& handle, const string& key)
     if(it != r.end()) {
       ret = long((*it)[0]);
     }
-  }catch(...) {}
+  }catch(...) {
+	  std::cout << "AFFAFF\n";
+	  }
 
   m.leaveMutex();
   return ret;

@@ -33,6 +33,7 @@ user::user(connection* c, Semaphore* s, Semaphore* l, const string& n, const str
   ip = addr;
   con = c;
   name = n;
+	ircuser = false;
 }
 
 user::user(const string& n, const string& addr) {
@@ -71,7 +72,7 @@ void user::setRoom(const string& n)
 
 bool user::send(const string& data)
 {
-  if (ircuser) return false;
+  if (ircuser) return true;
   if(con->send(data))
     return true;
   
@@ -118,6 +119,7 @@ void user::DecRef()
 
 int user::igetProp(const string& key)
 {
+  if(ircuser) return 0;
   int ret;
   m_iprops.enterMutex();
   if(iprops.count(key))
@@ -130,6 +132,7 @@ int user::igetProp(const string& key)
 
 void user::isetProp(const string& key, int val)
 {
+  if(ircuser) return;
   m_iprops.enterMutex();
   iprops[key] = val;
   m_iprops.leaveMutex();
@@ -137,6 +140,7 @@ void user::isetProp(const string& key, int val)
 
 string user::sgetProp(const string& key)
 {
+  if(ircuser) return "";
   string ret;
   m_sprops.enterMutex();
   if(sprops.count(key))
@@ -149,6 +153,7 @@ string user::sgetProp(const string& key)
 
 void user::ssetProp(const string& key, const string& val)
 {
+  if(ircuser) return;
   m_sprops.enterMutex();
   sprops[key] = val;
   m_sprops.leaveMutex();
@@ -173,7 +178,7 @@ set<string> user::xgetProp(const string& key)
 
 void user::incrProp(const string& key)
 {
-
+  if(ircuser) return;
   m_iprops.enterMutex();
   if(!iprops.count(key))
     iprops[key] = 0;
@@ -183,6 +188,7 @@ void user::incrProp(const string& key)
 
 void user::decrProp(const string& key)
 {
+  if(ircuser) return;
   m_iprops.enterMutex();
   if(!iprops.count(key))
     iprops[key] = 0;
