@@ -114,23 +114,27 @@ void sendR(int r, const string& what, bool raw)
 
 void sendRoom(const string& room, const string& what, bool raw)
 {
-  string tosend;
-  if(raw)
-    tosend = what;
-  else
-    tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", what);
+  try {
+    string tosend;
+    if(raw)
+      tosend = what;
+    else
+      tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", what);
 
-  ::room* r;
-  r = yace->rooms().getRoom(room);
-  set<string> all = r->getAllUsers();
-  r->DecRef();
-  set<string>::iterator it = all.begin();
-  for(;it != all.end();++it) {
-    user* t = yace->users().getUser(*it);
-    if(t == NULL || t->isIRC())
-      continue;
-    t->send(tosend);
-    t->DecRef();
+    ::room* r;
+    r = yace->rooms().getRoom(room);
+    set<string> all = r->getAllUsers();
+    r->DecRef();
+    set<string>::iterator it = all.begin();
+    for(;it != all.end();++it) {
+      user* t = yace->users().getUser(*it);
+      if(t == NULL || t->isIRC())
+        continue;
+      t->send(tosend);
+      t->DecRef();
+    }
+  } catch(...) {
+	  return;
   }
 }
 

@@ -226,12 +226,12 @@ static int gag(CA)
   if(gagged(target)) {
     ungag(target);
     notice = yace->sql().getString("un_gag");
-		yace->irc().send(":" + yace->irc().getServerName + " TKL -s * " + u->getIP() + "YaCE!yace@" + yace->irc().getServerName + " 0 0 :YaCE Gag");
+		yace->irc().send(":" + yace->irc().getServerName() + " TKL -s * " + u->getIP() + "YaCE!yace@" + yace->irc().getServerName() + " 0 0 :YaCE Gag");
   }
   else {
     gag(target);
     notice = yace->sql().getString("gag");
-		yace->irc().send(":" + yace->irc().getServerName + " TKL +s * " + u->getIP() + "YaCE!yace@" + yace->irc().getServerName + " 0 0 :YaCE Gag");
+		yace->irc().send(":" + yace->irc().getServerName() + " TKL +s * " + u->getIP() + "YaCE!yace@" + yace->irc().getServerName() + " 0 0 :YaCE Gag");
 				
   }
 

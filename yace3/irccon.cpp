@@ -48,12 +48,11 @@ void
 irccon::run ()
 {
 	connect ();
-	connectRC ("lounge", "#yace");
 	string got;
 	for (;;)
 	{
 		std::getline (*irc, got);
-		// cout << "IRC-Server: " << got << endl;
+		//cout << "IRC-Server: " << got << endl;
 		parse (got);
 	}
 }
@@ -295,7 +294,7 @@ irccon::parse (const string & what)
 	  if (ia.arg(0)[0] == '#') {
 		  // Channelmodes
 			string room = ia.arg(0);
-			cout << room << endl;
+			//cout << room << endl;
 			string modes = ia.arg(1);
 			bool adding = false;
 			
@@ -340,10 +339,10 @@ irccon::parse (const string & what)
 		else {
 		  string user = ia.prefix();
 			string modes = ia.rest();
-			cout << ia.rest() << endl;
+			//cout << ia.rest() << endl;
 			bool adding = false;
-			cout << "DEBUG: User: " << user << endl;
-			cout << "DEBUG: Modes: " << modes << endl;
+			//cout << "DEBUG: User: " << user << endl;
+			//cout << "DEBUG: Modes: " << modes << endl;
 			for (unsigned int i=0;i<modes.length(); i++) {
 			  switch (modes[i]) {
 			    case '+':
@@ -386,8 +385,15 @@ irccon::parse (const string & what)
 			}
 		}
 		return;
-	}
+	} else if(ia.command() == "AWAY") {
+	  // string name = ia.prefix(); // solution to fix some curious
+	  i2y_away(ia.prefix(), ia.rest().substr(0, ia.rest().length()-1));
+	  return;
+	} else {
+		cout << "DEBUG: Unknown command: " << ia.command() << endl;
+		return;
 	else {
 	  cout << "UNHANDLED: " << what << endl;
+
 	}
 }
