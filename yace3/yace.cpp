@@ -115,6 +115,9 @@ void YaCE::run()
     
     cout << "OK" << endl;
   }
+  else {
+    ic = NULL;
+  }
   // end irc
 
   try {

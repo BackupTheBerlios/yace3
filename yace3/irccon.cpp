@@ -19,6 +19,7 @@
   Francisco, CA 94107 USA.
 */
 
+#include <vector>
 #include "irccon.h"
 #include "functions.h"
 #include "commandargs.h"
@@ -54,6 +55,39 @@ void irccon::run()
     }
     cout << got << endl;
   }
+}
+
+string irccon::getChannel(const string& room)
+{
+  if(c_rooms.count(room))
+    return c_rooms[room];
+  else
+    return "";
+}
+
+string irccon::getRoom(const string& channel)
+{
+  for(map<string, string>::const_iterator it = c_rooms.begin(); it != c_rooms.end(); ++it) {
+    if (it->second == channel)
+      return it->first;
+  }
+  return "";
+}
+
+void irccon::connectRC(const string& room, const string& channel)
+{
+  if(channel == "")
+    if(c_rooms.count(room)) {
+      c_rooms.erase(room);
+      return;
+    }
+  
+  string a;
+  if((a = getRoom(channel)) != "") {
+    c_rooms.erase(a);
+  }
+  
+  c_rooms[room] = channel;
 }
 
 void irccon::send(const string& str)

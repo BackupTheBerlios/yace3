@@ -25,6 +25,7 @@
 #include <cc++/thread.h>
 #include <cc++/socket.h>
 #include <map>
+#include <vector>
 
 #ifdef  CCXX_NAMESPACES
 using namespace std;
@@ -40,11 +41,19 @@ private:
   int port;
   bool connected;
 
+  map<string, string> c_rooms;
+  vector<string> irc_nicks;
+
 public:
   irccon(const string& h, int p, const string& n, const string& pwd);
   void run();
   bool connect();
   void irccon::send(const string& str);
+
+  string getChannel(const string& room);
+  string getRoom(const string& channel);
+  void connectRC(const string& room, const string& channel);
+
 };
 
 #endif
