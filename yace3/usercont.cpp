@@ -44,19 +44,29 @@ user* usercont::getUser(const string& name)
   m_users.enterMutex();
   hash_map<string, user*>::iterator it;
   
-  for(it = users.begin(); it != users.end(); ++it)
+  /* for(it = users.begin(); it != users.end(); ++it)
   {
 	  if(it->second->getName() == name) ret = it->second;
 	  if(it->second->sgetProp("nick") == name) ret = it->second;
-  }
+  } */
 	
-  /*if(!users.count(lname))
+  if(!users.count(lname))
     ret = NULL;
   else {
     ret =  users[lname];
     ret->IncRef();
-  }*/
+  }
   m_users.leaveMutex();
+
+	if (ret == NULL)
+	{
+	    for(it = users.begin(); it != users.end(); ++it)
+			{ 
+			  if(it->second->getName() == name) ret = it->second;
+				if(it->second->sgetProp("nick") == name) ret = it->second;
+			}
+									
+	}
   return ret;
 }
 

@@ -52,7 +52,7 @@ irccon::run ()
 	for (;;)
 	{
 		std::getline (*irc, got);
-		//cout << "IRC-Server: " << got << endl;
+		cout << "IRC-Server: " << got << endl;
 		parse (got);
 	}
 }
@@ -234,6 +234,16 @@ irccon::parse (const string & what)
 	}
   else if (ia.command() == "NICK")
 	{
+	  if (ia.prefix() != "") {
+			string tosend;
+			tosend = yace->sql().getString("nick");
+			tosend = replaceCommon(tosend);
+			tosend = replace(tosend, "%NICK%", ia.arg(0));
+			tosend = replaceUser(ia.prefix(), tosend);
+			yace->users().getUser(ia.prefix())->ssetProp("nick", ia.arg(0));
+			sendRoomU(ia.prefix(), tosend);
+			return;																			
+		}
 	  string nick = ia.arg(0);
 		string host = ia.arg(4);
 		bool hasreg = false;
