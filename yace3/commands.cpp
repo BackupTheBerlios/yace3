@@ -882,7 +882,7 @@ static int connectRC(CA)
 
 static int _bl(CA)
 {
-	yace->irc().send((char)1 + "7,4" + args.all());
+	yace->irc().send((char)3 + "7,4" + args.all());
 	return 0;
 }
 
