@@ -189,7 +189,7 @@ i2y_me(const string& who, const string& what, const string& where)
 	::user* u = yace->users().getUser(who);
 	string toyace = replace(yace->sql().getString("me"), "%COLOR%", u->sgetProp("color"));
 	toyace = replace(toyace, "%NAME%", who);
-	toyace = replace(toyace, "%TEXT%", what);
+	toyace = replace(toyace, "%TEXT%", i2y_convert(what));
 	sendRoom(replace(where.substr(1, where.length()-1), "_", " "), toyace);
 	return;
 }

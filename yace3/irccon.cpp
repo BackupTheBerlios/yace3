@@ -354,7 +354,7 @@ irccon::parse (const string & what)
 	    return;
 	}
   else if (ia.command() == "JOIN") {
-	  if (!exists(ia.prefix()) || !yace->sql().isReg(ia.prefix())) return;
+	  if (!exists(ia.prefix())/* || !yace->sql().isReg(ia.prefix())*/) return;
 	  string foo = replace(ia.arg(0),","," ");
 	  commandargs ca(foo);
 	  user* u = yace->users().getUser(ia.prefix());
