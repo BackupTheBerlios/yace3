@@ -1,6 +1,8 @@
 #include <sstream>
 #include "stringutil.h"
 #include "ircfunctions.h"
+#include "room.h"
+#include "user.h"
 #include "yace.h"
 
 string getIRCChannel(const string &yaceroom)
