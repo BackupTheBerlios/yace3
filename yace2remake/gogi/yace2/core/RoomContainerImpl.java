@@ -75,8 +75,10 @@ public class RoomContainerImpl implements RoomContainer
 		{
 			// exception handling is necessary because
 			// get() and put() will throw a
-			// NullPointerException if the key is null.
-			to_ret = m_rooms.get(name);
+			// NullPointerException if the key is null and
+			// the cast could fail and throw a
+			// ClassCastException
+			to_ret = (Room)m_rooms.get(name);
 
 			// if this room does not exist, create
 			// a new room.
@@ -89,6 +91,10 @@ public class RoomContainerImpl implements RoomContainer
 			return to_ret;
 		}
 		catch(NullPointerException e)
+		{
+			return null;
+		}
+		catch(ClassCastException e)
 		{
 			return null;
 		}
@@ -127,12 +133,12 @@ public class RoomContainerImpl implements RoomContainer
 				// and throw a ClassCastException
 				next = (Room)e.nextElement();
 			}
-			catch(ClassCastException e)
+			catch(ClassCastException ex)
 			{
 				// ignore the error and continue
 				continue;
 			}
-			catch(NoSuchElementException e)
+			catch(java.util.NoSuchElementException ex)
 			{
 				// ignore the error and continue
 				continue;
@@ -144,7 +150,7 @@ public class RoomContainerImpl implements RoomContainer
 			if(!to_check.hasMoreElements())
 			{
 				// delete the room
-				del(next.getName());
+				del(next.name());
 			}
 		}
 	}
