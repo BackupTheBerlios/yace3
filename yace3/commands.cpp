@@ -279,6 +279,7 @@ static int away(CA)
 
 static int l(CA)
 {
+  ostringstream tosend;
   if(!hasRights(caller, local)) return 0;
   string room = roomof(caller);
 
@@ -286,10 +287,14 @@ static int l(CA)
   if(locked(room)) {
     notice = yace->sql().getString("unlock_room");
     unlock(room);
+    tosend << ":" << caller << " MODE " << getChannel(room) << " -i";
+    yace->irc().send(tosend.str());
   }
   else {
     notice = yace->sql().getString("lock_room");
     lock(room);
+    tosend << ":" << caller << " MODE " << getChannel(room) << " +i";
+    yace->irc().send(tosend.str());
   }
   
   notice = replaceCommon(notice);

@@ -23,6 +23,7 @@
 #include <string>
 #include "user.h"
 #include "room.h"
+#include "functions.h"
 
 user::user(connection* c, Semaphore* s, Semaphore* l, const string& n, const string& addr, const string& id)
 {
@@ -51,6 +52,7 @@ string user::getID()
 string user::getName()
 {
   return name;
+	
 }
 
 string user::getRoom()
@@ -174,7 +176,6 @@ set<string> user::xgetProp(const string& key)
 
 void user::incrProp(const string& key)
 {
-  if(ircuser) return;
   m_iprops.enterMutex();
   if(!iprops.count(key))
     iprops[key] = 0;
@@ -184,7 +185,6 @@ void user::incrProp(const string& key)
 
 void user::decrProp(const string& key)
 {
-  if(ircuser) return;
   m_iprops.enterMutex();
   if(!iprops.count(key))
     iprops[key] = 0;
@@ -194,8 +194,17 @@ void user::decrProp(const string& key)
 
 void user::quit()
 {
-  yace->irc().send(":" + name + " QUIT :YaCE3");
-  logout->post();
+  /* FIXME. SIGSEGV.
+	if (ircuser) {
+	  leaves(this);
+		yace->rooms().leaves(this->getName());
+		yace->users().removeUser(this->getName());
+    logout->post();
+  }
+	else { */
+	  yace->irc().send(":" + name + " QUIT :YaCE3");
+		logout->post();
+  //}
 }
 
 bool user::isIRC()

@@ -7,5 +7,11 @@ mysql_user=someuser
 mysql_pass=thepassword
 mysql_db=yace
 
+irc=0
+irc_host=irc.someserver.net
+irc_name=yace.someserver.net
+irc_port=6667
+irc_password=somepassword
+
 logfile=/var/log/yace.log
 sourcetarball=/path/to/yace.src.tar.gz

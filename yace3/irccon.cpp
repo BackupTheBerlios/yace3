@@ -208,7 +208,6 @@ irccon::parse (const string & what)
 		  // We cant allow registered nicks at the moment.
 		  return;
 		}
-		
 	  user* irchehe = new user(ia.arg(0),ia.arg(4));
 		irchehe->IncRef();
 		yace->users().insertUser(irchehe);
@@ -230,10 +229,11 @@ irccon::parse (const string & what)
 		}
 		u->DecRef();
 	}
-	
+  else if (ia.command() == "QUIT") {
+	  /* FIXME quitUser(ia.prefix()); */
+	}
 	else if (ia.command() == "MODE")
 	{
-	  // FIXME: Doesnt parse ":tobi MODE #lounge -m"
 	  if (ia.arg(0)[0] == '#') {
 		  // Channelmodes
 			string room = ia.arg(0);
