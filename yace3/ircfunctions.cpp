@@ -155,7 +155,10 @@ i2y_away (const string & who, const string & what)
 		toyace = replace (toyace, "%TEXT%", replaceAll (i2y_convert (what)));
 		toyace = replaceUser(who, toyace);
     }
-	sendRoom (yace->users().getUser(who)->getRoom(), toyace);
+	try {
+		sendRoom (yace->users().getUser(who)->getRoom(), toyace);
+	} catch(...) {
+	}
 	return;
 }
 
