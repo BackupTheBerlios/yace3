@@ -61,6 +61,11 @@ public class RoomImpl implements Room
 		{
 			return "";
 		}
+		catch(ClassCastException e)
+		{
+			// if cast has failed
+			return ""
+		}
 	}
 
 	public boolean ssetProp(String prop, String to_set)
@@ -96,6 +101,11 @@ public class RoomImpl implements Room
 		}
 		catch(NullPointerException e)
 		{
+			return 0;
+		}
+		catch(ClassCastException e)
+		{
+			// if cast has failed
 			return 0;
 		}
 	}
@@ -144,6 +154,11 @@ public class RoomImpl implements Room
 		}
 		catch(NullPointerException e)
 		{
+			return false;
+		}
+		catch(ClassCastException e)
+		{
+			// if cast has failed
 			return false;
 		}
 	}
@@ -277,16 +292,19 @@ public class RoomImpl implements Room
 
 	public String name()
 	{
+		// return room name
 		return m_name;
 	}
 
 	public Enumeration users()
 	{
+		// return all users in this room
 		return m_users.elements();
 	}
 
 	public Enumeration props()
 	{
+		// return room properties
 		return m_props.keys();
 	}
 }
