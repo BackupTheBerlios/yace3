@@ -31,7 +31,7 @@ public interface RoomContainer
 	public Enumeration allRooms();
 
 	// get a specific room
-	public Room get(String name);
+	public Room room(String name);
 
 	// delete a room
 	public boolean del(String name);
