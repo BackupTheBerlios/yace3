@@ -237,9 +237,9 @@ irccon::parse (const string & what)
 			string room = ia.arg(0);
 			room = room.substr(1, room.length()-1);
 			string modes = ia.arg(1);
-			bool adding;
-
-			for (int i=1; i<modes.length(); i++) {
+			bool adding = false;
+			
+			for (int i=0; i<modes.length(); i++) {
 			  switch (modes[i]) {
 				  case '+':
 					  adding = true;
@@ -253,7 +253,7 @@ irccon::parse (const string & what)
 					  // Needs getchannelthingy
 					  if (adding)
 						  lock(room);
-						else
+						if (!adding)
 						  unlock(room);
 					break;
 			
@@ -261,7 +261,7 @@ irccon::parse (const string & what)
 					  // Needs getchannelthingy too
 						if (adding)
 						  setMod(room, 10, 25);
-						else
+						if (!adding)
 						  setMod(room, 0, 0);
 					break;
 					
@@ -269,7 +269,32 @@ irccon::parse (const string & what)
 			}
 		}
 		else {
-		  // Usermodes	
+		  string user = ia.prefix();
+			string modes = ia.rest();
+			cout << ia.rest() << endl;
+			bool adding = false;
+			cout << "DEBUG: User: " << user << endl;
+			cout << "DEBUG: Modes: " << modes << endl;
+			for (int i=0;i<modes.length(); i++) {
+			  switch (modes[i]) {
+			    case '+':
+				    adding = true;
+				  break;
+				
+			  	case '-':
+		  		  adding = false;
+		  		break;
+
+		  		case 'o':
+					  // FIXME.
+		  		  if (adding)
+						  setRights(user,51);
+					  else
+						  setRights(user,0);
+		  		break;
+				}
+				
+			}
 		}
 	}
 	
