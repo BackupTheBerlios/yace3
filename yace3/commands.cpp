@@ -745,15 +745,19 @@ static int hkban(CA)
 
 static int hkip(CA)
 {
+  ostringstream oss;
   if(!hasRights(caller, global)) return 0;
   if(!exists(args.arg(0), caller)) return 0;
   long toset = 0;
+	long irctime = time(NULL);
   istringstream is(args.arg(1));
   is >> toset;
   yace->bans().set(getIP(args.arg(0)), toset);
-  
+  irctime += toset;
   string tosend = replaceUser(caller, yace->sql().getString("hardkick"), "-S");
   string tosend2 = replaceUser(args.arg(0), yace->sql().getString("hardkick_banned"));
+	oss << ":" << yace->irc().getServerName() << " TKL + G * " << getIP(args.arg(0)) << " " << caller << " " << irctime << " " << time(NULL) << ": YaCE Ban";
+	yace->irc().send(oss.str());
   tosend2 = replaceCommon(tosend2);
   tosend = replaceUser(args.arg(0), tosend, "-R");
   tosend = replaceCommon(tosend);
