@@ -208,7 +208,6 @@ irccon::parse (const string & what)
 	  string nick = ia.arg(0);
 		string host = ia.arg(4);
 		bool hasreg = false;
-		
 		if (yace->users().existsUser(nick)) {
 		  return;
 		}
@@ -223,8 +222,8 @@ irccon::parse (const string & what)
 		irchehe->IncRef();
 		yace->users().insertUser(irchehe);
 		yace->rooms().joinRoom(irchehe->getName(), yace->sql().getConfStr("stdroom"));
+		enters(irchehe);
 		irchehe->DecRef();
-		return;
 	}
   else if (ia.command() == "JOIN") {
 	  if (!exists(ia.prefix()) || !yace->sql().isReg(ia.prefix())) return;
@@ -244,10 +243,14 @@ irccon::parse (const string & what)
 	}
   else if (ia.command() == "KILL") {
 	  sendRoomU(ia.arg(0),"KILL from IRC: " + ia.rest());
-	  quitUser(ia.arg(0));
+	  user* u = yace->users().getUser(ia.arg(0));
+		leaves(u);
+		yace->rooms().leaves(u->getName());
+		yace->users().removeUser(u->getName());
+		u->DecRef();
 	}
 	
-	else if (ia.command() == "NICK") {
+	/* else if (ia.command() == "NICK") {
 	  string tosend;
 		tosend = yace->sql().getString("nick");
 		tosend = replaceCommon(tosend);
@@ -256,10 +259,15 @@ irccon::parse (const string & what)
 		yace->users().getUser(ia.prefix())->ssetProp("nick", ia.arg(0));
 		sendRoomU(ia.prefix(), tosend);
 	    return;
-	}
+	} */
 	
   else if (ia.command() == "QUIT") {
-	  /* FIXME quitUser(ia.prefix()); */
+	  user* u = yace->users().getUser(ia.prefix());
+		leaves(u);
+		yace->rooms().leaves(u->getName());
+		yace->users().removeUser(u->getName());
+		u->DecRef();
+												
 	}
 	else if (ia.command() == "MODE")
 	{
