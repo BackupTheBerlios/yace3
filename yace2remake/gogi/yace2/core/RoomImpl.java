@@ -67,7 +67,12 @@ public class RoomImpl implements Room
 		catch(ClassCastException e)
 		{
 			// if cast has failed
-			return "";
+			// each object can be made to a string with
+			// the function toString(), so we do so.
+			// NullPointerException has not to be caught
+			// because it would be caught by
+			// catch(NullPointerException e) if prop is null.
+			return m_props.get(prop).toString();
 		}
 	}
 
