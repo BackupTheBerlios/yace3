@@ -5,7 +5,7 @@
 
 string getIRCChannel(const string &yaceroom)
 {
-  return yace->irc().getIRCRoom(yace->rooms().getRoom(u->getRoom()));
+  return yace->irc().getIRCRoom(yace->rooms().getRoom(yaceroom));
 }
 
 

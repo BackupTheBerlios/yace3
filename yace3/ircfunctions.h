@@ -1,5 +1,7 @@
 #include <sstream>
 #include "stringutil.h"
+#include "room.h"
+#include "user.h"
 #include "yace.h"
 
 
