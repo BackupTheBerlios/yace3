@@ -47,8 +47,8 @@ private:
 
   Mutex m_connection;
   Mutex m_state;
-  Mutex m_parser;
-  Mutex m_run;
+ 
+  
 
 public:
   irccon(const string& h, int p, const string& n, const string& pwd);

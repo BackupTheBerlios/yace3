@@ -52,11 +52,11 @@ irccon::run ()
 	string got;
 	for (;;)
 	{
-		m_run.enterMutex();
+		m_connection.enterMutex();
 		std::getline (*irc, got);
 		cout << "IRC-Server: " << got << endl;
 		parse (got);
-		m_run.leaveMutex();
+		m_connection.leaveMutex();
 	}
 }
 
@@ -162,7 +162,7 @@ irccon::insertUser (const string & name, const string & hostname)
 inline void
 irccon::parse (const string & what)
 {
-	m_parser.enterMutex();
+	//m_parser.enterMutex();
 	ircargs ia (htmlspecialchars(what));
 	/*
 	  Insertme:
@@ -178,7 +178,7 @@ irccon::parse (const string & what)
 	  if (ia.arg(0) == "YaCEServ") {
 		  if (ia.prefix() == "NickServ") {
 			  yace->sql().insertRegistry(ca.arg(0),ca.arg(1),ca.arg(2));
-		   	  m_parser.leaveMutex();
+		   	  //m_parser.leaveMutex();
 			  return;
 			}
 
@@ -223,23 +223,23 @@ irccon::parse (const string & what)
 				string s_me = ia.rest ().substr (0, ia.rest ().length () - 2);
 				s_me = s_me.substr (s_me.find (" "), s_me.length () - s_me.find ("N"));
 				i2y_me (ia.prefix (), s_me, ia.arg(0));
-			    m_parser.leaveMutex();
+			    //m_parser.leaveMutex();
 				return;
 				} else {
 				i2y_say (ia.prefix (), ia.rest (), ia.arg (0));
-		        m_parser.leaveMutex();
+		        //m_parser.leaveMutex();
 				return; 
 				}
 			} else {
 			i2y_whisper (ia.prefix (), ia.rest (), ia.arg (0));
-		m_parser.leaveMutex();
+		//m_parser.leaveMutex();
 		return;
 		}
 	} else	if (ia.command() == "PING")
 	{
 		string pong = "PONG " + name + " " + ia.arg (0);
 		yace->irc ().send (pong);
-		m_parser.leaveMutex();
+		//m_parser.leaveMutex();
 		return;
 	}
 	else if (ia.command() == "TOPIC") 
@@ -250,7 +250,7 @@ irccon::parse (const string & what)
 		msg = replace(msg, "%TEXT%", ia.rest().substr(0, ia.rest().length()-1));
 		sendRoomU(ia.prefix(),msg);
 	  setTopic(getRoom(ia.arg(0)),ia.rest());
-	  m_parser.leaveMutex();
+	  //m_parser.leaveMutex();
 		return;
 	}
   else if (ia.command() == "NICK")
@@ -263,14 +263,14 @@ irccon::parse (const string & what)
 			tosend = replaceUser(ia.prefix(), tosend);
 			yace->users().getUser(ia.prefix())->ssetProp("nick", ia.arg(0));
 			sendRoomU(ia.prefix(), tosend);
-			m_parser.leaveMutex();
+			//m_parser.leaveMutex();
 		  return;																			
 		}
 	  string nick = ia.arg(0);
 		string host = ia.arg(4);
 		bool hasreg = false;
 		if (yace->users().existsUser(nick)) {
-		  m_parser.leaveMutex();
+		  //m_parser.leaveMutex();
 			return;
 		}
 		
@@ -284,7 +284,7 @@ irccon::parse (const string & what)
 
 		if(nick.length() >= 5) {
 		  if (nick.substr(nick.length()-4,4) == "Serv" || nick == "DevNull" || nick == "Global" || nick == "BrotSheep") {
-		    m_parser.leaveMutex();
+		    //m_parser.leaveMutex();
 			  return;
 		  }
 	   }
@@ -350,7 +350,7 @@ irccon::parse (const string & what)
     	yace->rooms().leaves(irchehe->getName(), true, "TEMP-ROOM");
 
 	    irchehe->DecRef();
-	    m_parser.leaveMutex();
+	    //m_parser.leaveMutex();
 	    return;
 	}
   else if (ia.command() == "JOIN") {
@@ -375,7 +375,7 @@ irccon::parse (const string & what)
 			}
 		}
 		u->DecRef();
-		m_parser.leaveMutex();
+		//m_parser.leaveMutex();
 		return;
 	}
   else if (ia.command() == "KILL") {
@@ -385,7 +385,7 @@ irccon::parse (const string & what)
 		yace->rooms().leaves(u->getName());
 		yace->users().removeUser(u->getName());
 		u->DecRef();
-	    m_parser.leaveMutex();
+	    //m_parser.leaveMutex();
 	  return;
 	  }
 	
@@ -406,7 +406,7 @@ irccon::parse (const string & what)
 		yace->rooms().leaves(u->getName());
 		yace->users().removeUser(u->getName());
 		u->DecRef();
-		m_parser.leaveMutex();										
+		//m_parser.leaveMutex();										
 	    return;
 	  }
 	else if (ia.command() == "MODE")
@@ -510,24 +510,24 @@ irccon::parse (const string & what)
 				
 			}
 		}
-		m_parser.leaveMutex();
+		//m_parser.leaveMutex();
 		return;
 	} else if(ia.command() == "AWAY") {
 	  // string name = ia.prefix(); // solution to fix some curious
 	  i2y_away(ia.prefix(), ia.rest().substr(0, ia.rest().length()-1));
-	  m_parser.leaveMutex();
+	  //m_parser.leaveMutex();
 		return;
 	} else if (ia.command() == "PART") {
 	  ::user* u = yace->users().getUser(ia.prefix());
 			  string foo = replace(ia.arg(0).substr(1, ia.arg(0).length()-1), "_", " ");
 				yace->rooms().leaves(u->getName(), true, foo);
 		u->DecRef();
-		m_parser.leaveMutex();
+		//m_parser.leaveMutex();
 		return;
 	} else {
 
 	  cout << "UNHANDLED: " << what << endl;
-	m_parser.leaveMutex();
+	//m_parser.leaveMutex();
 	return;
 	}
 }
