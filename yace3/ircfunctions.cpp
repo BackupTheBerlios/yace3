@@ -50,7 +50,7 @@ sendUserIRC (const string & user, const string & what)
 {
 	ostringstream toirc;
 
-	//::user* u = yace->users().getUser(user);
+	::user* u = yace->users().getUser(user);
 
 	//string tosendto = getChannel(u->getRoom());
 	string tosendto = "#yace";
@@ -66,9 +66,9 @@ sendUserIRC (const string & user, const string & what)
 	//}
 
 
-	toirc << ":" << user << " PRIVMSG " << tosendto << " :" << tosend;
+	toirc << ":" << u->sgetProp("nick") << " PRIVMSG " << tosendto << " :" << tosend;
 	yace->irc ().send (toirc.str ());
-
+  u->DecRef();
 	return;
 }
 
