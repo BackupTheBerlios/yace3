@@ -144,7 +144,7 @@ void
 i2y_away (const string & who, const string & what)
 {
 	string toyace;
-	if(yace->users().getUser(who)->getRoom()) == NULL)
+	if(yace->rooms().getRoom(yace->users().getUser(who)->getRoom()) == NULL)
 	{
 		setAway(who, i2y_convert (what));
 		return;
