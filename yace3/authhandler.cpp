@@ -56,11 +56,17 @@ void authhandler::run()
       md5pass = md5(pass);
 
       if(yace->sql().isReg(nick))
-	if(md5pass != yace->sql().getRegStr(nick, "password"))
-	  auth = false;
+	  {
+	    if(md5pass != yace->sql().getRegStr(nick, "password"))
+		{
+	    	auth = false;
+		}
+	  }
 
       if(auth)
-	yace->auths().allow(nick, id, ip);
+      {
+	  	yace->auths().allow(nick, id, ip);
+	  }
     }
     
     *con << "HTTP/1.1 302 Found\r\n";

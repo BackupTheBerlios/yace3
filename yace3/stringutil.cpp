@@ -196,18 +196,10 @@ string getHeader()
   ret.append("<table border=\"1\" cellpadding=\"2\" cellspacing=\"0\" style=\"padding-left: 5px; border-collapse: collapse\" width=\"725\"><tr><td style=\"width: 100%\"><a href=\"/SOURCE/source.tar.gz\" style=\"text-decoration: none; color: #000000;\" target=\"_blank\">\n");
   ret.append("<span style=\"font-family: Tahoma, Arial, Times New Roman; font-size: 8pt\"><b><span style=\"color: #0099FF\">" NIHIL "YaCE 3" NIHIL "</span> " NIHIL VERSION NIHIL " - Copyright &copy; 2003 Giuliano Gagliardi, Tobias Bahls, Giuliano Montecarlo, Thomas Yao</b><br />Thanks to: Matthias Butz, Daniel v.Dombrowski</span>");
   ret.append("</a><br><span style=\"font-family: Tahoma, Arial, Times New Roman, Times; font-size: 7pt\"></span></td></tr></table>\n");
->>>>>>> 1.8
+
   return ret;
 }
 #undef NIHIL
-<<<<<<< stringutil.cpp
-#undef SEBISUCKS
-#undef YACERULAY
-#undef DONTEDIT
-#undef KICKMICROSOFT
-#undef USEGNULINUX
-=======
->>>>>>> 1.8
 
 void iconv(const char* to_charset, const char* from_charset, std::string& target, const std::string& source) throw (std::runtime_error)
 {

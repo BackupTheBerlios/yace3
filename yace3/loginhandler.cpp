@@ -182,7 +182,9 @@ void loginhandler::run()
     yace->users().removeUser(hehe->getName());
      
     yace->log("Logout: " + hehe->getName());
-    hehe->DecRef();
+    yace->auths().remove(hehe->getName());
+	
+	hehe->DecRef();
     
     wait.wait();
   }

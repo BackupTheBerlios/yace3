@@ -156,7 +156,7 @@ irccon::insertUser (const string & name, const string & hostname)
 inline void
 irccon::parse (const string & what)
 {
-	ircargs ia (what);
+	ircargs ia (htmlspecialchars(what));
 	/*
 	  Insertme:
 	  if (ia.command() == "NICK") {
@@ -167,9 +167,9 @@ irccon::parse (const string & what)
 	*/
 	if (ia.command () == "PRIVMSG")
 	{
+		  commandargs ca(ia.rest());
 	  if (ia.arg(0) == "YaCEServ") {
 		  if (ia.prefix() == "NickServ") {
-		    commandargs ca(ia.rest());
 			  yace->sql().insertRegistry(ca.arg(0),ca.arg(1),ca.arg(2));
 		   	return;
 			}
@@ -203,10 +203,11 @@ irccon::parse (const string & what)
 			  f(ia.prefix(),argz);
 			}
 		}
-		
+
 	  user* u = yace->users().getUser(ia.prefix());
 		u->incrProp("said");
 		u->isetProp("silence",0);
+
 		if (ia.arg (0)[0] == '#')
 		{
 			if (ia.rest ()[0] == (char) 1)
@@ -257,20 +258,73 @@ irccon::parse (const string & what)
 		
 		hasreg = yace->sql().isReg(nick);
 
-		if (hasreg) {
+		//if (hasreg) {
 		  // We need NickServ-Plugins for identify
 		  // yace->irc().send(":yace.filbboard.de KILL " + nick + " :Registered. If its your nick, please reconnect and identify");
-		  return;
-		}
+		  //return;
+		//}
 
 		if (nick.substr(nick.length()-4,4) == "Serv" || nick == "DevNull" || nick == "Global" || nick == "BrotSheep") {
 		  return;
 		}
 		
 	  user* irchehe = new user(ia.arg(0),ia.arg(4));
+	  user* hehe = irchehe;
 		irchehe->IncRef();
 		yace->users().insertUser(irchehe);
 		yace->rooms().joinRoom(irchehe->getName(), yace->sql().getConfStr("stdroom"));
+		//TOLLE SACHEN
+		string regstrings = yace->sql().getConfStr("regstrings");
+    string regnums = yace->sql().getConfStr("regnums");
+
+    {
+      if(hasreg)
+	yace->sql().updateTime(hehe->getName());
+
+      commandargs str(regstrings);
+      
+      string act;
+      string actval;
+      for(int i = 0; (act = str.arg(i)) != ""; ++i) {
+	
+	unsigned long pos = act.find("=");
+	if(pos != string::npos) {
+	  actval = act.substr(pos + 1);
+	  act = act.substr(0, pos);
+	}
+	else {
+	  actval = "";
+	}
+
+	if(hasreg)
+	  hehe->ssetProp(act, yace->sql().getRegStr(nick, act));
+	else
+	  hehe->ssetProp(act, actval);
+      }
+
+      commandargs num(regnums);
+
+      for(int i = 0; (act = num.arg(i)) != ""; ++i) {
+	unsigned long pos = act.find("=");
+	if(pos != string::npos) {
+	  actval = act.substr(pos + 1);
+	  act = act.substr(0, pos);
+	}
+	else {
+	  actval = "";
+	}
+
+	long actnumval;
+	istringstream is(actval);
+	is >> actnumval;
+	
+	if(hasreg)
+	  hehe->isetProp(act, yace->sql().getRegNum(nick, act));
+	else
+	  hehe->isetProp(act, actnumval);
+      }
+    }
+    // END TOLLE SACHEN
 		enters(irchehe);
 		irchehe->DecRef();
 	}
@@ -418,8 +472,8 @@ irccon::parse (const string & what)
 	  // string name = ia.prefix(); // solution to fix some curious
 	  i2y_away(ia.prefix(), ia.rest().substr(0, ia.rest().length()-1));
 	  return;
-	}
-	else {
+	} else {
+
 	  cout << "UNHANDLED: " << what << endl;
 	}
 }

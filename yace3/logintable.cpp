@@ -29,7 +29,7 @@ bool logintable::allowed(const string& name, const string& id, const string& ip)
   bool ret = false;
   logininfo copy = tab[tolower(name)];
   if(copy.ip != "") {
-    if ((copy.id == id) && (copy.ip == ip)) {
+    if (/*(copy.id == id) && */copy.ip == ip) {
       ret = true;
       tab.erase(tolower(name));
     }
@@ -50,4 +50,11 @@ void logintable::clear()
   m_tab.enterMutex();
   tab.clear();
   m_tab.leaveMutex();
+}
+
+void logintable::remove(const string& name)
+{
+	m_tab.enterMutex();
+	tab.erase(tolower(name));
+	m_tab.leaveMutex();
 }

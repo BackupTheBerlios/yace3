@@ -51,6 +51,7 @@ class logintable
   bool allowed(const string& name, const string& id, const string& ip);
   void allow(const string& name, const string& id, const string& ip);
   void clear();
+  void remove(const string& nick);
 };
 
 #endif

@@ -63,7 +63,7 @@ void sendUser(const string& who, const string& what, bool raw)
   if(raw)
     tosend = what;
   else
-    tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", what);
+    tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", replaceAll(what));
 
   user* u = yace->users().getUser(who);
   if(u == NULL)
@@ -79,7 +79,7 @@ void sendAll(const string& what, bool raw)
   if(raw)
     tosend = what;
   else
-    tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", what);
+    tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", replaceAll(what));
 
   set<string> all = yace->users().getAllUsers();
   set<string>::iterator it = all.begin();
@@ -98,7 +98,7 @@ void sendR(int r, const string& what, bool raw)
   if(raw)
     tosend = what;
   else
-    tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", what);
+    tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", replaceAll(what));
 
   set<string> all = yace->users().getAllUsers();
   set<string>::iterator it = all.begin();
@@ -119,7 +119,7 @@ void sendRoom(const string& room, const string& what, bool raw)
     if(raw)
       tosend = what;
     else
-      tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", what);
+      tosend = replace(yace->sql().getString("stdsend"), "%STUFF%", replaceAll(what));
 
     ::room* r;
     r = yace->rooms().getRoom(room);
@@ -437,18 +437,26 @@ bool hasRights(const string& who, int i, bool msg)
   return false;
 }
 
-string replaceAll(const string& in)
+inline string replaceAll(const string& in)
 {
   string ret = in;
   hash_map<string, string> reps = yace->sql().getReplaces();
   for(hash_map<string, string>::iterator it = reps.begin(); it != reps.end(); ++it) {
 	//ret = replaceI(ret, it->first, it->second);
-	while(tolower(ret).find(tolower(it->first)) != string::npos) 
-	{
-	  ret = replaceI(ret, it->first, it->second);
+	try {
+	  while(tolower(ret).find(tolower(it->first)) != string::npos) 
+	  {
+	    //cout << "HIER REPLACE" << endl;
+		ret = replaceI(ret, it->first, it->second);
+	  }
+    } catch(...) {
+	  //cout << "FUCK!" << endl;
+	  continue;
 	}
   }
+  //cout << "HIER REPLACE ENDE" << endl;
   return ret;
+	//return  in;
 }
 
 string roomof(const string& in)

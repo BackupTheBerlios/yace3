@@ -662,9 +662,9 @@ static int s(CA)
 {
   string tosend = yace->sql().getString("shout");
   tosend = replaceUser(caller, tosend);
-  tosend = replace(tosend, "%TEXT%", args.all());
+  tosend = replace(tosend, "%TEXT%", toupper(args.all()));
   sendRoomI(caller, tosend);
-	yace->irc().send(":" + caller + " PRIVMSG " + getChannel(roomof(caller)) + " :" + (char)1 + "ACTION Shouts: " + args.all() + char(1));
+	yace->irc().send(":" + caller + " PRIVMSG " + getChannel(roomof(caller)) + " :" + (char)1 + "ACTION ahouts: " + toupper(args.all()) + char(1));
 		
   return 0;
 }

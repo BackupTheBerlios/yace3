@@ -27,7 +27,7 @@
 #include "yace.h"
 #include "irccon.h"
 
-string color = "da1337";
+//string color = "da1337";
 
 string
 i2y_convert (const string & text)
@@ -114,11 +114,12 @@ quitIRCUser (user * u)
 void
 i2y_say (const string & who, const string & what, const string & where)
 {
+	::user* u = yace->users().getUser(who);
 	string text = what;
 	string tosend =
 		replace (yace->sql ().getString ("say"), "%NAME%", who);
 	tosend = replace (tosend, "%TEXT%", replaceAll (text));
-	tosend = replace (tosend, "%COLOR%", color);
+	tosend = replace (tosend, "%COLOR%", u->sgetProp("color"));
 	tosend = i2y_convert (tosend);
 	sendRoom (replace(where.substr(1, where.length()-1), "_", " "), tosend);
 	return;
@@ -127,10 +128,11 @@ i2y_say (const string & who, const string & what, const string & where)
 void
 i2y_whisper (const string & who, const string & what, const string & user)
 {
+	::user* u = yace->users().getUser(who);
 	string toyace =
 		replaceCommon (yace->sql ().getString ("whisperfrom"));
 	toyace = replace (toyace, "%CNAME%",
-			  "<span style=\"color:" + color + "\">" + who +
+			  "<span style=\"color:" + u->sgetProp("color") + "\">" + who +
 			  "</span>");
 	toyace = replace (toyace, "%TEXT%", what);
 	sendUser (user, toyace);
@@ -174,7 +176,8 @@ y2i_back (const string & who)
 void
 i2y_me(const string& who, const string& what, const string& where)
 {
-	string toyace = replace(yace->sql().getString("me"), "%COLOR%", color);
+	::user* u = yace->users().getUser(who);
+	string toyace = replace(yace->sql().getString("me"), "%COLOR%", u->sgetProp("color"));
 	toyace = replace(toyace, "%NAME%", who);
 	toyace = replace(toyace, "%TEXT%", what);
 	sendRoom(replace(where.substr(1, where.length()-1), "_", " "), toyace);

@@ -51,14 +51,13 @@ user* usercont::getUser(const string& name)
   } */
 	
   if(!users.count(lname))
+  {
     ret = NULL;
-  else {
+  } else {
     ret =  users[lname];
     ret->IncRef();
   }
-  m_users.leaveMutex();
-
-	if (ret == NULL)
+  if (ret == NULL)
 	{
 	    for(it = users.begin(); it != users.end(); ++it)
 			{ 
@@ -67,6 +66,7 @@ user* usercont::getUser(const string& name)
 			}
 									
 	}
+  m_users.leaveMutex();
   return ret;
 }
 

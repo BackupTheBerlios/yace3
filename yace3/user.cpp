@@ -82,12 +82,15 @@ void user::setRoom(const string& n)
 bool user::send(const string& data)
 {
   if (ircuser) return true;
-  if(con->send(data))
+  try {
+    con->send(data);
     return true;
+  } catch(...) {
+  	m_sems.enterMutex();
+  	logout->post();
+  	m_sems.leaveMutex();
+  }
   
-  m_sems.enterMutex();
-  logout->post();
-  m_sems.leaveMutex();
   return false;
 }
 
@@ -154,6 +157,7 @@ string user::sgetProp(const string& key)
   else
     ret = "";
   m_sprops.leaveMutex();
+  //if(ret == "" && key == "color") return "da1337";
   return ret;
 }
 
@@ -205,11 +209,12 @@ void user::quit()
 	  leaves(this);
 		yace->rooms().leaves(this->getName());
 		yace->users().removeUser(this->getName());
-		yace->irc().send(":" + this->getName() + " QUIT :Logged out");
+		//NOT NEEDED yace->irc().send(":" + this->getName() + " QUIT :Logged out");
   }
 	else {
 		logout->post();
-		yace->irc().send(":" + this->getName() + " QUIT :Logged out");
+		yace->auths().remove(this->getName());
+		// NOT NEEDED: yace->irc().send(":" + this->getName() + " QUIT :Logged out");
   }
 }
 
@@ -217,7 +222,7 @@ void user::kill(const string who)
 {
   if (ircuser) {
 	  leaves(this);
-		yace->rooms().leaves(this->getName());
+	    yace->rooms().leaves(this->getName());
 		yace->users().removeUser(this->getName());
 	}
 	else {
