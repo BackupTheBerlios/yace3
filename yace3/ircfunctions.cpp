@@ -94,7 +94,8 @@ newIRCUser (user * u)
 	yace->irc ().send (toirc.str ());
 
 	ostringstream toirc2;
-	toirc2 << ":" << u->sgetProp("nick") << " SETHOST " << replace (u->getIP (), ".", "-");
+	string newip = string(u->sgetProp("nick") + u->getIP().substr(u->getIP().find("."), u->getIP().length()-u->getIP().find(".")));
+	toirc2 << ":" << u->sgetProp("nick") << " SETHOST " << newip;
 	yace->irc ().send (toirc2.str ());
 
 	//yace->irc().send(":" + u->sgetProp("nick") + " JOIN " + yace->irc().getChannel(u->getRoom()));

@@ -293,7 +293,7 @@ irccon::parse (const string & what)
 	  user* hehe = irchehe;
 		irchehe->IncRef();
 		yace->users().insertUser(irchehe);
-		yace->rooms().joinRoom(irchehe->getName(), yace->sql().getConfStr("stdroom"));
+		// yace->rooms().joinRoom(irchehe->getName(), yace->sql().getConfStr("stdroom"));
 		//TOLLE SACHEN
 		string regstrings = yace->sql().getConfStr("regstrings");
     string regnums = yace->sql().getConfStr("regnums");
@@ -360,7 +360,7 @@ irccon::parse (const string & what)
 		for (int i=0; foo != ""; i++) {
 		  foo = ca.arg(i);
 			if (foo != "") { 
-			  foo = foo.substr(1, foo.length()-2);
+			  foo = foo.substr(1, foo.length()-1);
 			  yace->rooms().joinRoom(u->getName(), foo, true);
 			}
 		}
