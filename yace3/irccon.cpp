@@ -47,14 +47,6 @@ void irccon::run()
       (*irc) << pong << endl;
     }
 
-    if(ca.arg(1) == "PRIVMSG")
-    {
-      string ft = ca.arg(3);
-      ft[0] = "";
-      sendAll(htmlspecialchars("(" + replace(ca.arg(0), ":", "") + ") " + ft + " " + ca.rest(3)));
-    } else {
-      sendAll(got);
-    }
     cout << got << endl;
   }
 }
