@@ -437,6 +437,7 @@ bool hasRights(const string& who, int i, bool msg)
   return false;
 }
 
+
 string replaceAll(const string& in)
 {
   string ret = in;

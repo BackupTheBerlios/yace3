@@ -104,7 +104,7 @@ void addInvite(const string& room, const string& who);
 bool canJoin(const string& room, const string& who);
 
 bool exists(const string& who, const string& errorto = "");
-string replaceAll(const string& in);
+/*inline */string replaceAll(const string& in);
 string roomof(const string& user);
 string inviteof(const string& in);
 bool sameRoom(const string& caller, const string& target);

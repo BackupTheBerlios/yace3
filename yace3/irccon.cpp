@@ -52,19 +52,22 @@ irccon::run ()
 	string got;
 	for (;;)
 	{
+		m_run.enterMutex();
 		std::getline (*irc, got);
 		cout << "IRC-Server: " << got << endl;
 		parse (got);
+		m_run.leaveMutex();
 	}
 }
 
 string
 irccon::getChannel (const string & room)
 {
-	if (c_rooms.count (room))
-		return c_rooms[room];
-	else
+	if (c_rooms.count (room)) {
+	    return c_rooms[room];
+	} else {
 		return "";
+	}
 }
 
 string
@@ -73,8 +76,9 @@ irccon::getRoom (const string & channel)
 	for (map < string, string >::const_iterator it = c_rooms.begin ();
 	     it != c_rooms.end (); ++it)
 	{
-		if (it->second == channel)
-			return it->first;
+		if (it->second == channel) {
+		  return it->first;
+		}
 	}
 	return "";
 }
@@ -152,13 +156,13 @@ irccon::insertUser (const string & name, const string & hostname)
 {
   if (!connected) return;
 	c_nicks[name] = hostname;
-	return;
 }
 
 
 inline void
 irccon::parse (const string & what)
 {
+	m_parser.enterMutex();
 	ircargs ia (htmlspecialchars(what));
 	/*
 	  Insertme:
@@ -174,7 +178,8 @@ irccon::parse (const string & what)
 	  if (ia.arg(0) == "YaCEServ") {
 		  if (ia.prefix() == "NickServ") {
 			  yace->sql().insertRegistry(ca.arg(0),ca.arg(1),ca.arg(2));
-		   	return;
+		   	  m_parser.leaveMutex();
+			  return;
 			}
 
 			// YaCEServ needs OperServ access for some Features
@@ -218,16 +223,23 @@ irccon::parse (const string & what)
 				string s_me = ia.rest ().substr (0, ia.rest ().length () - 2);
 				s_me = s_me.substr (s_me.find (" "), s_me.length () - s_me.find ("N"));
 				i2y_me (ia.prefix (), s_me, ia.arg(0));
-			} else
+			    m_parser.leaveMutex();
+				return;
+				} else {
 				i2y_say (ia.prefix (), ia.rest (), ia.arg (0));
-		}
-		else
+		        m_parser.leaveMutex();
+				return; 
+				}
+			} else {
 			i2y_whisper (ia.prefix (), ia.rest (), ia.arg (0));
+		m_parser.leaveMutex();
 		return;
+		}
 	} else	if (ia.command() == "PING")
 	{
 		string pong = "PONG " + name + " " + ia.arg (0);
 		yace->irc ().send (pong);
+		m_parser.leaveMutex();
 		return;
 	}
 	else if (ia.command() == "TOPIC") 
@@ -238,7 +250,8 @@ irccon::parse (const string & what)
 		msg = replace(msg, "%TEXT%", ia.rest().substr(0, ia.rest().length()-1));
 		sendRoomU(ia.prefix(),msg);
 	  setTopic(getRoom(ia.arg(0)),ia.rest());
-	  return;
+	  m_parser.leaveMutex();
+		return;
 	}
   else if (ia.command() == "NICK")
 	{
@@ -250,13 +263,15 @@ irccon::parse (const string & what)
 			tosend = replaceUser(ia.prefix(), tosend);
 			yace->users().getUser(ia.prefix())->ssetProp("nick", ia.arg(0));
 			sendRoomU(ia.prefix(), tosend);
-			return;																			
+			m_parser.leaveMutex();
+		  return;																			
 		}
 	  string nick = ia.arg(0);
 		string host = ia.arg(4);
 		bool hasreg = false;
 		if (yace->users().existsUser(nick)) {
-		  return;
+		  m_parser.leaveMutex();
+			return;
 		}
 		
 		hasreg = yace->sql().isReg(nick);
@@ -267,9 +282,12 @@ irccon::parse (const string & what)
 		  //return;
 		//}
 
-		if (nick.substr(nick.length()-4,4) == "Serv" || nick == "DevNull" || nick == "Global" || nick == "BrotSheep") {
-		  return;
-		}
+		if(nick.length() >= 5) {
+		  if (nick.substr(nick.length()-4,4) == "Serv" || nick == "DevNull" || nick == "Global" || nick == "BrotSheep") {
+		    m_parser.leaveMutex();
+			  return;
+		  }
+	   }
 		
 	  user* irchehe = new user(ia.arg(0),ia.arg(4));
 	  user* hehe = irchehe;
@@ -330,6 +348,8 @@ irccon::parse (const string & what)
     // END TOLLE SACHEN
 		enters(irchehe);
 		irchehe->DecRef();
+	    m_parser.leaveMutex();
+	    return;
 	}
   else if (ia.command() == "JOIN") {
 	  if (!exists(ia.prefix()) || !yace->sql().isReg(ia.prefix())) return;
@@ -345,6 +365,7 @@ irccon::parse (const string & what)
 			}
 		}
 		u->DecRef();
+		m_parser.leaveMutex();
 		return;
 	}
   else if (ia.command() == "KILL") {
@@ -354,7 +375,9 @@ irccon::parse (const string & what)
 		yace->rooms().leaves(u->getName());
 		yace->users().removeUser(u->getName());
 		u->DecRef();
-	}
+	    m_parser.leaveMutex();
+	  return;
+	  }
 	
 	/* else if (ia.command() == "NICK") {
 	  string tosend;
@@ -373,8 +396,9 @@ irccon::parse (const string & what)
 		yace->rooms().leaves(u->getName());
 		yace->users().removeUser(u->getName());
 		u->DecRef();
-												
-	}
+		m_parser.leaveMutex();										
+	    return;
+	  }
 	else if (ia.command() == "MODE")
 	{
 	  if (ia.arg(0)[0] == '#') {
@@ -470,13 +494,17 @@ irccon::parse (const string & what)
 				
 			}
 		}
+		m_parser.leaveMutex();
 		return;
 	} else if(ia.command() == "AWAY") {
 	  // string name = ia.prefix(); // solution to fix some curious
 	  i2y_away(ia.prefix(), ia.rest().substr(0, ia.rest().length()-1));
-	  return;
+	  m_parser.leaveMutex();
+		return;
 	} else {
 
 	  cout << "UNHANDLED: " << what << endl;
+	m_parser.leaveMutex();
+	return;
 	}
 }

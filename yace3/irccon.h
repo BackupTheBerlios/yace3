@@ -47,6 +47,8 @@ private:
 
   Mutex m_connection;
   Mutex m_state;
+  Mutex m_parser;
+  Mutex m_run;
 
 public:
   irccon(const string& h, int p, const string& n, const string& pwd);
@@ -54,7 +56,13 @@ public:
   bool connect();
   void irccon::send(const string& str);
 
-  string getServerName() { return name; }
+  string getServerName() 
+  {
+	  //m_irc.enterMutex(); 
+	  string toret = this->name; 
+	  //m_irc.leaveMutex();
+		  return toret;
+  }
 
   string getChannel(const string& room);
   string getRoom(const string& channel);
