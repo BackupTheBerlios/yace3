@@ -51,45 +51,8 @@ irccon::run ()
 	for (;;)
 	{
 		std::getline (*irc, got);
-		/*
-		 * commandargs ca(got);
-		 * ircargs ia(got);
-		 */
+		cout << "IRC-Server: " << got << endl;
 		parse (got);
-		/*if(ca.arg(0) == "PING") {
-		 * string pong = ":" + name + " PONG " + name + " " + ca.arg(1);
-		 * ircargs ia(got);
-		 * cout << ia.command() << endl;
-		 * } */
-		/*if(ia.command() == "PING") {
-		 * string pong = ":" + name + " PONG " + name + " " + ia.arg(2);
-		 * (*irc) << pong << endl;
-		 * } */
-		/*if(ia.command() == "PRIVMSG") {
-		 * string from = ia.prefix();
-		 * string to = ia.arg(0);
-		 * string what = ia.rest();
-		 * // cout << "DEBUG: Got Privmsg from " << from << " to " << to << ": " << what << endl;
-		 * 
-		 * if (to[0] == '#') {
-		 * // Public
-		 * ostringstream tosend;
-		 * tosend << "(" << from << ") " << what;
-		 * sendAll(tosend.str());
-		 * } else {
-		 * // Private
-		 * string tosend = replaceUser(from, yace->sql().getString("whisperfrom"));
-		 * // FIXME: replaceUser needs user-class as first argument. 
-		 * 
-		 * tosend = replace(tosend, "%TEXT%", what);
-		 * sendUser(to, tosend);
-		 * }
-		 * } */
-
-		if (got != "")
-		{
-			cout << got << endl;
-		}
 	}
 }
 

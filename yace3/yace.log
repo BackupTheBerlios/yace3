@@ -1200,3 +1200,34 @@
 [Fri,  26  Dec  2003  20:02:00  +0100] Login: Giulay (localhost)
 [Fri,  26  Dec  2003  20:02:02  +0100] (Giulay) :affe:
 [Fri,  26  Dec  2003  20:02:06  +0100] (Giulay) :affe: :affe: :affe: :affe: :affe: 
+[Fri,  26  Dec  2003  20:07:49  +0100] Starting up...
+[Fri,  26  Dec  2003  20:07:50  +0100] Listening on port 12345
+[Fri,  26  Dec  2003  20:07:55  +0100] Login: Giulay (localhost)
+[Fri,  26  Dec  2003  20:08:02  +0100] (Giulay) Und es tut sogar:affe:
+[Fri,  26  Dec  2003  20:08:03  +0100] (Giulay) /wc
+[Fri,  26  Dec  2003  20:08:40  +0100] (Giulay) aber dsa mit den gereggten nicks muss noch gefixt werden o.O
+[Fri,  26  Dec  2003  20:08:50  +0100] (Giulay) [lounge] Animelee_Pokemon BrotSheep ChanServ compfreek dachund DevNull Giulay Global Greaty_XDCC Griffel Guest589825593 HelpServ j4c0b Matze0007 MemoServ Midori Natalie NickServ OperServ StatServ test^afk tobi TV-Junkie
+[Fri,  26  Dec  2003  20:08:58  +0100] (Giulay) nix Giuly, nix GoGi
+[Fri,  26  Dec  2003  20:14:54  +0100] (Giulay) kA
+[Fri,  26  Dec  2003  20:15:14  +0100] (Giulay) ich auch
+[Fri,  26  Dec  2003  20:15:38  +0100] (Giulay) int countArgs(commandargs aff)
+[Fri,  26  Dec  2003  20:15:41  +0100] (Giulay) {
+[Fri,  26  Dec  2003  20:15:46  +0100] (Giulay) string affe
+[Fri,  26  Dec  2003  20:15:47  +0100] (Giulay) ;
+[Fri,  26  Dec  2003  20:16:03  +0100] (Giulay) while(affe != "")
+[Fri,  26  Dec  2003  20:16:05  +0100] (Giulay) {
+[Fri,  26  Dec  2003  20:16:10  +0100] (Giulay) achso
+[Fri,  26  Dec  2003  20:16:16  +0100] (Giulay) vorher noch int ret = 0;
+[Fri,  26  Dec  2003  20:16:41  +0100] (Giulay) affe = aff.arg(ret)
+[Fri,  26  Dec  2003  20:16:52  +0100] (Giulay) ret++
+[Fri,  26  Dec  2003  20:16:53  +0100] (Giulay) }
+[Fri,  26  Dec  2003  20:17:01  +0100] (Giulay) return ret-1;
+[Fri,  26  Dec  2003  20:17:02  +0100] (Giulay) }
+[Fri,  26  Dec  2003  20:17:06  +0100] (Giulay) fertig :Affe:
+[Fri,  26  Dec  2003  20:17:08  +0100] (Giulay) :affe:
+[Fri,  26  Dec  2003  20:17:10  +0100] (Giulay) LOL
+[Fri,  26  Dec  2003  20:17:11  +0100] (Giulay) :AFFE:
+[Fri,  26  Dec  2003  20:34:12  +0100] Starting up...
+[Fri,  26  Dec  2003  20:34:12  +0100] Listening on port 12345
+[Fri,  26  Dec  2003  20:34:21  +0100] Login: Giulay (localhost)
+[Fri,  26  Dec  2003  20:34:32  +0100] (Giulay) :affe: :AFFE: :aFfE:
