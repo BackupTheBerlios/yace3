@@ -364,7 +364,7 @@ irccon::parse (const string & what)
 		  foo = ca.arg(i);
 			if (foo != "") { 
 			  foo = foo.substr(1, foo.length()-1);
-			  if(foo[foo.length()] == ' ') foo = foo.substr(0,foo.length()-1);
+			  if(foo[foo.length()-1] == ' ') foo = foo.substr(0,foo.length()-1);
 			  yace->rooms().joinRoom(u->getName(), foo, true);
 			}
 		}
