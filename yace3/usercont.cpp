@@ -42,7 +42,7 @@ user* usercont::getUser(const string& name)
   string lname = tolower(name);
   user* ret;
   m_users.enterMutex();
-  hash_map::iterator it;
+  hash_map<string, user*>::iterator it;
   
   for(it = users.begin(); it != users.end(); ++it)
   {
