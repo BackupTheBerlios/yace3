@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2003 Giuliano Gagliardi
+  Copyright (C) 2003 Giuliano Gagliardi, Tobias Bahls
 
   This file is part of YaCE 3
 
@@ -54,6 +54,7 @@ class sqlcon
   
   sqlcon(const string& database, const string& host, const string& user, const string& pass);
 
+  bool insertRegistry(const string& nick, const string& password, const string& mail);
   string getString(const string& key);
   string getText(const string& key);
   hash_map<string, string> getReplaces();

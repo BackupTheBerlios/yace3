@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2003 Giuliano Gagliardi
+  Copyright (C) 2003 Giuliano Gagliardi, Tobias Bahls
 
   This file is part of YaCE 3
 
@@ -54,6 +54,22 @@ string sqlcon::getString(const string& key)
   return ret;
 }
 
+bool sqlcon::insertRegistry(const string& nick, const string& password, const string& mail) {
+  // We need escapezeug
+  m.enterMutex();
+  Query q = con.query();
+	try {
+	  q << "INSERT INTO `registry` (`handle`,`password`,`access`,`rights`,`color`,`email`) VALUES ('" << nick << "', MD5('" << password << "'),NOW(),'0','#da1337','" << mail << "');";
+		cout << "DEBUG: Query: " << q.preview() << endl;
+		Result r = q.store();
+	}
+	catch (...) {
+		return false;
+	}
+  m.leaveMutex();
+	return true;
+}
+
 string sqlcon::getText(const string& key)
 {
   m.enterMutex();
@@ -79,6 +95,7 @@ string sqlcon::getText(const string& key)
   m.leaveMutex();
   return ret;
 }
+
 
 hash_map<string, string> sqlcon::getReplaces()
 {

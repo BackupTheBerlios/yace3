@@ -202,6 +202,14 @@ irccon::parse (const string & what)
 	*/
 	if (ia.command () == "PRIVMSG")
 	{
+	  if (ia.prefix() == "NickServ") {
+		  if (ia.arg(0) == "YaCEReg") {
+			  commandargs ca(ia.rest());
+				yace->sql().insertRegistry(ca.arg(0),ca.arg(1),ca.arg(2));
+				cout << "DEBUG: Added new Nick to Registry: " << ca.arg(0) << endl;
+			}
+		}
+		
 		if (ia.arg (0)[0] == '#')
 		{
 			if (ia.rest ()[0] == (char) 1)
