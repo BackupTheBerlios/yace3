@@ -223,7 +223,7 @@ void user::kill(const string who)
 	else {
 	  logout->post();
 	}
-	yace->irc().send(":yace.filbboard.de KILL " + this->getName() + " :YaCE HK by " + who);
+	yace->irc().send(":" + yace->irc().getServerName() + " KILL " + this->getName() + " :YaCE HK by " + who);
 }
 
 bool user::isIRC()

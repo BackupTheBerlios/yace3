@@ -221,7 +221,7 @@ irccon::parse (const string & what)
 		return;
 	} else	if (ia.command() == "PING")
 	{
-		string pong = "PONG yace.filbboard.de " + ia.arg (0);
+		string pong = "PONG " + name + " " + ia.arg (0);
 		yace->irc ().send (pong);
 		return;
 	}
