@@ -100,7 +100,7 @@ irccon::connectRC (const string & room, const string & channel)
 void
 irccon::send (const string & str)
 {
-
+  if (!connected) return;
 	cout << "DEBUG: " << str << endl;
 	(*irc) << str << endl;
 }
@@ -146,6 +146,7 @@ irccon::connect ()
 void
 irccon::insertUser (const string & name, const string & hostname)
 {
+  if (!connected) return;
 	c_nicks[name] = hostname;
 	return;
 }

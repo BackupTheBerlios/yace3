@@ -117,7 +117,7 @@ void YaCE::run()
     cout << "OK" << endl;
   }
   else {
-    ic = NULL;
+    ic = new irccon("localhost", 0, "NIHIL", "NIHIL");
     //icp = NULL;
   }
   // end irc

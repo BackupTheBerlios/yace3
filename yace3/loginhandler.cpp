@@ -162,9 +162,9 @@ void loginhandler::run()
     yace->users().insertUser(hehe);
     yace->rooms().joinRoom(hehe->getName(), yace->sql().getConfStr("stdroom"));
     //NEW IRC USER HERE
-	newIRCUser(hehe);
+		newIRCUser(hehe);
 	//NEW IRC USER HERE
-	loginmutex.leaveMutex();
+	  loginmutex.leaveMutex();
 
     //ok
     hehe->send(getHeader());
