@@ -34,7 +34,7 @@ void newIRCUser(const string& who)
   string ircroom = getIRCChannel(u->getRoom());
   if(ircroom == "") return;
   
-  toirc << "NICK " << who << " 1 1 " << who << /* WHAT'S THIS??  <<  */ u->getIP() << " foo 1 :Yace-User";
+  toirc << "NICK " << who << " 1 1 " << who << /* WHAT'S THIS??  <<  */ u->getIP() << " yace.filbboard.de 1 :Yace-User";
   yace->irc().send(toirc.str());  
   toirc.clear();
 
