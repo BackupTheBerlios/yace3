@@ -20,8 +20,15 @@
 */
 
 #include <vector>
+#include <sstream>
 #include "irccon.h"
 #include "functions.h"
+#include "commandargs.h"
+#include "stringutil.h"
+#include "ircargs.h"
+#include "yace.h"
+#include "user.h"
+#include "connection.h"
 #include "ircargs.h"
 #include "stringutil.h"
 
@@ -41,19 +48,41 @@ void irccon::run()
   for(;;) {
     std::getline(*irc, got);
     
+    commandargs ca(got);
     ircargs ia(got);
-    cout << ia.command() << endl;
-    
-    if(ia.command() == "PING") {
+    if(ca.arg(0) == "PING") {
+      string pong = ":" + name + " PONG " + name + " " + ca.arg(1);
+      ircargs ia(got);
+      cout << ia.command() << endl;
+    } 
+    /*if(ia.command() == "PING") {
       string pong = ":" + name + " PONG " + name + " " + ia.arg(2);
       (*irc) << pong << endl;
-    } else {
-      if(ia.command() == "PRIVMSG") {
-        sendAll("(" + ia.prefix() + ") " +  ia.rest());
+    } */
+    if(ia.command() == "PRIVMSG") {
+      string from = ia.prefix();
+      string to = ia.arg(0);
+      string what = ia.rest();
+      // cout << "DEBUG: Got Privmsg from " << from << " to " << to << ": " << what << endl;
+      
+      if (to[0] == '#') {
+        // Public
+	ostringstream tosend;
+	tosend << "(" << from << ") " << what;
+	sendAll(tosend.str());
+      }
+      else {
+        // Private
+        string tosend = replaceUser(from, yace->sql().getString("whisperfrom"));
+	// FIXME: replaceUser needs user-class as first argument.
+
+        tosend = replace(tosend, "%TEXT%", what);
+        sendUser(to, tosend);
       }
     }
-
-    cout << got << endl;
+    if (got != "") {
+        cout << got << endl;
+    }
   }
 }
 
@@ -110,7 +139,7 @@ bool irccon::connect()
     (*irc) << "SERVER " << name << " 1 :YaCE Connection (alpha)" << endl;
 
     (*irc) << "NICK YaCE 1 1 yace " << name << " " << name << " 1 :YaCE-Testfreak" << endl;
-    (*irc) << ":YaCE JOIN #lounge" << endl;
+    (*irc) << ":YaCE JOIN #yace" << endl;
     
   }
   catch(...) {
