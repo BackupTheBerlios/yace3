@@ -389,6 +389,8 @@ static int aq(CA)
   tosend = replaceUser(caller, tosend);
   tosend = replace(tosend, "%TEXT%", args.all());
   sendRoomI(caller, tosend);
+	yace->irc().send(":" + caller + " PRIVMSG " + getChannel(roomof(caller)) + " :" + (char)1 + "ACTION Asks: " + args.all() + char(1));
+		
   return 0;
 }
 
@@ -454,6 +456,8 @@ static int rq(CA)
   string tosend = replaceUser(caller, yace->sql().getString("answer"));
   tosend = replaceUser(caller, tosend);
   tosend = replace(tosend, "%TEXT%", args.all());
+	yace->irc().send(":" + caller + " PRIVMSG " + getChannel(roomof(caller)) + " :" + (char)1 + "ACTION Answers: " + args.all() + char(1));
+		
   sendRoomI(caller, tosend);
   return 0;
 }
@@ -572,6 +576,7 @@ static int video(CA)
   string tosend = replaceUser(caller, yace->sql().getString("video"));
   tosend = replace(tosend, "%TEXT%", args.arg(0));
   sendRoomU(caller, tosend);
+	yace->irc().send(":" + caller + " PRIVMSG " + getChannel(roomof(caller)) + " :" + (char)1 + "ACTION Video: " + args.all() + char(1));	
   return 0;
 }
   
@@ -645,6 +650,8 @@ static int s(CA)
   tosend = replaceUser(caller, tosend);
   tosend = replace(tosend, "%TEXT%", args.all());
   sendRoomI(caller, tosend);
+	yace->irc().send(":" + caller + " PRIVMSG " + getChannel(roomof(caller)) + " :" + (char)1 + "ACTION Shouts: " + args.all() + char(1));
+		
   return 0;
 }
 
@@ -654,6 +661,8 @@ static int p(CA)
   string tosend = yace->sql().getString("picture");
   tosend = replaceUser(caller, tosend);
   tosend = replace(tosend, "%TEXT%", args.all());
+	yace->irc().send(":" + caller + " PRIVMSG " + getChannel(roomof(caller)) + " :" + (char)1 + "ACTION Picture: " + args.all() + char(1));
+		
   sendRoomU(caller, tosend);
   return 0;
 }
@@ -752,6 +761,7 @@ static int url(CA)
   tosend = replaceCommon(tosend);
   tosend = replace(tosend, "%URL%", args.all());
   tosend = replaceUser(caller,tosend);
+	yace->irc().send(":" + caller + " PRIVMSG " + getChannel(roomof(caller)) + " :" + (char)1 + "ACTION URL: " + args.all() + char(1));
   sendRoomU(caller, tosend);
   return 0;
 }
