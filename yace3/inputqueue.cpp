@@ -27,6 +27,7 @@
 #include "user.h"
 #include "stringutil.h"
 #include <iostream>
+#include <sstream>
 
 void inputqueue::init()
 {
@@ -49,6 +50,7 @@ void inputqueue::run()
     commandfunc f;
 
     yace->log("(" + got.user + ")" + " " + got.text);
+    cout << "(" << got.user << ")" << " " << got.text << endl;
 
     // POST PROCESS INPUT <-- to put somewhere else
      
@@ -98,6 +100,13 @@ void inputqueue::run()
     }
     else {
       command = "say";
+      
+      if(u->getRoom() == "lounge")
+      {
+        ostringstream toirc;
+        toirc << ":" << user << " PRIVMSG #lounge " << ":" << got.text;
+        yace->irc().send(toirc.str());
+      }  
       argz = commandargs(got.text);
     }
 
