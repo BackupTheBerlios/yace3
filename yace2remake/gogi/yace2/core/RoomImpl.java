@@ -49,6 +49,9 @@ public class RoomImpl implements Room
 	{
 		try
 		{
+			// exception handling is necessary because
+			// a NullPointerException will be thrown if
+			// a cast fails.
 			// get the value and cast
 			String to_ret = (String)m_props.get(prop);
 			// throw an exception if the key does not exist
@@ -91,6 +94,9 @@ public class RoomImpl implements Room
 		// it returns a boolean value.
 		try
 		{
+			// exception handling is necessary because
+			// a NullPointerException will be thrown if
+			// a cast fails.
 			// get the value and cast
 			Long to_ret = (Long)m_props.get(prop);
 			// throw an exception if the key does not exist
@@ -135,6 +141,9 @@ public class RoomImpl implements Room
 		// into a primitive boolean type.
 		try
 		{
+			// exception handling is necessary because
+			// a NullPointerException will be thrown if
+			// a cast fails.
 			// get the value as an object
 			Object value = m_props.get(prop);
 			// throw an exception if the key does not exist
