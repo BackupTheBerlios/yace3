@@ -32,18 +32,21 @@ using namespace std;
 
 class ircargs
 {
-  string full;
-  string ssender;
-  string srargs;
-  string scommand;
-  vector<string> comargs;
+  string m_str;
+
+  string m_prefix;
+  string m_rest;
+  string m_command;
+  vector<string> m_args;
 
  public:
   ircargs(const string& text);
-  string carg(unsigned int i);
-  string rargs();
+
+  string arg(unsigned int i);
+  string rest();
   string command();
-  string sender();
+  string prefix();
+
   string all();
 };
 

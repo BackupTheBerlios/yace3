@@ -21,91 +21,65 @@
 
 #include "ircargs.h"
 
-ircargs::ircargs(const string& text)
+ircargs::ircargs(const string& text):
+  m_str(text)
 {
-  full = text;
-  string op(full);
-
-  unsigned int act;
-  int dds = 0;
-  int lps = 0;
-  while((act = op.find(" ")) != string::npos) {
-    lps++;
-    if(op.substr(0, 1) == ":")
-    {
-      if(dds == 0)
-      {
-        ssender = op.substr(1, act-1);
-	dds = 1;
-	continue;
-      }
-      if(dds == 1)
-      {
-        srargs = op.substr(1, op.length()-1);
-	break;
-      }
-    } else {
-      if(lps == 2) 
-      {
-        scommand = op.substr(0, act);
-      } else {
-        comargs.push_back(op.substr(0, act));
+  string temp(m_str);
+  
+  if(temp.size() >= 1) {
+    if(temp[0] == ':') {
+      unsigned int endprefix = temp.find(" ");
+      if(endprefix != string::npos) {
+	m_prefix = temp.substr(0, endprefix);
+	temp.replace(0, endprefix + 1, "");
       }
     }
-    op.replace(0, act, "");
+
+    unsigned int endc = temp.find(" ");
+    if(endc != string::npos) {
+      m_command = temp.substr(0, endc);
+      temp.replace(0, endc + 1, "");
+    }
+
+    unsigned int endr = temp.find(":");
+    if(endr != string::npos) {
+      m_rest = temp.substr(endr + 1);
+      temp.replace(endr, string::npos, "");
+    }
+    
+    unsigned int act;
+    while((act = temp.find(" ")) != string::npos) {
+      m_args.push_back(temp.substr(0, act));
+      temp.replace(0, act + 1, "");
+    }
+
+    m_args.push_back(m_rest);
   }
-  
-  //rests.push_back(op);
 }
 
-string ircargs::all()
+string ircargs::arg(unsigned int i)
 {
-  return full;
-}
-
-string ircargs::rargs()
-{
-  try {
-      throw 1;
-    return srargs;
-  }
-  catch(...) {
+  if(m_args.size() <= i)
     return "";
-  }
+  return m_args[i];
 }
 
-string ircargs::carg(unsigned int i)
+string ircargs::rest()
 {
-  try {
-    if(comargs.size() <= i)
-      throw 1;
-    return comargs[i];
-  }
-  catch(...) {
-    return "";
-  }
-}
-
-
-string ircargs::sender()
-{
-  try {
-      throw 1;
-    return ssender;
-  }
-  catch(...) {
-    return "";
-  }
+  return m_rest;
 }
 
 string ircargs::command()
 {
-  try {
-      throw 1;
-    return scommand;
-  }
-  catch(...) {
-    return "";
-  }
+  return m_command;
 }
 
+string ircargs::prefix()
+{
+  return m_prefix;
+}
+
+string ircargs::all()
+{
+  return m_str;
+}
