@@ -101,9 +101,12 @@ irccon::connectRC (const string & room, const string & channel)
 void
 irccon::send (const string & str)
 {
-  if (!connected) return;
-	cout << "DEBUG: " << str << endl;
-	(*irc) << str << endl;
+  if (!connected) 
+    return;
+  m_connection.enterMutex();
+  cout << "DEBUG: " << str << endl;
+  (*irc) << str << endl;
+  m_connection.leaveMutex();
 }
 
 bool
