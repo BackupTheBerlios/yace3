@@ -27,90 +27,147 @@
 #include "yace.h"
 #include "irccon.h"
 
-string getChannel(const string& yaceroom)
+string
+i2y_convert (const string & text)
 {
-  return yace->irc().getChannel(yaceroom);
+	string newtext;
+	iconv ("UTF-8", "ISO-8859-1", newtext, text);
+	return newtext;
+}
+
+string
+getChannel (const string & yaceroom)
+{
+	return yace->irc ().getChannel (yaceroom);
 }
 
 
 
-void sendUserIRC(const string& user, const string& what)
+void
+sendUserIRC (const string & user, const string & what)
 {
-  ostringstream toirc;
-  
-  //::user* u = yace->users().getUser(user);
-  
-  //string tosendto = getChannel(u->getRoom());
-  string tosendto = "#lounge";
-  if(tosendto == "") return;
-  
-  string tosend = what;
-  
-  //try {
-    //iconv("ISO-8859-1", "UTF-8", tosend, what);
-  //} catch(std::runtime_error e) {
-  //  yace->irc().send(":" + user + " PRIVMSG " + tosendto + ":KAPUTT");
-  //}
-  
+	ostringstream toirc;
 
-  toirc << ":" << user << " PRIVMSG " << tosendto << " :" << tosend;
-  yace->irc().send(toirc.str());  
-  
-  return;
+	//::user* u = yace->users().getUser(user);
+
+	//string tosendto = getChannel(u->getRoom());
+	string tosendto = "#yace";
+	if (tosendto == "")
+		return;
+
+	string tosend = what;
+
+	//try {
+	//iconv("ISO-8859-1", "UTF-8", tosend, what);
+	//} catch(std::runtime_error e) {
+	//  yace->irc().send(":" + user + " PRIVMSG " + tosendto + ":KAPUTT");
+	//}
+
+
+	toirc << ":" << user << " PRIVMSG " << tosendto << " :" << tosend;
+	yace->irc ().send (toirc.str ());
+
+	return;
 }
 
-void sendIRCUserPrivate(const string& user, const string& what, const string& to)
+void
+sendIRCUserPrivate (const string & user, const string & what,
+		    const string & to)
 {
-  ostringstream toirc;
+	ostringstream toirc;
 
-  toirc << ":" << user << " PRIVMSG " << to << " :" << what;
-  yace->irc().send(toirc.str());
+	toirc << ":" << user << " PRIVMSG " << to << " :" << what;
+	yace->irc ().send (toirc.str ());
 
-  return;
+	return;
 }
 
-void newIRCUser(user* u)
+void
+newIRCUser (user * u)
 {
-  ostringstream toirc;
-  
-  toirc << "NICK " << u->getName() << " 1 1 yace " << u->getIP() << " " << yace->irc().getServerName() << " 1 :Yace-User";
-  yace->irc().send(toirc.str());  
+	ostringstream toirc;
 
-  ostringstream toirc2;
-  toirc2 << ":" << u->getName() << " SETHOST yace.filbboard.de";
-  yace->irc().send(toirc2.str());
-  
-  //yace->irc().send(":" + u->getName() + " JOIN " + yace->irc().getChannel(u->getRoom()));
-  yace->irc().send(":" + u->getName() + " JOIN #lounge");
-  
-  return;
+	toirc << "NICK " << u->getName () << " 1 1 " << u->
+		getID () << " " << u->getIP () << " " << yace->irc ().
+		getServerName () << " 1 :Yace-User";
+	yace->irc ().send (toirc.str ());
+
+	ostringstream toirc2;
+	toirc2 << ":" << u->getName () << " SETHOST " << replace (u->getIP (),
+								  ".",
+								  "-") <<
+		".yace.gogi.tv";
+	yace->irc ().send (toirc2.str ());
+
+	//yace->irc().send(":" + u->getName() + " JOIN " + yace->irc().getChannel(u->getRoom()));
+	yace->irc ().send (":" + u->getName () + " JOIN #yace");
+
+	yace->irc ().send (":" + u->getName () + " MODE +xt " +
+			   u->getName () + " " + u->getName ());
+
+	return;
 }
 
-void quitIRCUser(user* u)
+void
+quitIRCUser (user * u)
 {
-  yace->irc().send(":" + u->getName() + "QUIT :Logged out");
+	yace->irc ().send (":" + u->getName () + "QUIT :Logged out");
 }
 
-void i2y_say(const string& who, const string& what, const string& where)
+void
+i2y_say (const string & who, const string & what, const string & where)
 {
-  string color = "da1337";
-  string text = what;
-  string tosend = replace(yace->sql().getString("say"), "%NAME%", who);
-  iconv("UTF-8", "ISO-8859-1", text, what);
-  tosend = replace(tosend, "%TEXT%", text);
-  tosend = replace(tosend, "%COLOR%", color);
-  tosend = replaceAll(tosend);
-  sendRoom(yace->irc().getRoom(where), tosend);
-  return;
+	string color = "da1337";
+	string text = what;
+	string tosend =
+		replace (yace->sql ().getString ("say"), "%NAME%", who);
+	tosend = replace (tosend, "%TEXT%", replaceAll (text));
+	tosend = replace (tosend, "%COLOR%", color);
+	tosend = i2y_convert (tosend);
+	sendRoom (yace->irc ().getRoom (where), tosend);
+	return;
 }
 
-void i2y_whisper(const string& who, const string& what, const string& user)
+void
+i2y_whisper (const string & who, const string & what, const string & user)
 {
-  string color = "da1337";
-  string toyace = replaceCommon(yace->sql().getString("whisperfrom"));
-  toyace = replace(toyace, "%CNAME", "<span style=\"color:" + color + "\">" + who + "</span>");
-  toyace = replace(toyace, "%TEXT%", what);
-  sendUser(user, toyace);
-  return;
+	string color = "da1337";
+	string toyace =
+		replaceCommon (yace->sql ().getString ("whisperfrom"));
+	toyace = replace (toyace, "%CNAME",
+			  "<span style=\"color:" + color + "\">" + who +
+			  "</span>");
+	toyace = replace (toyace, "%TEXT%", what);
+	sendUser (user, toyace);
+	return;
 }
 
+void
+i2y_away (const string & who, const string & what, const string & where)
+{
+	string color = "da1337";
+	string toyace = replaceCommon (yace->sql ().getString ("away"));
+	toyace = replace (toyace, "%TEXT%", replaceAll (i2y_convert (what)));
+	toyace = replace (toyace, "%COLOR%", color);
+	toyace = replace (toyace, "%CNAME",
+			  "<span style=\"color:" + color + "\">" + who +
+			  "</span>");
+	sendRoom (yace->irc ().getRoom (where), toyace);
+	return;
+}
+
+void
+y2i_away (const string & who, const string & why)
+{
+	::user * u = yace->users ().getUser (who);
+	yace->irc ().send (":" + who + " AWAY :" + why);
+	//yace->irc().send(":" + who + " PRIVMSG " + getChannel(u->getRoom()) + " :" + chr(3) + "ACTION: " +  why + chr(3));
+	return;
+}
+
+void
+y2i_back (const string & who)
+{
+	yace->irc ().send (":" + who + " AWAY");
+	return;
+}
