@@ -257,6 +257,11 @@ irccon::parse (const string & what)
 		  // We cant allow registered nicks at the moment.
 		  return;
 		}
+
+		if (nick.substr(nick.length()-4,4) == "Serv" || nick == "DevNull" || nick == "Global" || nick == "BrotSheep") {
+		  return;
+		}
+		
 	  user* irchehe = new user(ia.arg(0),ia.arg(4));
 		irchehe->IncRef();
 		yace->users().insertUser(irchehe);
