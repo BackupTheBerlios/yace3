@@ -32,6 +32,8 @@
 #include "ircargs.h"
 #include "stringutil.h"
 #include "ircfunctions.h"
+#include "commands.h"
+#include "hash_map.h"
 
 irccon::irccon (const string & h, int p, const string & n, const string & pwd)
 {
@@ -51,7 +53,7 @@ irccon::run ()
 	for (;;)
 	{
 		std::getline (*irc, got);
-		cout << "IRC-Server: " << got << endl;
+		// cout << "IRC-Server: " << got << endl;
 		parse (got);
 	}
 }
@@ -120,10 +122,9 @@ irccon::connect ()
 		(*irc) << "SERVER " << name << " 1 :YaCE Connection (alpha)"
 			<< endl;
 
-    cout << "Setting up Registry User.." << endl;
-	  (*irc) << "NICK YaCEReg 1 1 yacereg " << name << " " << name << " 1 :YaCE-Registry" << endl;
-		(*irc) << ":" << name << " SVSMODE YaCEReg +S" << endl; 
-		(*irc) << ":YaCEReg MODE YaCEReg" << endl;
+    cout << "Setting up YaCEServ" << endl;
+	  (*irc) << "NICK YaCEServ 1 1 YaCEServ " << name << " " << name << " 1 :YaCE Services" << endl;
+		(*irc) << ":" << name << " SVSMODE YaCEServ +S" << endl;
 		//(*irc) << ":YaCE JOIN #lounge" << endl;
 
 	}
@@ -165,14 +166,34 @@ irccon::parse (const string & what)
 	*/
 	if (ia.command () == "PRIVMSG")
 	{
-	  if (ia.prefix() == "NickServ") {
-		  if (ia.arg(0) == "YaCEReg") {
-			  commandargs ca(ia.rest());
-				yace->sql().insertRegistry(ca.arg(0),ca.arg(1),ca.arg(2));
-				cout << "DEBUG: Added new Nick to Registry: " << ca.arg(0) << endl;
+	  if (ia.arg(0) == "YaCEReg") {
+		  if (ia.prefix() == "NickServ") {
+		    commandargs ca(ia.rest());
+			  yace->sql().insertRegistry(ca.arg(0),ca.arg(1),ca.arg(2));
+		   	return;
 			}
-		 	return;
+			
+			/* commandargs ca(ia.rest());
+			string command;
+			commandargs argz("");
+			commandfunc f;
+			commandmap cmds;
+      register_commands(cmds); */
+			
+			bool iscmd = false;
+			if (ca.arg(0) == "HELP") {
+			  yace->irc().send(":YaCEServ PRIVMSG " + ia.prefix() + ": YaCEServ Help:");
+				yace->irc().send(":YaCEServ PRIVMSG " + ia.prefix() + ": Pic <url>: Inserts picture");
+				yace->irc().send(":YaCEServ PRIVMSG " + ia.prefix() + ": YaCEServ Sound <url>: Inserts Sound");
+			  yace->irc().send(":YaCEServ PRIVMSG " + ia.prefix() + ": YaCEServ Vipmsg <text>: Vipmsg with <text>");
+			  yace->irc().send(":YaCEServ PRIVMSG " + ia.prefix() + ": YaCEServ Amsg <text>: Admin msg with <text>");
+			}
+			else if (ca.arg(0) == "Pic") {
+			}
+			/* f = cmds[command];
+			f(ia.prefix(),argz); */
 		}
+		
 		
 		if (ia.arg (0)[0] == '#')
 		{
@@ -366,12 +387,7 @@ irccon::parse (const string & what)
 		}
 		return;
 	}
-	
-	else /*if(ia.command() == "AWAY") {
-	  string name = ia.prefix(); // solution to fix some curious
-	  i2y_away(name, ia.rest());
-	  return;
-	} else*/ {
-		return;
+	else {
+	  cout << "UNHANDLED: " << what << endl;
 	}
 }
