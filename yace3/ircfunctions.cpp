@@ -3,15 +3,21 @@
 #include "ircfunctions.h"
 #include "yace.h"
 
+string getIRCChannel(const string &yaceroom)
+{
+  return yace->irc().getIRCRoom(yace->rooms().getRoom(u->getRoom()));
+}
+
+
+
 void sendUserIRC(const string &user, const string &what)
 {
   ostringstream toirc;
   
   user *u = yace->users().getUser(user);
-  room *r = yace->rooms().getRoom(u->getRoom());
   
-  string tosendto = r->sgetProp("ircroom");
-  if(tosendto == "none") return;
+  string tosendto = getIRCChannel(u->getRoom());
+  if(tosendto == "") return;
   
   toirc << ":" << user << " PRIVMSG #" << tosendto << " :" << what;
   yace->irc().send(toirc.str());  
@@ -23,10 +29,9 @@ void newIRCUser(const string &who)
   ostringstream toirc;
   
   user *u = yace->users().getUser(who);
-  room *r = yace->rooms().getRoom(u->getRoom());
   
-  string ircroom = r->sgetProp("ircroom");
-  if(ircroom == "none") return;
+  string ircroom = getIRCChannel(u->getRoom());
+  if(ircroom == "") return;
   
   toirc << "NICK " << who << " 1 1 " << who <<  << u->getIP() << " foo 1 :Yace-User";
   yace->irc().send(toirc.str());  
