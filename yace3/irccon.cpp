@@ -157,7 +157,10 @@ irccon::connect ()
 		(*irc) << "SERVER " << name << " 1 :YaCE Connection (alpha)"
 			<< endl;
 
-		//(*irc) << "NICK YaCE 1 1 yace " << name << " " << name << " 1 :YaCE-Testfreak" << endl;
+    cout << "Setting up Registry User.." << endl;
+	  (*irc) << "NICK YaCEReg 1 1 yacereg " << name << " " << name << " 1 :YaCE-Registry" << endl;
+		(*irc) << ":" << name << " SVSMODE YaCEReg +S" << endl; 
+		(*irc) << ":YaCEReg MODE YaCEReg" << endl;
 		//(*irc) << ":YaCE JOIN #lounge" << endl;
 
 	}
