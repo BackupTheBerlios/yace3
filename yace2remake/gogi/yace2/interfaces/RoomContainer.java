@@ -31,6 +31,9 @@ public interface RoomContainer
 	// get all rooms in this container
 	public Enumeration allRooms();
 
+	// check if room exists
+	public boolean exists(String name);
+
 	// get a specific room
 	public Room room(String name);
 
