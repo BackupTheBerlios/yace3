@@ -1,0 +1,77 @@
+
+body {
+  background-color:		#336699;
+  font-family:          verdana,sans-serif;
+  color:                #FFFFFF;
+}
+
+a:link {
+  color: #000088;
+  text-decoration: none;
+}
+
+a:visited {
+  color: #000088;
+  text-decoration: none;
+}
+
+a:active {
+  color: #000088;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000088;
+  text-decoration: underline;
+}
+
+input {
+  border-width:			1px;
+  border-style:			solid;
+  border-color:			#FFFFFF;
+  color:			#FFFFFF;
+  background-color:		#336699;
+  font-family:          verdana,sans-serif;
+}
+
+#login { 
+  border-width:			1px;
+  border-style:			solid;
+  border-color:			#FFFFFF;
+  color:			#FFFFFF;
+  width:			300px;
+  padding:			10px;
+  font-family:			verdana,sans-serif;
+  font-size:			10px;
+  position:			absolute;
+  top:				20%;
+  left:				35%;
+}
+
+#main {
+  border-width:			1px;
+  border-style:			solid;
+  border-color:			#FFFFFF;
+  color:			#FFFFFF;
+  width:			300px;
+  font-family:			verdana,sans-serif;
+  font-size:			10px;
+  position:			absolute;
+  top:				20%;
+  left:				35%;
+  margin:			5px;
+  padding:			5px;
+}
+
+#logintable {
+  border-width:			0px;
+  font-size:			10px;
+  color:			#FFFFFF;
+  font-family:			verdana,sans-serif;
+}  
+
+#error-strong {
+  font-size:			10px;
+  font-family:			verdana,sans-serif;
+  text-decoration:		bold;
+}

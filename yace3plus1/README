@@ -1,0 +1,21 @@
+Required libraries:
+
+GNU Common C++ v2 - tested with version 1.0.13
+http://www.gnu.org/software/commonc++/
+
+mysql++ - C++ wrapper for libmysqlclient
+http://www.mysql.com/downloads/api-mysql++.html
+Note: You will have to apply patches for GCC (see url)
+
+Note that if you have the YaCE3 running, you need to specify a valid path to a gzipped tarball which contains the sourcecode of YOUR SPECIFIC version of the YaCE3. See COPYING for more details.
+
+If you want to help us, submit patches, questions, suggestions or whatever you want to the YaCE3 mailing list at yace3-devel@nongnu.org.
+
+CREDITS:
+Giuliano Montecarlo
+Thomas Yao
+Jan Christian Meyer
+Tobias Bahls
+Johann Aydinbas
+Marc Hartung
+Giuliano Gagliardi

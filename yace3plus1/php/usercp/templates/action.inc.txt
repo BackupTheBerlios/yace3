@@ -1,0 +1,1 @@
+<a href="$PHPSELF?action=$ACTION&$ID">$LABEL</a><br>

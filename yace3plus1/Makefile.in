@@ -1,0 +1,17 @@
+CC = @CC@
+CXX = @CXX@
+
+CXXFLAGS += @CXXFLAGS@
+
+LDFLAGS += @LDFLAGS@ @LIBS@
+
+OBJS =  yace.o connection.o room.o roomcont.o user.o usercont.o stringutil.o hkstable.o inputhandler.o loginhandler.o functions.o config.o sqlcon.o util.o inputqueue.o sourcehandler.o commandargs.o commands.o timer.o timedactions.o logintable.o authhandler.o main.o adminhandler.o adminactions.o sqlcon.o irccon.o ircfunctions.o ircargs.o
+
+all: ${OBJS}
+	${CXX} -o yace.d ${LDFLAGS} $^
+
+clean:
+	rm -rf *.o *~ .*.sw* yace.d yace.s config.cache config.log
+
+sqlcon.o: sqlcon.cpp
+	${CXX} ${CXXFLAGS} -fpermissive -w -c -o sqlcon.o sqlcon.cpp

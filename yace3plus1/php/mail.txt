@@ -1,0 +1,18 @@
+Hallo $name,
+
+Hier ist dein Aktivierungskey
+
+Name: $name
+Key: $key
+
+Dein Passwort ist $pwd.
+
+Du kannst deinen Nickname unter $actaddress?name=$name&key=$key aktivieren.
+
+Bitte beachten: Dein Nick wird aus der Datenbank gelöscht, wenn du ihn nicht
+innerhalb von 2 Tagen aktivierst.
+
+See You,
+Das ChatTeam
+
+.oO|Powered by YaCE3|Oo.
