@@ -66,7 +66,7 @@ void roomcont::joinRoom(const string& usr, const string& name, bool irc)
   pusr->DecRef();
 }
 
-bool roomcont::leaves(const string& usr, bool irc, string room)
+bool roomcont::leaves(const string& usr, string room, bool irc)
 {
   user* pusr = yace->users().getUser(usr);
 
