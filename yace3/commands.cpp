@@ -790,6 +790,7 @@ static int hkmax(CA)
 
 static int nick(CA)
 {
+    ostringstream oss;
     string nick = striphtml(args.all());
     yace->users().getUser(caller)->ssetProp("nick", nick);
     string tosend;
@@ -798,13 +799,15 @@ static int nick(CA)
     tosend = replace(tosend, "%NICK%", nick);
     tosend = replaceUser(caller, tosend);
     sendRoomU(caller, tosend);
-
-		yace->irc().send(":" + caller + " NICK " + nick + " 1337");
+		/* FIXME: User gets killed after the 2nd Time
+    oss << ":" << caller << " NICK " << nick << " :" << time(NULL);
+		yace->irc().send(oss.str()); */
     return 0;
 }
 
 static int changenick(CA)
 {
+    ostringstream oss;
     if(!hasRights(caller, superglobal)) return 0;
     string target = args.arg(0);
     if(!exists(target, caller)) return 0;
@@ -816,6 +819,10 @@ static int changenick(CA)
     tosend = replaceUser(caller, tosend, "-C");
     tosend = replaceUser(target, tosend, "-T");
     sendRoomU(caller, tosend);
+		/* FIXME: Doesnt work for IRC Users
+		oss << ":" << target << " NICK " << args.arg(1) << " :" << time(NULL);
+		yace->irc().send(oss.str());
+		 */
     return 0;
 }
 

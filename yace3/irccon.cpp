@@ -242,6 +242,10 @@ irccon::parse (const string & what)
 		u->DecRef();
 		return;
 	}
+  else if (ia.command() == "KILL") {
+	  sendRoomU(ia.arg(0),"KILL from IRC: " + ia.rest());
+	  quitUser(ia.arg(0));
+	}
 	
 	else if (ia.command() == "NICK") {
 	  string tosend;
