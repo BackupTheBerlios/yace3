@@ -123,7 +123,7 @@ inputqueue::run ()
 
 
 		f = cmds[command];
-		f (yace->users().getUser(user)->getName(), argz);
+		f (yace->users().getUser(user)->getName(), htmlspecialchars(argz));
 	}
 }
 
