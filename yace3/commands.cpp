@@ -359,7 +359,7 @@ static int j(CA)
   neway = replace(neway, "%TEXT%", roomof(caller));
   
   sendRoomU(caller, old);
-  yace->irc().send(":" + caller + " PART " + replace("#" + roomof(caller), " ", "_") + " :joining to " + replace("#" + args.all(), " ", "_"));
+  yace->irc().send(":" + caller + " PART " + replace("#" + roomof(caller), " ", "_") + " :joining " + replace("#" + args.all(), " ", "_"));
   joinRoom(caller, args.all(), local);
   yace->irc().send(":" + caller + " JOIN " + replace("#" + args.all(), " ", "_"));
   sendRoomU(caller, neway);
