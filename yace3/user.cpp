@@ -197,3 +197,8 @@ void user::quit()
   yace->irc().send(":" + name + " QUIT :YaCE3");
   logout->post();
 }
+
+bool user::isIRC()
+{
+  return ircuser;
+}

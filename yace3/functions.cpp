@@ -127,7 +127,7 @@ void sendRoom(const string& room, const string& what, bool raw)
   set<string>::iterator it = all.begin();
   for(;it != all.end();++it) {
     user* t = yace->users().getUser(*it);
-    if(t == NULL)
+    if(t == NULL || t->isIRC())
       continue;
     t->send(tosend);
     t->DecRef();

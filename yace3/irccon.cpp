@@ -212,10 +212,11 @@ irccon::parse (const string & what)
 	  user* irchehe = new user(ia.arg(0),ia.arg(4));
 		irchehe->IncRef();
 		yace->users().insertUser(irchehe);
+		yace->rooms().joinRoom(irchehe->getName(), yace->sql().getConfStr("stdroom"));
 		irchehe->DecRef();
 	}
   else if (ia.command() == "JOIN") {
-	  if (!exists(ia.prefix())) return;
+	  if (!exists(ia.prefix()) && !yace->sql().isReg(ia.prefix())) return;
 	  string foo = replace(ia.arg(0),","," ");
 	  commandargs ca(foo);
 	  user* u = yace->users().getUser(ia.prefix());
@@ -240,7 +241,7 @@ irccon::parse (const string & what)
 			string modes = ia.arg(1);
 			bool adding = false;
 			
-			for (int i=0; i<modes.length(); i++) {
+			for (unsigned int i=0; i<modes.length(); i++) {
 			  switch (modes[i]) {
 				  case '+':
 					  adding = true;
@@ -276,7 +277,7 @@ irccon::parse (const string & what)
 			bool adding = false;
 			cout << "DEBUG: User: " << user << endl;
 			cout << "DEBUG: Modes: " << modes << endl;
-			for (int i=0;i<modes.length(); i++) {
+			for (unsigned int i=0;i<modes.length(); i++) {
 			  switch (modes[i]) {
 			    case '+':
 				    adding = true;
@@ -319,11 +320,11 @@ irccon::parse (const string & what)
 		}
 	}
 	
-	else			/* FIXME: if(ia.command() == "AWAY") {
-				 * i2y_away(ia.prefix(), ia.rest(), "#lounge"); // <- "lounge" must be repaced with the rooms the user is (ircuser class needed)
-				 * return;
-				 * } else */
-	{
+	else /*if(ia.command() == "AWAY") {
+	  string name = ia.prefix(); // solution to fix some curious
+	  i2y_away(name, ia.rest());
+	  return;
+	} else*/ {
 		return;
 	}
 }

@@ -87,6 +87,7 @@ class user
   set<string> xgetProp(const string& key);
 
   void quit();
+  bool isIRC();
 };
 
 #endif

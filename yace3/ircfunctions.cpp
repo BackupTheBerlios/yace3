@@ -98,14 +98,13 @@ newIRCUser (user * u)
 	toirc2 << ":" << u->getName () << " SETHOST " << replace (u->getIP (),
 								  ".",
 								  "-") <<
-		".yace.gogi.tv";
+		".yace";
 	yace->irc ().send (toirc2.str ());
 
 	//yace->irc().send(":" + u->getName() + " JOIN " + yace->irc().getChannel(u->getRoom()));
 	yace->irc ().send (":" + u->getName () + " JOIN #yace");
 
-	yace->irc ().send (":" + u->getName () + " MODE +xt " +
-			   u->getName () + " " + u->getName ());
+	yace->irc ().send (":" + u->getName () + " MODE :+xt");
 
 	return;
 }
@@ -143,22 +142,27 @@ i2y_whisper (const string & who, const string & what, const string & user)
 }
 
 void
-i2y_away (const string & who, const string & what, const string & where)
+i2y_away (const string & who, const string & what)
 {
-	string toyace = replaceCommon (yace->sql ().getString ("away"));
-	toyace = replace (toyace, "%TEXT%", replaceAll (i2y_convert (what)));
-	toyace = replace (toyace, "%COLOR%", color);
-	toyace = replace (toyace, "%CNAME",
-			  "<span style=\"color:" + color + "\">" + who +
-			  "</span>");
-	sendRoom (yace->irc ().getRoom (where), toyace);
+	string toyace;
+	if(isAway(who))
+	{
+		toyace = replaceCommon(yace->sql().getString("back"));
+		toyace = replaceUser(who, toyace);
+		toyace = replace(toyace, "%TEXT%", replaceAll(getAway(who)));
+	} else {	
+		toyace = replaceCommon (yace->sql ().getString ("away"));
+		setAway(who, i2y_convert (what));
+		toyace = replace (toyace, "%TEXT%", replaceAll (i2y_convert (what)));
+		toyace = replaceUser(who, toyace);
+    }
+	sendRoom (yace->users().getUser(who)->getRoom(), toyace);
 	return;
 }
 
 void
 y2i_away (const string & who, const string & why)
 {
-	::user * u = yace->users ().getUser (who);
 	yace->irc ().send (":" + who + " AWAY :" + why);
 	//yace->irc().send(":" + who + " PRIVMSG " + getChannel(u->getRoom()) + " :" + chr(3) + "ACTION: " +  why + chr(3));
 	return;
