@@ -17,7 +17,7 @@ void sendUserIRC(const string& user, const string& what)
   
   ::user* u = yace->users().getUser(user);
   
-  string tosendto = getIRCChannel(u->getRoom());
+  string tosendto = getChannel(u->getRoom());
   if(tosendto == "") return;
   
   toirc << ":" << user << " PRIVMSG " << tosendto << " :" << what;
@@ -31,7 +31,7 @@ void newIRCUser(const string& who)
   
   ::user* u = yace->users().getUser(who);
   
-  string ircroom = getIRCChannel(u->getRoom());
+  string ircroom = getChannel(u->getRoom());
   if(ircroom == "") return;
   
   toirc << "NICK " << who << " 1 1 " << who << /* WHAT'S THIS??  <<  */ u->getIP() << " yace.filbboard.de 1 :Yace-User";
