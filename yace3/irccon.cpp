@@ -109,7 +109,7 @@ irccon::send (const string & str)
     return;
   m_connection.enterMutex();
   cout << "DEBUG: " << str << endl;
-  (*irc) << str << endl;
+  (*irc) << replace(str, "\n", "") << endl;
   m_connection.leaveMutex();
 }
 
