@@ -42,7 +42,8 @@ void inputhandler::run()
   string nick = urlextract(query_string, "name");
   string input = urlextract(query_string, "input");
   string buzz = urlextract(query_string, "buzz");
-
+  replaceI(nick, "sebi", "Affe");
+  
   con->send(getNoContent());
   con->close();
    

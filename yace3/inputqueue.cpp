@@ -86,7 +86,8 @@ void inputqueue::run()
     u->DecRef();
     // POST PROCESS END
 
-    string sendirc = got.text;
+    string sendirc;
+    iconv("ISO-8859-1", "UTF-8", sendirc, got.text);
     if(got.text.find("/") == 0) {
       commandargs tmp(got.text.substr(1));
       if(cmds.count(tolower(tmp.arg(0)))) {
@@ -101,7 +102,7 @@ void inputqueue::run()
     else {
       command = "say";
       sendUserIRC(user, sendirc); 
-      argz = commandargs(replaceAll(got.text));
+      argz = commandargs(replaceI(replaceAll(got.text), "sebi", "Der &Auml;rmste Stra&szlig;enpenner von Frankfurt"));
     }
 
     

@@ -20,6 +20,7 @@
 */
 
 #include <sstream>
+#include <iostream>
 #include "stringutil.h"
 #include "ircfunctions.h"
 #include "functions.h"
@@ -43,7 +44,16 @@ void sendUserIRC(const string& user, const string& what)
   string tosendto = "#lounge";
   if(tosendto == "") return;
   
-  toirc << ":" << user << " PRIVMSG " << tosendto << " :" << what;
+  string tosend = what;
+  
+  //try {
+    //iconv("ISO-8859-1", "UTF-8", tosend, what);
+  //} catch(std::runtime_error e) {
+  //  yace->irc().send(":" + user + " PRIVMSG " + tosendto + ":KAPUTT");
+  //}
+  
+
+  toirc << ":" << user << " PRIVMSG " << tosendto << " :" << tosend;
   yace->irc().send(toirc.str());  
   
   return;
@@ -70,6 +80,7 @@ void newIRCUser(user* u)
   toirc2 << ":" << u->getName() << " SETHOST yace.filbboard.de";
   yace->irc().send(toirc2.str());
   
+  //yace->irc().send(":" + u->getName() + " JOIN " + yace->irc().getChannel(u->getRoom()));
   yace->irc().send(":" + u->getName() + " JOIN #lounge");
   
   return;
@@ -83,7 +94,13 @@ void quitIRCUser(user* u)
 void i2y_say(const string& who, const string& what, const string& where)
 {
   string color = "da1337";
-  sendRoom(yace->irc().getRoom(where), replace(replace(replace(yace->sql().getString("say"), "%NAME%", who), "%COLOR%", color), "%TEXT%", what));
+  string text = what;
+  string tosend = replace(yace->sql().getString("say"), "%NAME%", who);
+  iconv("UTF-8", "ISO-8859-1", text, what);
+  tosend = replace(tosend, "%TEXT%", text);
+  tosend = replace(tosend, "%COLOR%", color);
+  tosend = replaceAll(tosend);
+  sendRoom(yace->irc().getRoom(where), tosend);
   return;
 }
 

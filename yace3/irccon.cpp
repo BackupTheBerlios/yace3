@@ -142,8 +142,8 @@ bool irccon::connect()
     (*irc) << "PASS " << pass << endl;
     (*irc) << "SERVER " << name << " 1 :YaCE Connection (alpha)" << endl;
 
-    (*irc) << "NICK YaCE 1 1 yace " << name << " " << name << " 1 :YaCE-Testfreak" << endl;
-    (*irc) << ":YaCE JOIN #yace" << endl;
+    //(*irc) << "NICK YaCE 1 1 yace " << name << " " << name << " 1 :YaCE-Testfreak" << endl;
+    //(*irc) << ":YaCE JOIN #lounge" << endl;
     
   }
   catch(...) {
