@@ -165,22 +165,26 @@ irccon::parse (const string & what)
 	*/
 	if (ia.command () == "PRIVMSG")
 	{
-	  if (ia.arg(0) == "YaCEReg") {
+	  if (ia.arg(0) == "YaCEServ") {
 		  if (ia.prefix() == "NickServ") {
 		    commandargs ca(ia.rest());
 			  yace->sql().insertRegistry(ca.arg(0),ca.arg(1),ca.arg(2));
 		   	return;
 			}
-			
-			/* commandargs ca(ia.rest());
+
+			// YaCEServ needs OperServ access for some Features
+			commandargs ca(ia.rest());
+			typedef hash_map<string, commandfunc> commandmap;
 			string command;
 			commandargs argz("");
 			commandfunc f;
 			commandmap cmds;
-      register_commands(cmds); */
+      register_commands(cmds);
 			
 			bool iscmd = false;
-			if (ca.arg(0) == "HELP") {
+			if (ca.arg(0) == "help") {
+			  cout << "HELP REQUEST!" << endl;
+			  iscmd = false;
 			  yace->irc().send(":YaCEServ PRIVMSG " + ia.prefix() + ": YaCEServ Help:");
 				yace->irc().send(":YaCEServ PRIVMSG " + ia.prefix() + ": Pic <url>: Inserts picture");
 				yace->irc().send(":YaCEServ PRIVMSG " + ia.prefix() + ": YaCEServ Sound <url>: Inserts Sound");
@@ -188,9 +192,14 @@ irccon::parse (const string & what)
 			  yace->irc().send(":YaCEServ PRIVMSG " + ia.prefix() + ": YaCEServ Amsg <text>: Admin msg with <text>");
 			}
 			else if (ca.arg(0) == "Pic") {
+			  iscmd = true;
+				command = "p";
+				argz = ca.rest(0);
 			}
-			/* f = cmds[command];
-			f(ia.prefix(),argz); */
+			if (iscmd) {
+			  f = cmds[command];
+			  f(ia.prefix(),argz);
+			}
 		}
 		
 		
@@ -389,11 +398,8 @@ irccon::parse (const string & what)
 	  // string name = ia.prefix(); // solution to fix some curious
 	  i2y_away(ia.prefix(), ia.rest().substr(0, ia.rest().length()-1));
 	  return;
-	} else {
-		cout << "DEBUG: Unknown command: " << ia.command() << endl;
-		return;
+	}
 	else {
 	  cout << "UNHANDLED: " << what << endl;
-
 	}
 }
