@@ -44,6 +44,7 @@ class user
  private:
   long refcount;
   Mutex m_refcount;
+  vector<string> joined_rooms;
 
   Semaphore* sem;
   Semaphore* logout;
@@ -90,6 +91,7 @@ class user
 	void kill(const string who);
 
   bool isIRC();
+  vector<string> getRooms();
 };
 
 #endif

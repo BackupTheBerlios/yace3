@@ -361,7 +361,7 @@ irccon::parse (const string & what)
 		  foo = ca.arg(i);
 			if (foo != "") { 
 			  foo = foo.substr(1, foo.length()-2);
-			  yace->rooms().joinRoom(u->getName(), foo);
+			  yace->rooms().joinRoom(u->getName(), foo, true);
 			}
 		}
 		u->DecRef();
@@ -500,6 +500,13 @@ irccon::parse (const string & what)
 	  // string name = ia.prefix(); // solution to fix some curious
 	  i2y_away(ia.prefix(), ia.rest().substr(0, ia.rest().length()-1));
 	  m_parser.leaveMutex();
+		return;
+	} else if (ia.command() == "PART") {
+	  ::user* u = yace->users().getUser(ia.prefix());
+			  string foo = replace(ia.arg(0).substr(1, ia.arg(0).length()-1), "_", " ");
+				yace->rooms().leaves(u->getName(), true, foo);
+		u->DecRef();
+		m_parser.leaveMutex();
 		return;
 	} else {
 

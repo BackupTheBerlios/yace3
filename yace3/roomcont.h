@@ -50,8 +50,8 @@ class roomcont
 
  public:
   room* getRoom(const string& name);
-  void joinRoom(const string& usr, const string& name);
-  bool leaves(const string& usr);
+  void joinRoom(const string& usr, const string& name, bool irc =false);
+  bool leaves(const string& usr, bool irc =false, string room ="");
   set<string> getAllRooms();
 };
 

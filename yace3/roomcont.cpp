@@ -40,10 +40,12 @@ room* roomcont::getRoom(const string& name)
   return ret;
 }
 
-void roomcont::joinRoom(const string& usr, const string& name)
+void roomcont::joinRoom(const string& usr, const string& name, bool irc)
 {
-  if(!leaves(usr))
-    return;
+  if(!irc) {
+    if(!leaves(usr))
+      return;
+  }
 
   user* pusr = yace->users().getUser(usr);
   if(pusr == NULL)
@@ -64,7 +66,7 @@ void roomcont::joinRoom(const string& usr, const string& name)
   pusr->DecRef();
 }
 
-bool roomcont::leaves(const string& usr)
+bool roomcont::leaves(const string& usr, bool irc, string room)
 {
   user* pusr = yace->users().getUser(usr);
 
@@ -72,7 +74,14 @@ bool roomcont::leaves(const string& usr)
     return false;
   }
 
-  room* r = getRoom(pusr->getRoom());
+  ::room* r;
+  
+  if(irc) {
+    r = getRoom(room);
+  } else {
+    r = getRoom(pusr->getRoom());
+  }
+  
   if(r == NULL) {
     pusr->DecRef();
     return true;;

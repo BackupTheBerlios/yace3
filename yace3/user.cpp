@@ -235,3 +235,12 @@ bool user::isIRC()
 {
   return ircuser;
 }
+
+vector<string> user::getRooms()
+{
+  m_room.enterMutex();
+  vector<string> ret = joined_rooms;
+  m_room.leaveMutex();
+  return ret;
+ 
+}
