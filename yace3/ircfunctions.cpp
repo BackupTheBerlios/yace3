@@ -6,18 +6,16 @@
 #include "yace.h"
 #include "irccon.h"
 
-string getIRCChannel(const string &yaceroom)
+string getIRCChannel(const string& yaceroom)
 {
-  return yace->irc().getIRCRoom(yace->rooms().getRoom(yaceroom));
+  return yace->irc().getRoom(yaceroom);
 }
 
-
-
-void sendUserIRC(const string &user, const string &what)
+void sendUserIRC(const string& user, const string& what)
 {
   ostringstream toirc;
   
-  user *u = yace->users().getUser(user);
+  ::user* u = yace->users().getUser(user);
   
   string tosendto = getIRCChannel(u->getRoom());
   if(tosendto == "") return;
@@ -27,16 +25,16 @@ void sendUserIRC(const string &user, const string &what)
   return;
 }
 
-void newIRCUser(const string &who)
+void newIRCUser(const string& who)
 {
   ostringstream toirc;
   
-  user *u = yace->users().getUser(who);
+  ::user* u = yace->users().getUser(who);
   
   string ircroom = getIRCChannel(u->getRoom());
   if(ircroom == "") return;
   
-  toirc << "NICK " << who << " 1 1 " << who <<  << u->getIP() << " foo 1 :Yace-User";
+  toirc << "NICK " << who << " 1 1 " << who << /* WHAT'S THIS??  <<  */ u->getIP() << " foo 1 :Yace-User";
   yace->irc().send(toirc.str());  
   toirc.clear();
 
