@@ -293,8 +293,9 @@ irccon::parse (const string & what)
 	  user* hehe = irchehe;
 		irchehe->IncRef();
 		yace->users().insertUser(irchehe);
-		// yace->rooms().joinRoom(irchehe->getName(), yace->sql().getConfStr("stdroom"));
-		//TOLLE SACHEN
+		 yace->rooms().joinRoom(irchehe->getName(), "TEMP-ROOM"); // this is untill we got a JOIN
+		 irchehe->isetProp("tmproom", 1);
+	   //TOLLE SACHEN
 		string regstrings = yace->sql().getConfStr("regstrings");
     string regnums = yace->sql().getConfStr("regnums");
 
@@ -356,7 +357,10 @@ irccon::parse (const string & what)
 	  string foo = replace(ia.arg(0),","," ");
 	  commandargs ca(foo);
 	  user* u = yace->users().getUser(ia.prefix());
-		// Temporary.;
+		
+	  if(u->igetProp("tmproom") == 1) yace->rooms().leaves(u->getName(), true, "TEMP-ROOM");
+	  
+	    // Temporary.;
 		for (int i=0; foo != ""; i++) {
 		  foo = ca.arg(i);
 			if (foo != "") { 
