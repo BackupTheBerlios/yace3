@@ -31,6 +31,7 @@
 #include "connection.h"
 #include "ircargs.h"
 #include "stringutil.h"
+#include "ircfunctions.h"
 
 irccon::irccon(const string& h, int p, const string& n, const string& pwd)
 {
@@ -44,22 +45,25 @@ irccon::irccon(const string& h, int p, const string& n, const string& pwd)
 void irccon::run()
 {
   connect();
+  connectRC("lounge", "#lounge");
   string got;
   for(;;) {
     std::getline(*irc, got);
-    
+    /*
     commandargs ca(got);
     ircargs ia(got);
-    if(ca.arg(0) == "PING") {
+    */
+    parse(got);
+    /*if(ca.arg(0) == "PING") {
       string pong = ":" + name + " PONG " + name + " " + ca.arg(1);
       ircargs ia(got);
       cout << ia.command() << endl;
-    } 
+    } */
     /*if(ia.command() == "PING") {
       string pong = ":" + name + " PONG " + name + " " + ia.arg(2);
       (*irc) << pong << endl;
     } */
-    if(ia.command() == "PRIVMSG") {
+    /*if(ia.command() == "PRIVMSG") {
       string from = ia.prefix();
       string to = ia.arg(0);
       string what = ia.rest();
@@ -70,16 +74,16 @@ void irccon::run()
 	ostringstream tosend;
 	tosend << "(" << from << ") " << what;
 	sendAll(tosend.str());
-      }
-      else {
+      } else {
         // Private
         string tosend = replaceUser(from, yace->sql().getString("whisperfrom"));
-	// FIXME: replaceUser needs user-class as first argument.
+	// FIXME: replaceUser needs user-class as first argument. 
 
         tosend = replace(tosend, "%TEXT%", what);
         sendUser(to, tosend);
       }
-    }
+    }*/
+    
     if (got != "") {
         cout << got << endl;
     }
@@ -156,3 +160,34 @@ bool irccon::connect()
   return true;
 }
 
+void irccon::insertUser(const string& name, const string& hostname)
+{
+  c_nicks[name] =  hostname;
+  return;
+}
+
+
+void irccon::parse(const string& what)
+{
+  ircargs ia(what);
+  if(ia.command() == "PRIVMSG")
+  {
+    if(ia.arg(0)[0] == '#')
+    {
+      i2y_say(ia.prefix(), ia.rest(), ia.arg(0));
+    } else {
+      i2y_whisper(ia.prefix(), ia.rest(), ia.arg(0));
+    }
+    return;
+  } else if(ia.command() == "NICK") {
+      yace->irc().insertUser(ia.arg(0), ia.arg(4));
+      replace(yace->sql().getString("enters"), "%CNAME", ia.arg(0));
+      return;
+    } else if(ia.command() == "PING") {
+      string pong = "PONG yace.gogi.tv " + ia.arg(0);
+      yace->irc().send(pong);
+      return;
+    } else {
+      return;
+  }
+}

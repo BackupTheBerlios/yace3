@@ -175,5 +175,6 @@ void user::decrProp(const string& key)
 
 void user::quit()
 {
+  yace->irc().send(":" + name + " QUIT :YaCE3");
   logout->post();
 }

@@ -102,12 +102,13 @@ void YaCE::run()
   // Starting irc, if needed
   
   if(cfg.get("irc") == "1") {
-    cout << "Connecting to IRC(" << cfg.get("irc_host") << "...";
+    cout << "Connecting to IRC(" << cfg.get("irc_host") << ")...";
     int ircport = atoi(cfg.get("irc_port").c_str());
     
     try {
       ic = new irccon(cfg.get("irc_host"), ircport, cfg.get("irc_name"), cfg.get("irc_password"));
       ic->start();
+      //icp->init();
     } catch(...) {
       cout << "ERROR" << endl;
       exit(1);
@@ -117,6 +118,7 @@ void YaCE::run()
   }
   else {
     ic = NULL;
+    //icp = NULL;
   }
   // end irc
 

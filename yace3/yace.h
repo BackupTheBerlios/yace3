@@ -40,6 +40,7 @@ using namespace std;
 #include "sqlcon.h"
 #include "inputqueue.h"
 #include "timer.h"
+#include "irccon.h"
 
 class YaCE
 {
@@ -56,6 +57,8 @@ private:
 
   inputqueue inqu;
   timer thetimer;
+
+  irccon* ic;
   
 public:
   inputqueue& iq()
@@ -68,6 +71,11 @@ public:
     return *sqlc;
   }
 
+  irccon& irc()
+  {
+    return *ic;
+  }
+  
   config& conf()
   {
     return cfg;

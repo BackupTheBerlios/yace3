@@ -43,6 +43,7 @@ private:
 
   map<string, string> c_rooms;
   vector<string> irc_nicks;
+  map<string, string> c_nicks;
 
 public:
   irccon(const string& h, int p, const string& n, const string& pwd);
@@ -54,7 +55,9 @@ public:
 
   string getChannel(const string& room);
   string getRoom(const string& channel);
+  void insertUser(const string& name, const string& hostname);
   void connectRC(const string& room, const string& channel);
+  void parse(const string& what);
 
 };
 

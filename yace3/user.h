@@ -26,6 +26,7 @@
 #include <string>
 #include <set>
 #include "hash_map.h"
+#include "yace.h"
 
 #ifdef CCXX_NAMESPACES
 using namespace ost;

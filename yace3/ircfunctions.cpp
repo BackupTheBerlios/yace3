@@ -22,8 +22,7 @@
 #include <sstream>
 #include "stringutil.h"
 #include "ircfunctions.h"
-#include "room.h"
-#include "user.h"
+#include "functions.h"
 #include "yace.h"
 #include "irccon.h"
 
@@ -38,15 +37,15 @@ void sendUserIRC(const string& user, const string& what)
 {
   ostringstream toirc;
   
-  ::user* u = yace->users().getUser(user);
+  //::user* u = yace->users().getUser(user);
   
-  string tosendto = getChannel(u->getRoom());
+  //string tosendto = getChannel(u->getRoom());
+  string tosendto = "#lounge";
   if(tosendto == "") return;
   
   toirc << ":" << user << " PRIVMSG " << tosendto << " :" << what;
   yace->irc().send(toirc.str());  
   
-  u->DecRef();
   return;
 }
 
@@ -54,12 +53,9 @@ void sendIRCUserPrivate(const string& user, const string& what, const string& to
 {
   ostringstream toirc;
 
-  ::user* u = yace->users().getUser(user);
-
   toirc << ":" << user << " PRIVMSG " << to << " :" << what;
   yace->irc().send(toirc.str());
 
-  u->DecRef();
   return;
 }
 
@@ -74,9 +70,30 @@ void newIRCUser(user* u)
   toirc2 << ":" << u->getName() << " SETHOST yace.filbboard.de";
   yace->irc().send(toirc2.str());
   
+  yace->irc().send(":" + u->getName() + " JOIN #lounge");
+  
+  return;
 }
 
 void quitIRCUser(user* u)
 {
   yace->irc().send(":" + u->getName() + "QUIT :Logged out");
 }
+
+void i2y_say(const string& who, const string& what, const string& where)
+{
+  string color = "da1337";
+  sendRoom(yace->irc().getRoom(where), replace(replace(replace(yace->sql().getString("say"), "%NAME%", who), "%COLOR%", color), "%TEXT%", what));
+  return;
+}
+
+void i2y_whisper(const string& who, const string& what, const string& user)
+{
+  string color = "da1337";
+  string toyace = replaceCommon(yace->sql().getString("whisperfrom"));
+  toyace = replace(toyace, "%CNAME", "<span style=\"color:" + color + "\">" + who + "</span>");
+  toyace = replace(toyace, "%TEXT%", what);
+  sendUser(user, toyace);
+  return;
+}
+

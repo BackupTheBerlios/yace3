@@ -30,7 +30,7 @@ ircargs::ircargs(const string& text):
     if(temp[0] == ':') {
       unsigned int endprefix = temp.find(" ");
       if(endprefix != string::npos) {
-	m_prefix = temp.substr(0, endprefix);
+	m_prefix = temp.substr(1, endprefix-1);
 	temp.replace(0, endprefix + 1, "");
       }
     }
