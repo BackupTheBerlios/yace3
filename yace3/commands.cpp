@@ -25,6 +25,7 @@
 #include "util.h"
 #include "stringutil.h"
 #include "roomcont.h"
+#include "ircfunctions.h"
 #include <iostream>
 #include <sstream>
 
@@ -84,6 +85,11 @@ static int rt(CA)
 
 static int m(CA)
 {
+  // IRC
+   sendIRCUserPrivate(caller,args.rest(0),args.arg(0));
+    
+  
+  // YaCE
   if(!exists(args.arg(0))) {
     string err = yace->sql().getString("unknown_command");
     err = replace(err, "%TEXT%", args.arg(0));
@@ -105,6 +111,7 @@ static int m(CA)
   touser = replace(touser, "%TEXT%", args.rest(0));
   sendUser(caller, tocaller);
   sendUserI(caller, args.arg(0), touser);
+  
   return 0;
 }
 

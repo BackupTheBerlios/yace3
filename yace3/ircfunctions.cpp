@@ -50,6 +50,19 @@ void sendUserIRC(const string& user, const string& what)
   return;
 }
 
+void sendIRCUserPrivate(const string& user, const string& what, const string& to)
+{
+  ostringstream toirc;
+
+  ::user* u = yace->users().getUser(user);
+
+  toirc << ":" << user << " PRIVMSG " << to << " :" << what;
+  yace->irc().send(toirc.str());
+
+  u->DecRef();
+  return;
+}
+
 void newIRCUser(user* u)
 {
   ostringstream toirc;
