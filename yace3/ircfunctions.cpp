@@ -1,7 +1,7 @@
 #include <sstream>
 #include "stringutil.h"
 #include "ircfunctions.h"
-
+#include "yace.h"
 
 void sendUserIRC(const string &user, const string &what)
 {
@@ -28,7 +28,7 @@ void newIRCUser(const string &who)
   string ircroom = r->sgetProp("ircroom");
   if(ircroom == "none") return;
   
-  toirc << "NICK " << who << " 1 1 " << who << " << u->getIP() << " foo 1 :Yace-User";
+  toirc << "NICK " << who << " 1 1 " << who <<  << u->getIP() << " foo 1 :Yace-User";
   yace->irc().send(toirc.str());  
   toirc.clear();
 
