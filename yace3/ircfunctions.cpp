@@ -67,7 +67,8 @@ sendUserIRC (const string & user, const string & what)
 
 
 	toirc << ":" << u->sgetProp("nick") << " PRIVMSG " << tosendto << " :" << tosend;
-	yace->irc ().send (toirc.str ());
+
+	yace->irc().send (toirc.str ());
   u->DecRef();
 	return;
 }

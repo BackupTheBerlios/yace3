@@ -20,6 +20,7 @@
 */
 
 #include "sqlcon.h"
+#include "stringutil.h"
 #include <iostream>
 
 sqlcon::sqlcon(const string& database, const string& host, const string& user, const string& pass) :
@@ -56,7 +57,10 @@ string sqlcon::getString(const string& key)
 }
 
 bool sqlcon::insertRegistry(const string& nick, const string& password, const string& mail) {
-  // We need escapezeug
+  password = replace(password, "`", " ");
+	password = replace(password, "'", " ");
+	mail = replace(mail, "`", " ");
+	mail = replace(mail, "'", " ");
   m.enterMutex();
   Query q = con.query();
 	try {

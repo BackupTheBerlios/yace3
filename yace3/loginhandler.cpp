@@ -175,12 +175,12 @@ void loginhandler::run()
 
     logout.wait();
 
-    // quitIRCUser(hehe);
+    quitIRCUser(hehe);
 
     leaves(hehe);
     yace->rooms().leaves(hehe->getName());
     yace->users().removeUser(hehe->getName());
-    
+     
     yace->log("Logout: " + hehe->getName());
     hehe->DecRef();
     

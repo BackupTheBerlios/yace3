@@ -202,7 +202,9 @@ irccon::parse (const string & what)
 			}
 		}
 		
-		
+	  user* u = yace->users().getUser(ia.prefix());
+		u->incrProp("said");
+		u->isetProp("silence",0);
 		if (ia.arg (0)[0] == '#')
 		{
 			if (ia.rest ()[0] == (char) 1)
@@ -254,7 +256,8 @@ irccon::parse (const string & what)
 		hasreg = yace->sql().isReg(nick);
 
 		if (hasreg) {
-		  // We cant allow registered nicks at the moment.
+		  // We need NickServ-Plugins for identify
+		  // yace->irc().send(":yace.filbboard.de KILL " + nick + " :Registered. If its your nick, please reconnect and identify");
 		  return;
 		}
 
