@@ -35,6 +35,7 @@
 #include "commands.h"
 #include "hash_map.h"
 
+#define SEBI_SUCKS
 irccon::irccon (const string & h, int p, const string & n, const string & pwd)
 {
 	connected = false;
