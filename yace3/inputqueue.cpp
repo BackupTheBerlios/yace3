@@ -103,7 +103,7 @@ void inputqueue::run()
     else {
       command = "say";
       sendUserIRC(user, sendirc); 
-      argz = commandargs(replaceI(replaceAll(got.text), "sebi", "Der &Auml;rmste Stra&szlig;enpenner von Frankfurt"));
+      argz = commandargs(replaceI(replaceAll(got.text), "sebi", "Der &Auml;rmste Stra&szlig;enpenner von Frankfurt"), got.text);
     }
 
     
