@@ -114,6 +114,9 @@ void lock(const string& r);
 void unlock(const string& r);
 bool locked(const string& r);
 
+void hide(const string& r);
+void reveal(const string& r);
+
 int quitUser(const string &user);
 int killUser(const string &user, const string who);
 #endif
