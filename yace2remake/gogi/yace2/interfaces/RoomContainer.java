@@ -23,6 +23,7 @@
 */
 
 package gogi.yace2.interfaces;
+
 import java.util.Enumeration;
 
 public interface RoomContainer
