@@ -64,7 +64,7 @@ public class RoomImpl implements Room
 		catch(ClassCastException e)
 		{
 			// if cast has failed
-			return ""
+			return "";
 		}
 	}
 
