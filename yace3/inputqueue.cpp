@@ -98,15 +98,6 @@ void inputqueue::run()
     }
     else {
       command = "say";
-      
-      if(u->getRoom() == "lounge")
-      {
-        ostringstream toirc;
-        toirc << ":YaCE PRIVMSG #lounge " << ":(" << user << ") " << got.text;
-        yace->irc().send(toirc.str());
-      }  
-      got.text = replaceAll(got.text);
-
       argz = commandargs(got.text);
     }
 
