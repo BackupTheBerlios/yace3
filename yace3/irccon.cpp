@@ -355,20 +355,23 @@ irccon::parse (const string & what)
 	}
   else if (ia.command() == "JOIN") {
 	  if (!exists(ia.prefix())/* || !yace->sql().isReg(ia.prefix())*/) return;
-	  string foo = replace(ia.arg(0),","," ");
-	  cout << foo << "und so" << endl;
+		string foo = ia.arg(0);
+		if (foo.find(","))
+	    foo = replace(foo,","," ");
 	  commandargs ca(foo);
 	  user* u = yace->users().getUser(ia.prefix());
 		
 	    // Temporary.;
 		for (int i=0; foo != ""; i++) {
 		  foo = ca.arg(i);
-			if (foo != "") { 
+			if (foo != "") {
+			  foo = replace(foo.substr(1,foo.length()), "_", "");
+			  /*
 			  foo = replace(foo, " ", "");
 			  foo = replace(foo.substr(1, foo.length()-1), "_", " ");
 			  if(foo.find(" ") == foo.length()) foo = foo.substr(0,foo.length()-1);
-			  cout << foo << "und so" << endl;
-			  yace->rooms().joinRoom(u->getName(), foo, true);
+			  cout << foo << " und so" << endl;
+			  yace->rooms().joinRoom(u->getName(), foo, true);*/
 			}
 		}
 		u->DecRef();
