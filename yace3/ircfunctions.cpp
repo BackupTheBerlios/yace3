@@ -28,11 +28,11 @@ void newIRCUser(const string &who)
   string ircroom = r->sgetProp("ircroom");
   if(ircroom == "none") return;
   
-  toirc << "NICK " << who << " 1 1 " << who << " << u->getIP() << " foo 1 :Yace-User";
+  toirc << "NICK " << who << " 1 1 " << who <<  << u->getIP() << " foo 1 :Yace-User";
   yace->irc().send(toirc.str());  
   toirc.clear();
 
-  toirc << ":" << who << " SETHOST " << u->getIP();
+  toirc << ":" << who << " SETHOST yace.filbboard.de";
   yace->irc().send(toirc.str());
   toirc.clear();
 
