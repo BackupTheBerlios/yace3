@@ -53,7 +53,7 @@ sendUserIRC (const string & user, const string & what)
 	::user* u = yace->users().getUser(user);
 
 	//string tosendto = getChannel(u->getRoom());
-	string tosendto = "#yace";
+	string tosendto = replace('#' + u->getRoom(), " ", "_");
 	if (tosendto == "")
 		return;
 
@@ -89,22 +89,17 @@ newIRCUser (user * u)
 {
 	ostringstream toirc;
 
-	toirc << "NICK " << u->getName () << " 1 1 " << u->
-		getID () << " " << u->getIP () << " " << yace->irc ().
-		getServerName () << " 1 :Yace-User";
+	toirc << "NICK " << u->sgetProp("nick") << " 1 1 " << u->getName() << " " << u->getIP() << " " << yace->irc().getServerName () << " 1 :YaCE-User";
 	yace->irc ().send (toirc.str ());
 
 	ostringstream toirc2;
-	toirc2 << ":" << u->getName () << " SETHOST " << replace (u->getIP (),
-								  ".",
-								  "-") <<
-		".yace";
+	toirc2 << ":" << u->sgetProp("nick") << " SETHOST " << replace (u->getIP (), ".", "-");
 	yace->irc ().send (toirc2.str ());
 
-	//yace->irc().send(":" + u->getName() + " JOIN " + yace->irc().getChannel(u->getRoom()));
-	yace->irc ().send (":" + u->getName () + " JOIN #yace");
+	//yace->irc().send(":" + u->sgetProp("nick") + " JOIN " + yace->irc().getChannel(u->getRoom()));
+	yace->irc ().send (":" + u->sgetProp("nick") + " JOIN " + replace('#' + u->getRoom(), " ", "_"));
 
-	yace->irc ().send (":" + u->getName () + " MODE :+xt");
+	yace->irc ().send (":" + u->sgetProp("nick") + " MODE :+xt");
 
 	return;
 }
@@ -112,7 +107,7 @@ newIRCUser (user * u)
 void
 quitIRCUser (user * u)
 {
-	yace->irc().send(":" + u->getName() + " QUIT :Logged out");
+	yace->irc().send(":" + u->sgetProp("nick") + " QUIT :Logged out");
 }
 
 void
@@ -124,7 +119,7 @@ i2y_say (const string & who, const string & what, const string & where)
 	tosend = replace (tosend, "%TEXT%", replaceAll (text));
 	tosend = replace (tosend, "%COLOR%", color);
 	tosend = i2y_convert (tosend);
-	sendRoom (yace->irc ().getRoom (where), tosend);
+	sendRoom (replace(where.substr(1, where.length()-1), "_", " "), tosend);
 	return;
 }
 
@@ -133,7 +128,7 @@ i2y_whisper (const string & who, const string & what, const string & user)
 {
 	string toyace =
 		replaceCommon (yace->sql ().getString ("whisperfrom"));
-	toyace = replace (toyace, "%CNAME",
+	toyace = replace (toyace, "%CNAME%",
 			  "<span style=\"color:" + color + "\">" + who +
 			  "</span>");
 	toyace = replace (toyace, "%TEXT%", what);
@@ -181,6 +176,6 @@ i2y_me(const string& who, const string& what, const string& where)
 	string toyace = replace(yace->sql().getString("me"), "%COLOR%", color);
 	toyace = replace(toyace, "%NAME%", who);
 	toyace = replace(toyace, "%TEXT%", what);
-	sendRoom(yace->irc().getRoom(where), toyace);
+	sendRoom(replace(where.substr(1, where.length()-1), "_", " "), toyace);
 	return;
 }

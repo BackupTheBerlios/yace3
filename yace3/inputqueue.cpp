@@ -127,7 +127,7 @@ inputqueue::run ()
 
 
 		f = cmds[command];
-		f (user, argz);
+		f (yace->users().getUser(user)->getName(), argz);
 	}
 }
 

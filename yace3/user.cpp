@@ -35,12 +35,15 @@ user::user(connection* c, Semaphore* s, Semaphore* l, const string& n, const str
   con = c;
   name = n;
 	ircuser = false;
+	this->ssetProp("nick", name);
 }
 
 user::user(const string& n, const string& addr) {
   ircuser = true;
   name = n;
   ip = addr;
+  this->ssetProp("nick", name);
+  this->ssetProp("color", "da1337");
 }
 
 string user::getID()
@@ -49,9 +52,13 @@ string user::getID()
   else return sid;
 }
 
-string user::getName()
+string user::getName(/*bool realname*/)
 {
   return name;
+	/*if(!realname)
+		return this->sgetProp("nick");
+	else
+		return name; */
 	
 }
 

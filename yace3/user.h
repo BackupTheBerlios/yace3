@@ -68,7 +68,7 @@ class user
   user(connection* c, Semaphore* s, Semaphore* l, const string& n, const string& addr, const string& id);
 	user(const string& n, const string& addr);
   string getID();
-  string getName();
+  string getName(/*bool realname =true*/);
   string getIP();
   string getRoom();
   void setRoom(const string& n);

@@ -83,7 +83,6 @@ void loginhandler::run()
 
     user* hehe = new user(con, &wait, &logout, nick, ip, id);
     
-    newIRCUser(hehe);
 
     hehe->ssetProp("logintime", c_time());
 
@@ -162,7 +161,10 @@ void loginhandler::run()
     hehe->IncRef();
     yace->users().insertUser(hehe);
     yace->rooms().joinRoom(hehe->getName(), yace->sql().getConfStr("stdroom"));
-    loginmutex.leaveMutex();
+    //NEW IRC USER HERE
+	newIRCUser(hehe);
+	//NEW IRC USER HERE
+	loginmutex.leaveMutex();
 
     //ok
     hehe->send(getHeader());
