@@ -19,7 +19,7 @@ void sendUserIRC(const string &user, const string &what)
   string tosendto = getIRCChannel(u->getRoom());
   if(tosendto == "") return;
   
-  toirc << ":" << user << " PRIVMSG #" << tosendto << " :" << what;
+  toirc << ":" << user << " PRIVMSG " << tosendto << " :" << what;
   yace->irc().send(toirc.str());  
   return;
 }
